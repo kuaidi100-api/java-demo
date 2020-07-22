@@ -37,15 +37,16 @@ public class BaseServiceTest {
     private String userid = PropertiesReader.get("userid");
     private String tid = PropertiesReader.get("tid");
     /**
-     * 查询物流轨迹，顺丰的需要带电话号码（后四位即可）
+     * 查询物流轨迹
      */
-    @Test
+   @Test
     public void testQueryTrack(){
         QueryTrack queryTrack = new QueryTrack();
         QueryTrackReq queryTrackReq = new QueryTrackReq();
         QueryTrackParam queryTrackParam = new QueryTrackParam();
         queryTrackParam.setCom(CompanyConstant.ST);
         queryTrackParam.setNum("773039762404825");
+        queryTrackParam.setPhone("17725390266");
         queryTrackReq.setParam(queryTrackParam);
         queryTrackReq.setCustomer(customer);
         queryTrackReq.setSign(SignUtils.sign(new Gson().toJson(queryTrackParam)+key+customer));
@@ -53,7 +54,7 @@ public class BaseServiceTest {
     }
 
     /**
-     * 查询物流轨迹，顺丰的需要带电话号码（后四位即可）
+     * 订阅
      */
     @Test
     public void testSubscribe(){
@@ -65,6 +66,7 @@ public class BaseServiceTest {
         subscribeParam.setParameters(subscribeParameters);
         subscribeParam.setCompany(CompanyConstant.ST);
         subscribeParam.setNumber("773039762404825");
+        subscribeParameters.setPhone("17725390266");
         subscribeParam.setKey(key);
         subscribeReq.setParam(subscribeParam);
         Subscribe subscribe = new Subscribe();
