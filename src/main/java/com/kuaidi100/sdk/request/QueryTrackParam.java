@@ -17,7 +17,7 @@ public class QueryTrackParam {
      */
     private String num;
     /**
-     * 收件人或寄件人的手机号或固话（顺丰单号必填，也可以填写后四位，如果是固话，请不要上传分机号）
+     * 收件人或寄件人的手机号或固话
      */
     private String phone;
     /**
