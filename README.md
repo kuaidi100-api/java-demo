@@ -2,7 +2,7 @@
 
 ## Introduce
 
-kuai100-api 是由快递100官方提供的sdk，方便调试使用。
+kuai100-api 是由[快递100](https://api.kuaidi100.com/home)官方提供的sdk，方便调试使用。
 
 kuai100-api 集成了实时查询、订阅推送、智能判断、云打印相关、电子面单相关、短信等接口。
 
@@ -256,3 +256,61 @@ public class BaseServiceTest {
     }
 }
 ```
+
+## FAQ
+
+### 问题1.快递100api接口里sign该如何处理？
+
+快递100加密方式统一为MD5后转大写，可以参考[签名](https://github.com/kuaidi100-api/kuadi100-api/blob/master/src/main/java/com/kuaidi100/sdk/utils/SignUtils.java)
+
+```java
+org.apache.commons.codec.digest.DigestUtils.md5Hex(msg).toUpperCase();
+```
+
+### 问题2.使用了快递100订阅接口后，该如何处理回调接口？
+
+可以参考推送[订阅回调](https://github.com/kuaidi100-api/kuadi100-api/blob/master/src/main/java/com/kuaidi100/sdk/api/Subscribe.java#L56)
+
+```java
+public SubscribeResp callBackUrl(HttpServletRequest request){
+        String param = request.getParameter("param");
+        String sign = request.getParameter("sign");
+        //建议记录一下这个回调的内容，方便出问题后双方排查问题
+        log.debug("快递100订阅推送回调结果|{}|{}",param,sign);
+        //订阅时传的salt,没有可以忽略
+        String salt = "";
+        String ourSign = SignUtils.sign(param + salt);
+        SubscribeResp subscribeResp = new SubscribeResp();
+        subscribeResp.setResult(Boolean.TRUE);
+        subscribeResp.setReturnCode("200");
+        subscribeResp.setMessage("成功");
+        //加密如果相等，属于快递100推送；否则可以忽略掉当前请求
+        if (ourSign.equals(sign)){
+            //TODO 业务处理
+            return subscribeResp;
+        }
+        return null;
+    }
+```
+
+### 问题3.使用电子面单图片接口，该如何处理返回的base64图片？
+
+返回的是一个字符串json数组，多个子单时会有多个。
+
+添加前缀“`data:image/png;base64,`”，把“`\\\\n`”替换成“”；可以参考[处理返回的base64字符串](https://github.com/kuaidi100-api/kuadi100-api/blob/master/src/main/java/com/kuaidi100/sdk/api/PrintImg.java#L47)
+
+```java
+public List<String> getBase64Img(String imgBase64){
+        List<String> stringList= new Gson().fromJson(imgBase64,
+                                 new TypeToken<List<String>>() {}.getType());
+        List<String> base64Img = new ArrayList<String>();
+        if (stringList != null && stringList.size()>0){
+            for (String s : stringList) {
+                s = "data:image/png;base64,"+s.replace("\\\\n","");
+                base64Img.add(s);
+            }
+        }
+        return base64Img;
+    }
+```
+
