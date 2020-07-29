@@ -11,7 +11,7 @@ public class CompanyConstant {
     public static final String YT = "yuantong";
     public static final String HT = "huitongkuaidi";
     public static final String ST = "shentong";
-    public static final String YD = "yuanda";
+    public static final String YD = "yunda";
     public static final String EMS = "ems";
     public static final String JD = "jd";
     public static final String ZJS = "zhaijisong";

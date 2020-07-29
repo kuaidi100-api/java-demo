@@ -45,4 +45,12 @@ public class QueryTrackResp {
     private String condition;
 
     private QueryTrackRouteInfo routeInfo;
+    /**
+     * 查不到轨迹或者其他问题返回码
+     */
+    private String returnCode;
+    /**
+     * 查不到轨迹或者其他问题返回结果
+     */
+    private boolean result;
 }
