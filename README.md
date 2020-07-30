@@ -1,4 +1,4 @@
-<h1 align="center"><a href="https://github.com/kuaidi100-api/kuadi100-api/" target="_blank">kuaidi100-api Project</a></h1>
+<h1 align="center"><a href="https://github.com/kuaidi100-api/kuadi100-api/" target="_blank">java-demo Project</a></h1>
 
 ## Introduce
 
