@@ -2,9 +2,9 @@
 
 ## Introduce
 
-kuai100-api 是由[快递100](https://api.kuaidi100.com/home)官方提供的sdk，方便调试使用。
+java-demo 是由[快递100](https://api.kuaidi100.com/home)官方提供的java sdk，方便调试使用。
 
-kuai100-api 集成了实时查询、订阅推送、智能判断、云打印相关、电子面单相关、短信等接口。
+java-demo 集成了实时查询、订阅推送、智能判断、云打印相关、电子面单相关、短信等接口。
 
 ## Features
 
@@ -14,10 +14,10 @@ kuai100-api 集成了实时查询、订阅推送、智能判断、云打印相�
 
 ## Getting started
 
-kuai100-api使用和测试可参考[kuaidi100-api-test](https://github.com/kuaidi100-api/kuadi100-api/blob/master/src/test/java/BaseServiceTest.java)。
+java-demo使用和测试可参考[java-demo-test](https://github.com/kuaidi100-api/kuadi100-api/blob/master/src/test/java/BaseServiceTest.java)。
 
 ```
-# git clone https://github.com/kuaidi100-api/kuadi100-api.git
+# git clone https://github.com/kuaidi100-api/java-demo.git
 ```
 
 #### Add Config
