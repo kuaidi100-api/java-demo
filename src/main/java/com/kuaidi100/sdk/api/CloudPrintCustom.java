@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.kuaidi100.sdk.contant.ApiInfoConstant;
 import com.kuaidi100.sdk.pojo.HttpResult;
 import com.kuaidi100.sdk.request.CloudPrintCustomParam;
-import com.kuaidi100.sdk.request.PrintBaseReq;
+import com.kuaidi100.sdk.request.BaseReq;
 import com.kuaidi100.sdk.response.PrintBaseResp;
 import com.kuaidi100.sdk.utils.HttpUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -19,12 +19,12 @@ import java.net.URLEncoder;
  */
 public class CloudPrintCustom {
 
-    public PrintBaseResp print(PrintBaseReq<CloudPrintCustomParam> printBaseReq) throws Exception {
+    public PrintBaseResp print(BaseReq<CloudPrintCustomParam> baseReq) throws Exception {
         String url = String.format(ApiInfoConstant.CLOUD_PRINT_URL,
-                printBaseReq.getMethod(), printBaseReq.getT(),
-                printBaseReq.getKey(), printBaseReq.getSign(),
-                URLEncoder.encode(new Gson().toJson(printBaseReq.getParam()), "UTF-8"));
-        HttpResult httpResult = HttpUtils.doPost(url, printBaseReq);
+                baseReq.getMethod(), baseReq.getT(),
+                baseReq.getKey(), baseReq.getSign(),
+                URLEncoder.encode(new Gson().toJson(baseReq.getParam()), "UTF-8"));
+        HttpResult httpResult = HttpUtils.doPost(url, baseReq);
         if (httpResult.getStatus() == 200 && StringUtils.isNotBlank(httpResult.getBody())) {
 
             return new Gson().fromJson(httpResult.getBody(), PrintBaseResp.class);

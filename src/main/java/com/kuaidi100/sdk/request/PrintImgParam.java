@@ -38,6 +38,10 @@ public class PrintImgParam {
      */
     private String recManMobile;
     /**
+     * 收件人的手机号
+     */
+    private String recManTel;
+    /**
      * 收件人所在完整地址
      */
     private String recManPrintAddr;

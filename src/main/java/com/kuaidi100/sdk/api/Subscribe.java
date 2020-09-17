@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.kuaidi100.sdk.contant.ApiInfoConstant;
 import com.kuaidi100.sdk.pojo.HttpResult;
 import com.kuaidi100.sdk.request.SubscribeReq;
+import com.kuaidi100.sdk.response.SubscribePushParamResp;
 import com.kuaidi100.sdk.response.SubscribeResp;
 import com.kuaidi100.sdk.utils.HttpUtils;
 import com.kuaidi100.sdk.utils.SignUtils;
@@ -68,6 +69,7 @@ public class Subscribe {
         //加密如果相等，属于快递100推送；否则可以忽略掉当前请求
         if (ourSign.equals(sign)){
             //TODO 业务处理
+            SubscribePushParamResp subscribePushParamResp = new Gson().fromJson(param, SubscribePushParamResp.class);
             return subscribeResp;
         }
         return null;

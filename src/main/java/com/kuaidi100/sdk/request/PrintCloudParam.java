@@ -140,4 +140,6 @@ public class PrintCloudParam {
      * 该字段为申通专用，其他公司勿传；申通的需要传 44
      */
     private String code;
+
+    private String orgSortingName;
 }

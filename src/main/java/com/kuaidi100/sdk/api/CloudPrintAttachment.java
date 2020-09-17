@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kuaidi100.sdk.contant.ApiInfoConstant;
 import com.kuaidi100.sdk.pojo.HttpResult;
-import com.kuaidi100.sdk.request.CloudPrintAttachmentReq;
+import com.kuaidi100.sdk.request.CloudAttachmentReq;
 import com.kuaidi100.sdk.response.PrintBaseResp;
 import com.kuaidi100.sdk.utils.HttpUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class CloudPrintAttachment{
 
-    public PrintBaseResp print(CloudPrintAttachmentReq cloudPrintAttachmentReq) throws Exception{
+    public PrintBaseResp print(CloudAttachmentReq cloudPrintAttachmentReq) throws Exception{
         String url = String.format(ApiInfoConstant.CLOUD_PRINT_URL,
                 cloudPrintAttachmentReq.getMethod(),
                 cloudPrintAttachmentReq.getT(),

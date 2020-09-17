@@ -69,4 +69,24 @@ public class ApiInfoConstant {
      * 复打方法
      */
     public static final String SEND_SMS_URL = "http://apisms.kuaidi100.com:9502/sms/send.do";
+    /**
+     * 商家寄件
+     */
+    public static final String B_ORDER_URL = "https://order.kuaidi100.com/order/borderbestapi.do";
+    /**
+     * 商家寄件查询运力
+     */
+    public static final String B_ORDER_QUERY_TRANSPORT_CAPACITY_METHOD = "querymkt";
+    /**
+     * 商家寄件下单
+     */
+    public static final String B_ORDER_SEND_METHOD = "bOrderBest";
+    /**
+     * 商家寄件获取验证码
+     */
+    public static final String B_ORDER_CODE_METHOD = "getCode";
+    /**
+     * 商家寄件取消
+     */
+    public static final String B_ORDER_CANCEL_METHOD = "cancelBest";
 }

@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.kuaidi100.sdk.contant.ApiInfoConstant;
 import com.kuaidi100.sdk.pojo.HttpResult;
 import com.kuaidi100.sdk.request.CloudPrintOldParam;
-import com.kuaidi100.sdk.request.PrintBaseReq;
+import com.kuaidi100.sdk.request.BaseReq;
 import com.kuaidi100.sdk.response.PrintBaseResp;
 import com.kuaidi100.sdk.utils.HttpUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -19,7 +19,7 @@ import java.net.URLEncoder;
  */
 public class CloudPrintOld {
 
-    public PrintBaseResp print(PrintBaseReq<CloudPrintOldParam> cloudPrintOldParamReq) throws Exception{
+    public PrintBaseResp print(BaseReq<CloudPrintOldParam> cloudPrintOldParamReq) throws Exception{
         String url = String.format(ApiInfoConstant.CLOUD_PRINT_URL,
                 cloudPrintOldParamReq.getMethod(),
                 cloudPrintOldParamReq.getT(),

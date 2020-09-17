@@ -9,7 +9,7 @@ import java.lang.ref.PhantomReference;
  * @Date: 2020-07-20 9:41
  */
 @Data
-public class PrintBaseReq<T> {
+public class BaseReq<T> {
 
     /**
      * 业务类型（默认：getPrintImg）

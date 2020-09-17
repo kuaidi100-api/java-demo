@@ -9,6 +9,6 @@ import java.io.File;
  * @Date: 2020-07-20 9:36
  */
 @Data
-public class CloudPrintAttachmentReq extends PrintBaseReq<CloudPrintAttachmentParam>{
+public class CloudAttachmentReq extends BaseReq<CloudPrintAttachmentParam> {
     private File file;
 }

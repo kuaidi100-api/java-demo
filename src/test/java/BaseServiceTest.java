@@ -170,7 +170,7 @@ public class BaseServiceTest {
      */
     @Test
     public void testCloudCustom() throws Exception{
-        PrintBaseReq<CloudPrintCustomParam> printCustomParamReq = new PrintBaseReq<CloudPrintCustomParam>();
+        BaseReq<CloudPrintCustomParam> printCustomParamReq = new BaseReq<CloudPrintCustomParam>();
         CloudPrintCustomParam cloudPrintCustomParam = new CloudPrintCustomParam();
         cloudPrintCustomParam.setSiid(siid);
         cloudPrintCustomParam.setCallBackUrl("http://www.baidu.com");
@@ -190,7 +190,7 @@ public class BaseServiceTest {
      */
     @Test
     public void testCloudAttachment() throws Exception{
-        CloudPrintAttachmentReq cloudPrintAttachmentReq = new CloudPrintAttachmentReq();
+        CloudAttachmentReq cloudPrintAttachmentReq = new CloudAttachmentReq();
         CloudPrintAttachmentParam cloudPrintAttachmentParam = new CloudPrintAttachmentParam();
         cloudPrintAttachmentParam.setSiid(siid);
         cloudPrintAttachmentParam.setCallBackUrl("http://www.baidu.com");
@@ -210,7 +210,7 @@ public class BaseServiceTest {
      */
     @Test
     public void testCloudPrintOld() throws Exception{
-        PrintBaseReq<CloudPrintOldParam> printCustomParamReq = new PrintBaseReq<CloudPrintOldParam>();
+        BaseReq<CloudPrintOldParam> printCustomParamReq = new BaseReq<CloudPrintOldParam>();
         CloudPrintOldParam cloudPrintOldParam = new CloudPrintOldParam();
         cloudPrintOldParam.setTaskId("2B70DF2F433F64C4A8C6F23DD50368DC");
         String t = System.currentTimeMillis() + "";
@@ -240,5 +240,96 @@ public class BaseServiceTest {
         sendSmsReq.setTid(tid);
         sendSmsReq.setSign(SignUtils.sign(key+userid));
         System.out.println(sendSms.sendSms(sendSmsReq));
+    }
+
+    /**
+     * 商家寄件查询运力
+     */
+    @Test
+    public void testBorderQuery() throws Exception {
+        BaseReq<BOrderQueryReq>  param = new BaseReq<BOrderQueryReq>();
+        BOrderQueryReq bOrderQueryReq = new BOrderQueryReq();
+        bOrderQueryReq.setSendAddr("福田区华强南");
+
+        String t = String.valueOf(System.currentTimeMillis());
+        param.setKey(key);
+        param.setSign(SignUtils.sign(new Gson().toJson(bOrderQueryReq) + t + key + secret));
+        param.setT(t);
+        param.setParam(bOrderQueryReq);
+
+        BOrder bOrder = new BOrder();
+        System.out.println(bOrder.transportCapacity(param));
+    }
+
+    /**
+     * 商家寄件
+     */
+    @Test
+    public void testBorder() throws Exception {
+        BaseReq<BOrderReq>  param = new BaseReq<BOrderReq>();
+        BOrderReq bOrderReq = new BOrderReq();
+        bOrderReq.setKuaidicom(CompanyConstant.ZT);
+        bOrderReq.setSendManName("张三");
+        bOrderReq.setSendManMobile("15966666666");
+        bOrderReq.setSendManPrintAddr("广东深圳市福田区华强南");
+        bOrderReq.setRecManName("李四");
+        bOrderReq.setRecManMobile("15966666666");
+        bOrderReq.setRecManPrintAddr("广东深圳市南山区金蝶软件园");
+        bOrderReq.setCallBackUrl("http://www.baidu.com");
+        bOrderReq.setCargo("文件");
+        bOrderReq.setRemark("测试下单，待会取消");
+        bOrderReq.setWeight("1");
+        bOrderReq.setSalt("123456");
+        bOrderReq.setServiceType("标准快递");
+
+        String t = String.valueOf(System.currentTimeMillis());
+        param.setKey(key);
+        param.setSign(SignUtils.sign(new Gson().toJson(bOrderReq) + t + key + secret));
+        param.setT(t);
+        param.setParam(bOrderReq);
+
+        BOrder bOrder = new BOrder();
+        System.out.println(bOrder.order(param));
+    }
+
+    /**
+     * 商家寄件获取验证码
+     */
+    @Test
+    public void testBorderGetCode() throws Exception {
+        BaseReq<BOrderGetCodeReq>  param = new BaseReq<BOrderGetCodeReq>();
+        BOrderGetCodeReq bOrderGetCodeReq = new BOrderGetCodeReq();
+        bOrderGetCodeReq.setTaskId("CE181BBD30C0F9BF531AB456CCE278E7");
+        bOrderGetCodeReq.setOrderId("100012021501262");
+
+        String t = String.valueOf(System.currentTimeMillis());
+        param.setKey(key);
+        param.setSign(SignUtils.sign(new Gson().toJson(bOrderGetCodeReq) + t + key + secret));
+        param.setT(t);
+        param.setParam(bOrderGetCodeReq);
+
+        BOrder bOrder = new BOrder();
+        System.out.println(bOrder.getCode(param));
+    }
+
+    /**
+     * 商家寄件取消
+     */
+    @Test
+    public void testBorderCancel() throws Exception {
+        BaseReq<BOrderCancelReq>  param = new BaseReq<BOrderCancelReq>();
+        BOrderCancelReq bOrderCancelReq = new BOrderCancelReq();
+        bOrderCancelReq.setTaskId("CE181BBD30C0F9BF531AB456CCE278E7");
+        bOrderCancelReq.setOrderId("100012021501262");
+        bOrderCancelReq.setCancelMsg("测试单取消");
+
+        String t = String.valueOf(System.currentTimeMillis());
+        param.setKey(key);
+        param.setSign(SignUtils.sign(new Gson().toJson(bOrderCancelReq) + t + key + secret));
+        param.setT(t);
+        param.setParam(bOrderCancelReq);
+
+        BOrder bOrder = new BOrder();
+        System.out.println(bOrder.cancel(param));
     }
 }
