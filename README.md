@@ -4,12 +4,11 @@
 
 java-demo 是由[快递100](https://api.kuaidi100.com/home)官方提供的java sdk，方便调试使用。
 
-java-demo 集成了实时查询、订阅推送、智能判断、云打印相关、电子面单相关、短信等接口。
+java-demo 集成了实时查询、订阅推送、智能判断、云打印相关、电子面单相关、短信、商家寄件等接口。
 
 ## Features
 
 - 提供了快递100接口请求参数实体类、返回实体类。
-- 支持maven集成。
 - 提供测试类调试。
 
 ## Getting started
