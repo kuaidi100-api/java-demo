@@ -89,4 +89,8 @@ public class ApiInfoConstant {
      * 商家寄件取消
      */
     public static final String B_ORDER_CANCEL_METHOD = "cancelBest";
+    /**
+     * 云平台通用请求url
+     */
+    public static final String CLOUD_NORMAL_URL = "http://cloud.kuaidi100.com/api";
 }

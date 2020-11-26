@@ -26,4 +26,8 @@ public class PrintHtmlData {
      * 电子面单链接
      */
     private List<String> templateurl;
+    /**
+     * 子单号
+     */
+    private String childNum;
 }

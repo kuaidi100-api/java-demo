@@ -1,8 +1,12 @@
 import com.google.gson.Gson;
 import com.kuaidi100.sdk.api.*;
+import com.kuaidi100.sdk.cloud.CloudBase;
 import com.kuaidi100.sdk.contant.ApiInfoConstant;
 import com.kuaidi100.sdk.contant.CompanyConstant;
 import com.kuaidi100.sdk.request.*;
+import com.kuaidi100.sdk.request.cloud.COrderCancelReq;
+import com.kuaidi100.sdk.request.cloud.COrderQueryReq;
+import com.kuaidi100.sdk.request.cloud.COrderReq;
 import com.kuaidi100.sdk.utils.PropertiesReader;
 import com.kuaidi100.sdk.utils.SignUtils;
 import org.junit.Test;
@@ -23,6 +27,8 @@ public class BaseServiceTest {
     private String siid = PropertiesReader.get("siid");
     private String userid = PropertiesReader.get("userid");
     private String tid = PropertiesReader.get("tid");
+    private String secret_key = PropertiesReader.get("secret_key");
+    private String secret_secret = PropertiesReader.get("secret_secret");
     /**
      * 查询物流轨迹
      */
@@ -331,5 +337,61 @@ public class BaseServiceTest {
 
         BOrder bOrder = new BOrder();
         System.out.println(bOrder.cancel(param));
+    }
+
+    /**
+     * C端查询运力
+     */
+    @Test
+    public void testCOrderQuery() throws Exception {
+        CloudBase cloudBase = new CloudBase();
+        COrderQueryReq cOrderQueryReq = new COrderQueryReq();
+        cOrderQueryReq.setAddress("广东省深圳市南山区华强南");
+        cOrderQueryReq.setSecret_key(secret_key);
+        cOrderQueryReq.setSecret_code("7c5c49c5e51a4b75bd960f4997d2846a");
+        cOrderQueryReq.setSecret_sign(SignUtils.sign(secret_key+secret_secret));
+        System.out.println(new Gson().toJson(cloudBase.execute(cOrderQueryReq)));
+    }
+
+    /**
+     * c端寄件
+     */
+    @Test
+    public void testCOrder() throws Exception {
+        CloudBase cloudBase = new CloudBase();
+        COrderReq cOrderReq = new COrderReq();
+        cOrderReq.setCom(CompanyConstant.JD);
+        cOrderReq.setSendManName("张三");
+        cOrderReq.setSendManMobile("15966666666");
+        cOrderReq.setSendManPrintAddr("广东深圳市南山区金蝶软件园");
+        cOrderReq.setRecManName("李四");
+        cOrderReq.setRecManMobile("15966666666");
+        cOrderReq.setRecManPrintAddr("广东深圳市福田区华强南");
+        cOrderReq.setCallBackUrl("http://www.baidu.com");
+        cOrderReq.setCargo("文件");
+        cOrderReq.setRemark("测试下单，待会取消");
+        cOrderReq.setWeight("1");
+        cOrderReq.setSalt("123456");
+
+        cOrderReq.setSecret_key(secret_key);
+        cOrderReq.setSecret_code("ddffadd3df4b4c0d8d6f9942c7a8c990");
+        cOrderReq.setSecret_sign(SignUtils.sign(secret_key+secret_secret));
+        System.out.println(new Gson().toJson(cloudBase.execute(cOrderReq)));
+    }
+
+    /**
+     * c端取消寄件
+     */
+    @Test
+    public void testCOrderCancel() throws Exception {
+        CloudBase cloudBase = new CloudBase();
+        COrderCancelReq cOrderCancelReq = new COrderCancelReq();
+        cOrderCancelReq.setTaskId("7CBD198CF873129D2CFA221928EEF3EE");
+        cOrderCancelReq.setOrderId("10997974");
+        cOrderCancelReq.setCancelMsg("测试单");
+        cOrderCancelReq.setSecret_key(secret_key);
+        cOrderCancelReq.setSecret_code("bcb0428c1dd84aca9d6e19ea4dcf683d");
+        cOrderCancelReq.setSecret_sign(SignUtils.sign(secret_key+secret_secret));
+        System.out.println(new Gson().toJson(cloudBase.execute(cOrderCancelReq)));
     }
 }

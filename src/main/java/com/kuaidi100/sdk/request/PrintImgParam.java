@@ -152,11 +152,28 @@ public class PrintImgParam {
      */
     private String resultv2;
     /**
-     * 该字段为申通专用，其他公司勿传；申通的需要传 44
-     */
-    private String code;
-    /**
      * 打印时间
      */
     private String printTime;
+
+    /**
+     * 扩展字段，不同快递公司具体详情看参数字典
+     * https://api.kuaidi100.com/help/doc/?code=5f0ff6e82977d50a94e10237&openKey=%E7%94%B5%E5%AD%90%E9%9D%A2%E5%8D%95
+     */
+    private String code;
+    /**
+     * 扩展字段，具体详情看参数字典
+     * https://api.kuaidi100.com/help/doc/?code=5f0ff6e82977d50a94e10237&openKey=%E7%94%B5%E5%AD%90%E9%9D%A2%E5%8D%95
+     */
+    private String partnerSecret;
+    /**
+     * 扩展字段，具体详情看参数字典
+     * https://api.kuaidi100.com/help/doc/?code=5f0ff6e82977d50a94e10237&openKey=%E7%94%B5%E5%AD%90%E9%9D%A2%E5%8D%95
+     */
+    private String partnerName;
+    /**
+     * 扩展字段，具体详情看参数字典
+     * https://api.kuaidi100.com/help/doc/?code=5f0ff6e82977d50a94e10237&openKey=%E7%94%B5%E5%AD%90%E9%9D%A2%E5%8D%95
+     */
+    private String checkMan;
 }
