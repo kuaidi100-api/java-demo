@@ -1,7 +1,6 @@
 package com.kuaidi100.sdk.response;
 
 import lombok.Data;
-import sun.dc.pr.PRError;
 
 /**
  * @Author: api.kuaidi100.com

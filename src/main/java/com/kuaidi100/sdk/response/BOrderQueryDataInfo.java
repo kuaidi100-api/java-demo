@@ -1,7 +1,6 @@
 package com.kuaidi100.sdk.response;
 
 import lombok.Data;
-import sun.dc.pr.PRError;
 
 import java.util.List;
 
