@@ -2,14 +2,12 @@ package com.kuaidi100.sdk.request;
 
 import lombok.Data;
 
-import java.lang.ref.PhantomReference;
-
 /**
  * @Author: api.kuaidi100.com
  * @Date: 2020-07-20 9:41
  */
 @Data
-public class BaseReq<T> {
+public class PrintReq extends BaseRequest {
 
     /**
      * 业务类型（默认：getPrintImg）
@@ -30,5 +28,9 @@ public class BaseReq<T> {
     /**
      * 其他参数
      */
-    private T param;
+    private String param;
+    /**
+     * 快递100分配给贵司的的授权key
+     */
+    private String secret;
 }

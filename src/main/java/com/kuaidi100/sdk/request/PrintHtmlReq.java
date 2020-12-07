@@ -28,5 +28,5 @@ public class PrintHtmlReq {
     /**
      * 其他参数组合成的json对象
      */
-    private PrintHtmlParam param;
+    private String param;
 }

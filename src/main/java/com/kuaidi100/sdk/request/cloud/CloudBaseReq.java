@@ -1,5 +1,6 @@
 package com.kuaidi100.sdk.request.cloud;
 
+import com.kuaidi100.sdk.request.BaseRequest;
 import com.kuaidi100.sdk.utils.SignUtils;
 import lombok.Data;
 
@@ -8,7 +9,7 @@ import lombok.Data;
  * @Date: 2020-10-27 15:45
  */
 @Data
-public class CloudBaseReq {
+public class CloudBaseReq extends BaseRequest {
     /**
      * 用户授权key
      */

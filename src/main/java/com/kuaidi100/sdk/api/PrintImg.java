@@ -2,13 +2,15 @@ package com.kuaidi100.sdk.api;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.kuaidi100.sdk.core.BaseClient;
+import com.kuaidi100.sdk.request.BaseRequest;
 import com.kuaidi100.sdk.contant.ApiInfoConstant;
 import com.kuaidi100.sdk.pojo.HttpResult;
-import com.kuaidi100.sdk.request.PrintImgReq;
+import com.kuaidi100.sdk.request.PrintReq;
 import com.kuaidi100.sdk.response.PrintBaseResp;
 import com.kuaidi100.sdk.response.PrintImgData;
-import com.kuaidi100.sdk.utils.HttpUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,22 +19,23 @@ import java.util.List;
  * @Author: api.kuaidi100.com
  * @Date: 2020-07-17 15:46
  */
-public class PrintImg {
+public class PrintImg extends BaseClient {
+
+    public String getApiUrl(BaseRequest request) {
+        return ApiInfoConstant.ELECTRONIC_ORDER_PIC_URL;
+    }
 
     /**
      * 获取电子面单图片（BASE64）
      *
-     * @param printImgReq
+     * @param printReq
      * @return: java.lang.String
      * @author: api.kuaidi100.com
      * @time: 2020/7/17 17:15
      */
-    public PrintBaseResp<PrintImgData> printImG(PrintImgReq printImgReq){
-        if (printImgReq == null || StringUtils.isBlank(printImgReq.getKey())||StringUtils.isBlank(printImgReq.getT())||printImgReq.getParam() == null){
-            return null;
-        }
-        HttpResult httpResult = HttpUtils.doPost(ApiInfoConstant.ELECTRONIC_ORDER_PIC_URL, printImgReq);
-        if (httpResult.getStatus() == 200 && StringUtils.isNotBlank(httpResult.getBody())){
+    public PrintBaseResp<PrintImgData> printImG(PrintReq printReq) throws Exception{
+        HttpResult httpResult = execute(printReq);
+        if (httpResult.getStatus() == HttpStatus.SC_OK && StringUtils.isNotBlank(httpResult.getBody())){
            return new Gson().fromJson(httpResult.getBody(),new TypeToken<PrintBaseResp<PrintImgData>>(){}.getType());
         }
         return null;

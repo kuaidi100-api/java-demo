@@ -1,6 +1,5 @@
 package com.kuaidi100.sdk.utils;
 
-import com.google.gson.Gson;
 import com.kuaidi100.sdk.pojo.HttpResult;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -19,8 +18,9 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -45,7 +45,7 @@ public class HttpUtils {
 
         HttpResult result = new HttpResult();
         try {
-            Map<String, String> params = objectToMap(obj);
+            Map<String, String> params = ObjectToMapUtils.objectToMap(obj);
             HttpPost httpPost = new HttpPost(url);
             if (params != null && params.size() > 0) {
                 List<NameValuePair> list = new ArrayList<NameValuePair>();
@@ -58,9 +58,6 @@ public class HttpUtils {
             resp = httpClient.execute(httpPost);
             String body = EntityUtils.toString(resp.getEntity(), CHARSET_DEFAULT);
             int statusCode = resp.getStatusLine().getStatusCode();
-            if (isRecord){
-                record.info("{}|{}|{}|{}",url,new Gson().toJson(obj),statusCode,body);
-            }
             result.setStatus(statusCode);
             result.setBody(body);
         } catch (Exception e) {
@@ -119,42 +116,4 @@ public class HttpUtils {
         return result;
     }
 
-
-    /**
-     * 将Object对象里面的属性和值转化成Map对象
-     *
-     * @param obj
-     * @return
-     * @throws IllegalAccessException
-     */
-    public static Map<String, String> objectToMap(Object obj) throws IllegalAccessException {
-        if (obj == null) {
-            return null;
-        }
-        Map<String, String> map = new HashMap<String,String>();
-        List<Field> allField = getAllField(obj);
-        for (Field field : allField) {
-            field.setAccessible(true);
-            String fieldName = field.getName();
-            String fieldValue = "";
-            if (field.getType()== String.class || field.getType() == Integer.class || field.getType() == int.class){
-                fieldValue = field.get(obj)==null?"": field.get(obj).toString();
-            }else {
-                 fieldValue = new Gson().toJson(field.get(obj));
-            }
-            map.put(fieldName, fieldValue);
-        }
-        return map;
-    }
-
-    private static List<Field> getAllField(Object obj){
-        List<Field> fieldList = new ArrayList<Field>() ;
-        Class<?> clazz = obj.getClass();
-        while (clazz != null){
-            fieldList.addAll(Arrays.asList(clazz.getDeclaredFields()));
-            clazz = clazz.getSuperclass();
-        }
-        return fieldList;
-
-    }
 }
