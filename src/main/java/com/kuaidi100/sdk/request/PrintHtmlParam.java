@@ -43,7 +43,7 @@ public class PrintHtmlParam {
      * needChild = 1、count 需要大于1，如count = 2 则一个主单 一个子单，
      * count = 3则一个主单 二个子单；返回的子单号码见返回结果的childNum字段
      */
-    private String count;
+    private int count;
     /**
      * 物品总重量，单位：KG （例子：0.5）
      */
@@ -83,7 +83,7 @@ public class PrintHtmlParam {
      * needChild = 1、count 需要大于1，如count = 2 一个主单 一个子单，
      * count = 3 一个主单 二个子单，返回的子单号码见返回结果的childNum字段
      */
-    private String needChild;
+    private int needChild;
     /**
      * 是否需要回单(支持回单的快递公司才可以用，是否支持可以参考参数字典)
      * 1:需要

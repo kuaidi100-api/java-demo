@@ -1,13 +1,16 @@
 package com.kuaidi100.sdk.api;
 
 import com.google.gson.Gson;
+import com.kuaidi100.sdk.core.BaseClient;
+import com.kuaidi100.sdk.request.BaseRequest;
 import com.kuaidi100.sdk.contant.ApiInfoConstant;
 import com.kuaidi100.sdk.pojo.HttpResult;
 import com.kuaidi100.sdk.request.SubscribeReq;
 import com.kuaidi100.sdk.response.SubscribePushParamResp;
 import com.kuaidi100.sdk.response.SubscribeResp;
-import com.kuaidi100.sdk.utils.HttpUtils;
 import com.kuaidi100.sdk.utils.SignUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,9 +22,13 @@ import javax.servlet.http.HttpServletRequest;
  * @Author: api.kuaidi100.com
  * @Date: 2020-07-16 14:38
  */
-public class Subscribe {
+public class Subscribe extends BaseClient {
 
     private static Logger log = LoggerFactory.getLogger(Subscribe.class);
+
+    public String getApiUrl(BaseRequest request) {
+        return ApiInfoConstant.SUBSCRIBE_URL;
+    }
 
     /**
      * 订阅接口
@@ -29,13 +36,12 @@ public class Subscribe {
      * @param subscribeReq
      * @return
      */
-    public SubscribeResp  subscribe(SubscribeReq subscribeReq){
-        SubscribeResp subscribeResp = new SubscribeResp();
-        HttpResult httpResult = HttpUtils.doPost(ApiInfoConstant.SUBSCRIBE_URL, subscribeReq);
-        if (httpResult.getStatus() == 200){
-            subscribeResp = new Gson().fromJson(httpResult.getBody(), SubscribeResp.class);
+    public SubscribeResp  subscribe(SubscribeReq subscribeReq) throws Exception{
+        HttpResult httpResult = execute(subscribeReq);
+        if (httpResult.getStatus() == HttpStatus.SC_OK && StringUtils.isNotBlank(httpResult.getBody())){
+           return new Gson().fromJson(httpResult.getBody(), SubscribeResp.class);
         }
-        return subscribeResp;
+        return null;
     }
 
     /**

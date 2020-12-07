@@ -1,12 +1,15 @@
 package com.kuaidi100.sdk.api;
 
 import com.google.gson.Gson;
+import com.kuaidi100.sdk.core.BaseClient;
+import com.kuaidi100.sdk.request.BaseRequest;
 import com.kuaidi100.sdk.contant.ApiInfoConstant;
 import com.kuaidi100.sdk.pojo.HttpResult;
 import com.kuaidi100.sdk.request.SendSmsReq;
 import com.kuaidi100.sdk.response.SendSmsResp;
 import com.kuaidi100.sdk.response.SmsCallbackResp;
-import com.kuaidi100.sdk.utils.HttpUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,18 +20,22 @@ import java.util.Map;
  * @Author: api.kuaidi100.com
  * @Date: 2020-07-20 19:00
  */
-public class SendSms {
+public class SendSms extends BaseClient {
     private static Logger log = LoggerFactory.getLogger(SendSms.class);
+
+    public String getApiUrl(BaseRequest request) {
+        return ApiInfoConstant.SEND_SMS_URL;
+    }
+
     /**
      * 发送短信
      *
      * @param sendSmsReq
      * @return
      */
-    public SendSmsResp sendSms(SendSmsReq sendSmsReq){
-        HttpResult httpResult = HttpUtils.doPost(ApiInfoConstant.SEND_SMS_URL, sendSmsReq);
-        System.out.println(httpResult.getBody());
-        if (httpResult.getBody()!= null && httpResult.getStatus() == 200){
+    public SendSmsResp sendSms(SendSmsReq sendSmsReq) throws Exception{
+        HttpResult httpResult = execute(sendSmsReq);
+        if (StringUtils.isNotBlank(httpResult.getBody()) && httpResult.getStatus() == HttpStatus.SC_OK){
             return new Gson().fromJson(httpResult.getBody(),SendSmsResp.class);
         }
         return null;

@@ -7,7 +7,7 @@ import lombok.Data;
  * @Date: 2020-07-14 15:56
  */
 @Data
-public class QueryTrackReq {
+public class QueryTrackReq extends BaseRequest {
     /**
      * 我方分配给贵司的的公司编号, 点击查看账号信息
      */
@@ -19,5 +19,5 @@ public class QueryTrackReq {
     /**
      * 其他参数组合成的json对象
      */
-    private QueryTrackParam param;
+    private String param;
 }

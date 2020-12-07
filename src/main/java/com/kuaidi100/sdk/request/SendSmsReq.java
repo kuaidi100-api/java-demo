@@ -7,7 +7,7 @@ import lombok.Data;
  * @Date: 2020-07-21 9:14
  */
 @Data
-public class SendSmsReq {
+public class SendSmsReq extends BaseRequest {
     /**
      * 加密签名信息：MD5(key + userid)；加密后字符串转大写
      */

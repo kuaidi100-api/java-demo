@@ -7,7 +7,7 @@ import lombok.Data;
  * @Date: 2020-07-17 15:49
  */
 @Data
-public class PrintImgReq {
+public class PrintImgReq extends PrintReq{
     /**
      * 业务类型（默认：getPrintImg）
      */
@@ -27,5 +27,5 @@ public class PrintImgReq {
     /**
      * 其他参数组合成的json对象
      */
-    private PrintImgParam param;
+    private String param;
 }

@@ -7,7 +7,7 @@ import lombok.Data;
  * @Date: 2020-07-16 13:41
  */
 @Data
-public class SubscribeReq {
+public class SubscribeReq extends BaseRequest {
     /**
      * 返回数据格式(json、xml、text)
      */
@@ -15,5 +15,5 @@ public class SubscribeReq {
     /**
      * 其他参数
      */
-    private SubscribeParam param;
+    private String param;
 }
