@@ -10,6 +10,7 @@ java-demo 集成了实时查询、订阅推送、智能判断、云打印相关�
 
 - 提供了快递100接口请求参数实体类、返回实体类。
 - 提供测试类调试。
+- 支持maven、gradle引入
 
 ## Getting started
 
@@ -23,6 +24,45 @@ java-demo使用和测试可参考[java-demo-test](https://github.com/kuaidi100-a
 
 使用sdk的可以先配置[account.properties](https://github.com/kuaidi100-api/kuadi100-api/blob/master/src/main/resources/account.properties)，账号信息可以登录快递100获取https://poll.kuaidi100.com/manager/page/myinfo/enterprise （注意不要泄露快递100的账号密码以及授权key等敏感信息，以防被他人盗用！！！）
 
+#### Gradle
+
+**Step 1.** Add it in your root build.gradle at the end of repositories:
+
+```css
+allprojects {
+	repositories {
+		...
+		maven { url 'https://www.jitpack.io' }
+	}
+}
+```
+
+**Step 2.** Add the dependency
+
+```css
+dependencies {
+	implementation 'com.github.kuaidi100-api:java-demo:1.0.0'
+}
+```
+
+#### Maven
+
+```css
+	<repositories>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://www.jitpack.io</url>
+		</repository>
+	</repositories>
+```
+
+```css
+	<dependency>
+	    <groupId>com.github.kuaidi100-api</groupId>
+	    <artifactId>java-demo</artifactId>
+	    <version>1.0.0</version>
+	</dependency>
+```
 
 ### Use Junit Test
 
@@ -35,64 +75,71 @@ public class BaseServiceTest {
     private String siid = PropertiesReader.get("siid");
     private String userid = PropertiesReader.get("userid");
     private String tid = PropertiesReader.get("tid");
+    private String secret_key = PropertiesReader.get("secret_key");
+    private String secret_secret = PropertiesReader.get("secret_secret");
     /**
      * 查询物流轨迹
      */
     @Test
-    public void testQueryTrack(){
-        QueryTrack queryTrack = new QueryTrack();
+    public void testQueryTrack() throws Exception{
+
         QueryTrackReq queryTrackReq = new QueryTrackReq();
         QueryTrackParam queryTrackParam = new QueryTrackParam();
-        queryTrackParam.setCom(CompanyConstant.ST);
-        queryTrackParam.setNum("773039762404825");
+        queryTrackParam.setCom(CompanyConstant.YT);
+        queryTrackParam.setNum("YT9383342193097");
         queryTrackParam.setPhone("17725390266");
-        queryTrackReq.setParam(queryTrackParam);
+        String param = new Gson().toJson(queryTrackParam);
+
+        queryTrackReq.setParam(param);
         queryTrackReq.setCustomer(customer);
-        queryTrackReq.setSign(SignUtils.sign(new Gson().toJson(queryTrackParam)+key+customer));
-        System.out.println(queryTrack.queryTrack(queryTrackReq));
+        queryTrackReq.setSign(SignUtils.querySign(param ,key,customer));
+
+        IBaseClient baseClient = new QueryTrack();
+        System.out.println(baseClient.execute(queryTrackReq));
     }
 
     /**
      * 订阅
      */
     @Test
-    public void testSubscribe(){
-        SubscribeReq subscribeReq = new SubscribeReq();
-        subscribeReq.setSchema(ApiInfoConstant.SUBSCRIBE_SCHEMA);
-        SubscribeParam subscribeParam = new SubscribeParam();
+    public void testSubscribe() throws Exception{
         SubscribeParameters subscribeParameters = new SubscribeParameters();
         subscribeParameters.setCallbackurl("http://www.baidu.com");
+        subscribeParameters.setPhone("17725390266");
+
+        SubscribeParam subscribeParam = new SubscribeParam();
         subscribeParam.setParameters(subscribeParameters);
         subscribeParam.setCompany(CompanyConstant.ST);
         subscribeParam.setNumber("773039762404825");
-        subscribeParameters.setPhone("17725390266");
         subscribeParam.setKey(key);
-        subscribeReq.setParam(subscribeParam);
-        Subscribe subscribe = new Subscribe();
-        System.out.println(new Gson().toJson(subscribe.subscribe(subscribeReq)));
+
+        SubscribeReq subscribeReq = new SubscribeReq();
+        subscribeReq.setSchema(ApiInfoConstant.SUBSCRIBE_SCHEMA);
+        subscribeReq.setParam(new Gson().toJson(subscribeParam));
+
+        IBaseClient subscribe = new Subscribe();
+        System.out.println(subscribe.execute(subscribeReq));
     }
 
     /**
      * 智能识别接口（正式用户可以使用）
      */
     @Test
-    public void testAutoNum(){
-        AutoNum autoNum = new AutoNum();
-        System.out.println(autoNum.getFirstComByNum(key,"773039762404825"));
+    public void testAutoNum() throws Exception{
+        AutoNumReq autoNumReq = new AutoNumReq();
+        autoNumReq.setKey(key);
+        autoNumReq.setNum("773039762404825");
+
+        IBaseClient baseClient = new AutoNum();
+        System.out.println(baseClient.execute(autoNumReq));
     }
 
     /**
      * 电子面单图片接口
      */
     @Test
-    public void testPrintImg(){
-        PrintImgReq printImgReq = new PrintImgReq();
+    public void testPrintImg() throws Exception{
         PrintImgParam printImgParam = new PrintImgParam();
-        printImgReq.setKey(key);
-        printImgReq.setMethod(ApiInfoConstant.ELECTRONIC_ORDER_PIC_METHOD);
-
-        String t = System.currentTimeMillis() + "";
-        printImgReq.setT(t);
         printImgParam.setKuaidicom(CompanyConstant.ZJS);
         printImgParam.setSendManName("张三");
         printImgParam.setSendManMobile("15999566666");
@@ -104,77 +151,95 @@ public class BaseServiceTest {
         printImgParam.setTempid("180c7c8f646742ca871a92c976392b05");
         printImgParam.setCount("1");
 
-        String sign = SignUtils.sign(new Gson().toJson(printImgParam)+t+key+secret);
-        printImgReq.setSign(sign);
-        printImgReq.setParam(printImgParam);
-        PrintImg printImg = new PrintImg();
-        System.out.println(new Gson().toJson(printImg.printImG(printImgReq)));
+        String param = new Gson().toJson(printImgParam);
+        String t = System.currentTimeMillis() + "";
+        String sign = SignUtils.printSign(param,t,key,secret);
+
+        PrintReq printReq = new PrintReq();
+        printReq.setKey(key);
+        printReq.setMethod(ApiInfoConstant.ELECTRONIC_ORDER_PIC_METHOD);
+        printReq.setSign(sign);
+        printReq.setParam(param);
+        printReq.setT(t);
+
+        IBaseClient printImg = new PrintImg();
+        System.out.println(printImg.execute(printReq));
     }
 
     /**
      * 电子面单html接口
      */
     @Test
-    public void testPrintHtml(){
-        PrintHtmlReq printHtmlReq = new PrintHtmlReq();
-        PrintHtmlParam printHtmlParam = new PrintHtmlParam();
+    public void testPrintHtml() throws Exception{
         ManInfo recManInfo  = new ManInfo();
-        ManInfo sendManInfo = new ManInfo();
-        printHtmlReq.setKey(key);
-        printHtmlReq.setMethod(ApiInfoConstant.ELECTRONIC_ORDER_HTML_METHOD);
-
-        String t = System.currentTimeMillis() + "";
-        printHtmlReq.setT(t);
-        printHtmlParam.setKuaidicom(CompanyConstant.ZJS);
         recManInfo.setName("张三");
         recManInfo.setMobile("15999566666");
         recManInfo.setPrintAddr("广东省深圳市南山区科技南十二路");
+
+        ManInfo sendManInfo = new ManInfo();
         sendManInfo.setName("李四");
         sendManInfo.setMobile("15999566666");
         sendManInfo.setPrintAddr("北京市海淀区xxx路");
-        printHtmlParam.setCount("1");
+
+        PrintHtmlParam printHtmlParam = new PrintHtmlParam();
+        printHtmlParam.setKuaidicom(CompanyConstant.ZJS);
+        printHtmlParam.setCount(2);
+        printHtmlParam.setNeedChild(1);
         //如果需要返回电子面单，需要设置
         printHtmlParam.setNeedTemplate("1");
         printHtmlParam.setSendMan(sendManInfo);
         printHtmlParam.setRecMan(recManInfo);
-        String sign = SignUtils.sign(new Gson().toJson(printHtmlParam)+t+key+secret);
-        printHtmlReq.setSign(sign);
-        printHtmlReq.setParam(printHtmlParam);
-        PrintHtml printHtml = new PrintHtml();
-        System.out.println(new Gson().toJson(printHtml.print(printHtmlReq)));
+
+        String t = System.currentTimeMillis() + "";
+        String param = new Gson().toJson(printHtmlParam);
+        String sign = SignUtils.printSign(param,t,key,secret);
+
+        PrintReq printReq = new PrintReq();
+        printReq.setKey(key);
+        printReq.setMethod(ApiInfoConstant.ELECTRONIC_ORDER_HTML_METHOD);
+        printReq.setT(t);
+        printReq.setSign(sign);
+        printReq.setParam(param);
+
+        IBaseClient printHtml = new PrintHtml();
+        System.out.println(printHtml.execute(printReq));
     }
 
     /**
      * 电子面单打印
      */
     @Test
-    public void testPrintCloud(){
-        PrintCloudReq printCloudReq = new PrintCloudReq();
-        PrintCloudParam printCloudParam = new PrintCloudParam();
+    public void testPrintCloud() throws Exception{
         ManInfo recManInfo  = new ManInfo();
-        ManInfo sendManInfo = new ManInfo();
-        printCloudReq.setKey(key);
-        printCloudReq.setMethod(ApiInfoConstant.ELECTRONIC_ORDER_PRINT_METHOD);
-
-        String t = System.currentTimeMillis() + "";
-        printCloudReq.setT(t);
-        printCloudParam.setKuaidicom(CompanyConstant.ZJS);
         recManInfo.setName("张三");
         recManInfo.setMobile("15999566666");
         recManInfo.setPrintAddr("广东省深圳市南山区科技南十二路");
+
+        ManInfo sendManInfo = new ManInfo();
         sendManInfo.setName("李四");
         sendManInfo.setMobile("15999566666");
         sendManInfo.setPrintAddr("北京市海淀区xxx路");
+
+        PrintCloudParam printCloudParam = new PrintCloudParam();
+        printCloudParam.setKuaidicom(CompanyConstant.ZJS);
         printCloudParam.setCount("1");
         printCloudParam.setSiid(siid);
         printCloudParam.setTempid("180c7c8f646742ca871a92c976392b05");
         printCloudParam.setSendMan(sendManInfo);
         printCloudParam.setRecMan(recManInfo);
-        String sign = SignUtils.sign(new Gson().toJson(printCloudParam)+t+key+secret);
-        printCloudReq.setSign(sign);
-        printCloudReq.setParam(printCloudParam);
-        PrintCloud printCloud = new PrintCloud();
-        System.out.println(new Gson().toJson(printCloud.print(printCloudReq)));
+
+        String param = new Gson().toJson(printCloudParam);
+        String t = System.currentTimeMillis() + "";
+
+        PrintReq printReq = new PrintReq();
+        printReq.setT(t);
+        printReq.setKey(key);
+        printReq.setMethod(ApiInfoConstant.ELECTRONIC_ORDER_PRINT_METHOD);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setParam(param);
+
+        IBaseClient baseClient = new PrintCloud();
+        System.out.println(baseClient.execute(printReq));
     }
 
     /**
@@ -182,19 +247,23 @@ public class BaseServiceTest {
      */
     @Test
     public void testCloudCustom() throws Exception{
-        BaseReq<CloudPrintCustomParam> printCustomParamReq = new BaseReq<CloudPrintCustomParam>();
         CloudPrintCustomParam cloudPrintCustomParam = new CloudPrintCustomParam();
         cloudPrintCustomParam.setSiid(siid);
         cloudPrintCustomParam.setCallBackUrl("http://www.baidu.com");
         cloudPrintCustomParam.setTempid("180c7c8f646742ca871a92c976392b05");
+
         String t = System.currentTimeMillis() + "";
-        printCustomParamReq.setKey(key);
-        printCustomParamReq.setMethod(ApiInfoConstant.CLOUD_PRINT_CUSTOM_METHOD);
-        printCustomParamReq.setT(t);
-        printCustomParamReq.setSign(SignUtils.sign(new Gson().toJson(cloudPrintCustomParam)+t+key+secret));
-        printCustomParamReq.setParam(cloudPrintCustomParam);
-        CloudPrintCustom cloudPrintService = new CloudPrintCustom();
-        System.out.println(cloudPrintService.print(printCustomParamReq));
+        String param = new Gson().toJson(cloudPrintCustomParam);
+
+        PrintReq printReq = new PrintReq();
+        printReq.setKey(key);
+        printReq.setMethod(ApiInfoConstant.CLOUD_PRINT_CUSTOM_METHOD);
+        printReq.setT(t);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setParam(param);
+
+        IBaseClient baseClient = new CloudPrintCustom();
+        System.out.println(baseClient.execute(printReq));
     }
 
     /**
@@ -202,19 +271,23 @@ public class BaseServiceTest {
      */
     @Test
     public void testCloudAttachment() throws Exception{
-        CloudAttachmentReq cloudPrintAttachmentReq = new CloudAttachmentReq();
         CloudPrintAttachmentParam cloudPrintAttachmentParam = new CloudPrintAttachmentParam();
         cloudPrintAttachmentParam.setSiid(siid);
         cloudPrintAttachmentParam.setCallBackUrl("http://www.baidu.com");
+
         String t = System.currentTimeMillis() + "";
+        String param = new Gson().toJson(cloudPrintAttachmentParam);
+        CloudAttachmentReq cloudPrintAttachmentReq = new CloudAttachmentReq();
+
         cloudPrintAttachmentReq.setKey(key);
         cloudPrintAttachmentReq.setMethod(ApiInfoConstant.CLOUD_PRINT_ATTACHMENT_METHOD);
         cloudPrintAttachmentReq.setT(t);
-        cloudPrintAttachmentReq.setSign(SignUtils.sign(new Gson().toJson(cloudPrintAttachmentParam)+t+key+secret));
-        cloudPrintAttachmentReq.setParam(cloudPrintAttachmentParam);
-        cloudPrintAttachmentReq.setFile(new File("C:\\Users\\Administrator.-20171106WFEKLN\\Desktop\\1.png"));
-        CloudPrintAttachment cloudPrintAttachment = new CloudPrintAttachment();
-        System.out.println(cloudPrintAttachment.print(cloudPrintAttachmentReq));
+        cloudPrintAttachmentReq.setSign(SignUtils.printSign(param,t,key,secret));
+        cloudPrintAttachmentReq.setParam(param);
+        cloudPrintAttachmentReq.setFile(new File("C:\\Users\\Administrator.-20171106WFEKLN\\Desktop\\1.jpg"));
+
+        IBaseClient baseClient = new CloudPrintAttachment();
+        System.out.println(baseClient.execute(cloudPrintAttachmentReq));
     }
 
     /**
@@ -222,25 +295,28 @@ public class BaseServiceTest {
      */
     @Test
     public void testCloudPrintOld() throws Exception{
-        BaseReq<CloudPrintOldParam> printCustomParamReq = new BaseReq<CloudPrintOldParam>();
+        PrintReq printReq = new PrintReq();
         CloudPrintOldParam cloudPrintOldParam = new CloudPrintOldParam();
-        cloudPrintOldParam.setTaskId("2B70DF2F433F64C4A8C6F23DD50368DC");
+        cloudPrintOldParam.setTaskId("D21DB1AC74A260E6F5604FC43B4598B8");
+
         String t = System.currentTimeMillis() + "";
-        printCustomParamReq.setKey(key);
-        printCustomParamReq.setMethod(ApiInfoConstant.CLOUD_PRINT_OLD_METHOD);
-        printCustomParamReq.setT(t);
-        printCustomParamReq.setSign(SignUtils.sign(new Gson().toJson(cloudPrintOldParam)+t+key+secret));
-        printCustomParamReq.setParam(cloudPrintOldParam);
-        CloudPrintOld cloudPrintService = new CloudPrintOld();
-        System.out.println(cloudPrintService.print(printCustomParamReq));
+        String param = new Gson().toJson(cloudPrintOldParam);
+
+        printReq.setKey(key);
+        printReq.setMethod(ApiInfoConstant.CLOUD_PRINT_OLD_METHOD);
+        printReq.setT(t);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setParam(param);
+
+        IBaseClient cloudPrintOld = new CloudPrintOld();
+        System.out.println(cloudPrintOld.execute(printReq));
     }
 
     /**
      * 发送短信
      */
     @Test
-    public void testSendSms(){
-        SendSms sendSms = new SendSms();
+    public void testSendSms() throws Exception{
         SendSmsReq sendSmsReq = new SendSmsReq();
         sendSmsReq.setCallback("http://www.baidu.com");
         Map<String,String> content = new HashMap<String, String>();
@@ -250,8 +326,10 @@ public class BaseServiceTest {
         sendSmsReq.setSeller("贵司名称");
         sendSmsReq.setUserid(userid);
         sendSmsReq.setTid(tid);
-        sendSmsReq.setSign(SignUtils.sign(key+userid));
-        System.out.println(sendSms.sendSms(sendSmsReq));
+        sendSmsReq.setSign(SignUtils.smsSign(key,userid));
+
+        IBaseClient sendSms = new SendSms();
+        System.out.println(sendSms.execute(sendSmsReq));
     }
 
     /**
@@ -259,18 +337,21 @@ public class BaseServiceTest {
      */
     @Test
     public void testBorderQuery() throws Exception {
-        BaseReq<BOrderQueryReq>  param = new BaseReq<BOrderQueryReq>();
         BOrderQueryReq bOrderQueryReq = new BOrderQueryReq();
         bOrderQueryReq.setSendAddr("福田区华强南");
 
         String t = String.valueOf(System.currentTimeMillis());
-        param.setKey(key);
-        param.setSign(SignUtils.sign(new Gson().toJson(bOrderQueryReq) + t + key + secret));
-        param.setT(t);
-        param.setParam(bOrderQueryReq);
+        String param = new Gson().toJson(bOrderQueryReq);
 
-        BOrder bOrder = new BOrder();
-        System.out.println(bOrder.transportCapacity(param));
+        PrintReq printReq = new PrintReq();
+        printReq.setKey(key);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setT(t);
+        printReq.setParam(param);
+        printReq.setMethod(ApiInfoConstant.B_ORDER_QUERY_TRANSPORT_CAPACITY_METHOD);
+
+        IBaseClient bOrder = new BOrder();
+        System.out.println(bOrder.execute(printReq));
     }
 
     /**
@@ -278,7 +359,7 @@ public class BaseServiceTest {
      */
     @Test
     public void testBorder() throws Exception {
-        BaseReq<BOrderReq>  param = new BaseReq<BOrderReq>();
+        PrintReq printReq = new PrintReq();
         BOrderReq bOrderReq = new BOrderReq();
         bOrderReq.setKuaidicom(CompanyConstant.ZT);
         bOrderReq.setSendManName("张三");
@@ -295,13 +376,16 @@ public class BaseServiceTest {
         bOrderReq.setServiceType("标准快递");
 
         String t = String.valueOf(System.currentTimeMillis());
-        param.setKey(key);
-        param.setSign(SignUtils.sign(new Gson().toJson(bOrderReq) + t + key + secret));
-        param.setT(t);
-        param.setParam(bOrderReq);
+        String param = new Gson().toJson(bOrderReq);
 
-        BOrder bOrder = new BOrder();
-        System.out.println(bOrder.order(param));
+        printReq.setKey(key);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setT(t);
+        printReq.setParam(param);
+        printReq.setMethod(ApiInfoConstant.B_ORDER_SEND_METHOD);
+
+        IBaseClient bOrder = new BOrder();
+        System.out.println(bOrder.execute(printReq));
     }
 
     /**
@@ -309,19 +393,22 @@ public class BaseServiceTest {
      */
     @Test
     public void testBorderGetCode() throws Exception {
-        BaseReq<BOrderGetCodeReq>  param = new BaseReq<BOrderGetCodeReq>();
+        PrintReq printReq = new PrintReq();
         BOrderGetCodeReq bOrderGetCodeReq = new BOrderGetCodeReq();
-        bOrderGetCodeReq.setTaskId("CE181BBD30C0F9BF531AB456CCE278E7");
-        bOrderGetCodeReq.setOrderId("100012021501262");
+        bOrderGetCodeReq.setTaskId("4D07550D8E685E06B3C679632E68ACDD");
+        bOrderGetCodeReq.setOrderId("100012022010566");
 
         String t = String.valueOf(System.currentTimeMillis());
-        param.setKey(key);
-        param.setSign(SignUtils.sign(new Gson().toJson(bOrderGetCodeReq) + t + key + secret));
-        param.setT(t);
-        param.setParam(bOrderGetCodeReq);
+        String param = new Gson().toJson(bOrderGetCodeReq);
 
-        BOrder bOrder = new BOrder();
-        System.out.println(bOrder.getCode(param));
+        printReq.setKey(key);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setT(t);
+        printReq.setParam(param);
+        printReq.setMethod(ApiInfoConstant.B_ORDER_CODE_METHOD);
+
+        IBaseClient bOrder = new BOrder();
+        System.out.println(bOrder.execute(printReq));
     }
 
     /**
@@ -329,22 +416,84 @@ public class BaseServiceTest {
      */
     @Test
     public void testBorderCancel() throws Exception {
-        BaseReq<BOrderCancelReq>  param = new BaseReq<BOrderCancelReq>();
+        PrintReq printReq = new PrintReq();
         BOrderCancelReq bOrderCancelReq = new BOrderCancelReq();
-        bOrderCancelReq.setTaskId("CE181BBD30C0F9BF531AB456CCE278E7");
-        bOrderCancelReq.setOrderId("100012021501262");
+        bOrderCancelReq.setTaskId("4D07550D8E685E06B3C679632E68ACDD");
+        bOrderCancelReq.setOrderId("100012022010566");
         bOrderCancelReq.setCancelMsg("测试单取消");
 
         String t = String.valueOf(System.currentTimeMillis());
-        param.setKey(key);
-        param.setSign(SignUtils.sign(new Gson().toJson(bOrderCancelReq) + t + key + secret));
-        param.setT(t);
-        param.setParam(bOrderCancelReq);
+        String param = new Gson().toJson(bOrderCancelReq);
 
-        BOrder bOrder = new BOrder();
-        System.out.println(bOrder.cancel(param));
+        printReq.setKey(key);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setT(t);
+        printReq.setParam(param);
+        printReq.setMethod(ApiInfoConstant.B_ORDER_CANCEL_METHOD);
+
+        IBaseClient bOrder = new BOrder();
+        System.out.println(bOrder.execute(printReq));
+    }
+
+    /**
+     * C端查询运力
+     */
+    @Test
+    public void testCOrderQuery() throws Exception {
+        COrderQueryReq cOrderQueryReq = new COrderQueryReq();
+        cOrderQueryReq.setAddress("广东省深圳市南山区华强南");
+        cOrderQueryReq.setSecret_key(secret_key);
+        cOrderQueryReq.setSecret_code(CloudApiCodeConstant.ORDER_QUERY_EXPRESS);
+        cOrderQueryReq.setSecret_sign(SignUtils.cloudSign(secret_key, secret_secret));
+
+        IBaseClient cloudBase = new CloudBase();
+        System.out.println(cloudBase.execute(cOrderQueryReq));
+    }
+
+    /**
+     * c端寄件
+     */
+    @Test
+    public void testCOrder() throws Exception {
+        COrderReq cOrderReq = new COrderReq();
+        cOrderReq.setCom(CompanyConstant.JD);
+        cOrderReq.setSendManName("张三");
+        cOrderReq.setSendManMobile("15966666666");
+        cOrderReq.setSendManPrintAddr("广东深圳市南山区金蝶软件园");
+        cOrderReq.setRecManName("李四");
+        cOrderReq.setRecManMobile("15966666666");
+        cOrderReq.setRecManPrintAddr("广东深圳市福田区华强南");
+        cOrderReq.setCallBackUrl("http://www.baidu.com");
+        cOrderReq.setCargo("文件");
+        cOrderReq.setRemark("测试下单，待会取消");
+        cOrderReq.setWeight("1");
+        cOrderReq.setSalt("123456");
+        cOrderReq.setSecret_key(secret_key);
+        cOrderReq.setSecret_code(CloudApiCodeConstant.ORDER);
+        cOrderReq.setSecret_sign(SignUtils.cloudSign(secret_key,secret_secret));
+
+        IBaseClient cloudBase = new CloudBase();
+        System.out.println(cloudBase.execute(cOrderReq));
+    }
+
+    /**
+     * c端取消寄件
+     */
+    @Test
+    public void testCOrderCancel() throws Exception {
+        COrderCancelReq cOrderCancelReq = new COrderCancelReq();
+        cOrderCancelReq.setTaskId("B19BB4C6F33BE9E735A63D4142557751");
+        cOrderCancelReq.setOrderId("11115207");
+        cOrderCancelReq.setCancelMsg("测试单");
+        cOrderCancelReq.setSecret_key(secret_key);
+        cOrderCancelReq.setSecret_code(CloudApiCodeConstant.ORDER_CANCEL);
+        cOrderCancelReq.setSecret_sign(SignUtils.cloudSign(secret_key,secret_secret));
+
+        IBaseClient cloudBase = new CloudBase();
+        System.out.println(cloudBase.execute(cOrderCancelReq));
     }
 }
+
 ```
 
 ## FAQ
@@ -404,3 +553,44 @@ public List<String> getBase64Img(String imgBase64){
     }
 ```
 
+### 问题4.云平台其他接口该如何对接？
+
+第一步：根据对应接口新增对应的请求参数类，继承[CloudBaseReq](https://github.com/kuaidi100-api/java-demo/blob/3221138a7b0d5b48b114e0b44ca2c1832075644a/src/main/java/com/kuaidi100/sdk/request/cloud/CloudBaseReq.java ),类似快递寄件接口取消寄件请求参数类
+
+```java
+public class COrderCancelReq extends CloudBaseReq{
+    /**
+     * 任务ID
+     */
+    private String taskId;
+    /**
+     * 订单ID
+     */
+    private String orderId;
+    /**
+     * 取消原因，例：暂时不寄件了
+     */
+    private String cancelMsg;
+}
+```
+
+第二步：调用时只需要更换成第一步新建的实体
+
+```java
+public void testCOrderCancel() throws Exception {
+    COrderCancelReq cOrderCancelReq = new COrderCancelReq();
+    cOrderCancelReq.setTaskId("B19BB4C6F33BE9E735A63D4142557751");
+    cOrderCancelReq.setOrderId("11115207");
+    cOrderCancelReq.setCancelMsg("测试单");
+    cOrderCancelReq.setSecret_key(secret_key);
+    cOrderCancelReq.setSecret_code(CloudApiCodeConstant.ORDER_CANCEL);
+    cOrderCancelReq.setSecret_sign(SignUtils.cloudSign(secret_key,secret_secret));
+
+    IBaseClient cloudBase = new CloudBase();
+    System.out.println(cloudBase.execute(cOrderCancelReq));
+}
+```
+
+tips：key、secret、code等账号信息获取，[云平台](http://cloud.kuaidi100.com/ )->[买家中心-我的接口](https://cloud.kuaidi100.com/buyer/api)
+
+![image-20201207190323327](https://cdn.kuaidi100.com/images/openapiabout/help.png)
