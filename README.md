@@ -48,20 +48,11 @@ dependencies {
 #### Maven
 
 ```css
-	<repositories>
-		<repository>
-		    <id>jitpack.io</id>
-		    <url>https://www.jitpack.io</url>
-		</repository>
-	</repositories>
-```
-
-```css
 	<dependency>
-	    <groupId>com.github.kuaidi100-api</groupId>
-	    <artifactId>java-demo</artifactId>
-	    <version>1.0.0</version>
-	</dependency>
+            <groupId>com.github.kuaidi100-api</groupId>
+            <artifactId>sdk</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 ```
 
 ### Use Junit Test
