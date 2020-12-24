@@ -10,6 +10,10 @@ public class ApiInfoConstant {
      */
     public static final String QUERY_URL = "https://poll.kuaidi100.com/poll/query.do";
     /**
+     * 查询url
+     */
+    public static final String QUERY_MAP_VIEW_URL = "https://poll.kuaidi100.com/poll/maptrack.do";
+    /**
      * 订阅url
      */
     public static final String SUBSCRIBE_URL = "https://poll.kuaidi100.com/poll";

@@ -5,10 +5,12 @@ import com.kuaidi100.sdk.core.IBaseClient;
 import com.kuaidi100.sdk.contant.ApiInfoConstant;
 import com.kuaidi100.sdk.contant.CloudApiCodeConstant;
 import com.kuaidi100.sdk.contant.CompanyConstant;
+import com.kuaidi100.sdk.pojo.HttpResult;
 import com.kuaidi100.sdk.request.*;
 import com.kuaidi100.sdk.request.cloud.COrderCancelReq;
 import com.kuaidi100.sdk.request.cloud.COrderQueryReq;
 import com.kuaidi100.sdk.request.cloud.COrderReq;
+import com.kuaidi100.sdk.response.QueryTrackMapResp;
 import com.kuaidi100.sdk.utils.PropertiesReader;
 import com.kuaidi100.sdk.utils.SignUtils;
 import org.junit.Test;
@@ -50,6 +52,33 @@ public class BaseServiceTest {
 
         IBaseClient baseClient = new QueryTrack();
         System.out.println(baseClient.execute(queryTrackReq));
+    }
+
+    /**
+     * 快递信息地图轨迹
+     */
+    @Test
+    public void testQueryMapView() throws Exception{
+
+        QueryTrackReq queryTrackReq = new QueryTrackReq();
+        QueryTrackParam queryTrackParam = new QueryTrackParam();
+        queryTrackParam.setCom(CompanyConstant.YD);
+        queryTrackParam.setNum("4311159956248");
+        queryTrackParam.setPhone("17725390266");
+        queryTrackParam.setFrom("河北保定市");
+        queryTrackParam.setTo("湖南岳阳市");
+        queryTrackParam.setResultv2("2");
+        String param = new Gson().toJson(queryTrackParam);
+
+        queryTrackReq.setParam(param);
+        queryTrackReq.setCustomer(customer);
+        queryTrackReq.setSign(SignUtils.querySign(param ,key,customer));
+
+        IBaseClient baseClient = new QueryTrackMap();
+        HttpResult result = baseClient.execute(queryTrackReq);
+
+        QueryTrackMapResp queryTrackMapResp = new Gson().fromJson(result.getBody(),QueryTrackMapResp.class);
+        System.out.println(queryTrackMapResp);
     }
 
     /**
