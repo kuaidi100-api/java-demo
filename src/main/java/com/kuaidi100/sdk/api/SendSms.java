@@ -1,17 +1,15 @@
 package com.kuaidi100.sdk.api;
 
 import com.google.gson.Gson;
-import com.kuaidi100.sdk.core.BaseClient;
-import com.kuaidi100.sdk.request.BaseRequest;
 import com.kuaidi100.sdk.contant.ApiInfoConstant;
+import com.kuaidi100.sdk.core.BaseClient;
 import com.kuaidi100.sdk.pojo.HttpResult;
+import com.kuaidi100.sdk.request.BaseRequest;
 import com.kuaidi100.sdk.request.SendSmsReq;
 import com.kuaidi100.sdk.response.SendSmsResp;
 import com.kuaidi100.sdk.response.SmsCallbackResp;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +19,6 @@ import java.util.Map;
  * @Date: 2020-07-20 19:00
  */
 public class SendSms extends BaseClient {
-    private static Logger log = LoggerFactory.getLogger(SendSms.class);
 
     public String getApiUrl(BaseRequest request) {
         return ApiInfoConstant.SEND_SMS_URL;
@@ -50,7 +47,7 @@ public class SendSms extends BaseClient {
      */
     public Map<String,Boolean> callback(SmsCallbackResp smsCallbackResp){
         //建议记录一下这个回调的内容，方便出问题后双方排查问题
-        log.debug("快递100短信回调结果|{}",new Gson().toJson(smsCallbackResp));
+        //log.debug("快递100短信回调结果|{}",new Gson().toJson(smsCallbackResp));
         Map<String,Boolean> result = new HashMap<String, Boolean>();
         if (smsCallbackResp == null){
             return result;

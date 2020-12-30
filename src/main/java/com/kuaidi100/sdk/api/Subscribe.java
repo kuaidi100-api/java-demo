@@ -1,18 +1,16 @@
 package com.kuaidi100.sdk.api;
 
 import com.google.gson.Gson;
-import com.kuaidi100.sdk.core.BaseClient;
-import com.kuaidi100.sdk.request.BaseRequest;
 import com.kuaidi100.sdk.contant.ApiInfoConstant;
+import com.kuaidi100.sdk.core.BaseClient;
 import com.kuaidi100.sdk.pojo.HttpResult;
+import com.kuaidi100.sdk.request.BaseRequest;
 import com.kuaidi100.sdk.request.SubscribeReq;
 import com.kuaidi100.sdk.response.SubscribePushParamResp;
 import com.kuaidi100.sdk.response.SubscribeResp;
 import com.kuaidi100.sdk.utils.SignUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,8 +21,6 @@ import javax.servlet.http.HttpServletRequest;
  * @Date: 2020-07-16 14:38
  */
 public class Subscribe extends BaseClient {
-
-    private static Logger log = LoggerFactory.getLogger(Subscribe.class);
 
     public String getApiUrl(BaseRequest request) {
         return ApiInfoConstant.SUBSCRIBE_URL;
@@ -64,7 +60,7 @@ public class Subscribe extends BaseClient {
         String param = request.getParameter("param");
         String sign = request.getParameter("sign");
         //建议记录一下这个回调的内容，方便出问题后双方排查问题
-        log.debug("快递100订阅推送回调结果|{}|{}",param,sign);
+        //log.debug("快递100订阅推送回调结果|{}|{}",param,sign);
         //订阅时传的salt,没有可以忽略
         String salt = "";
         String ourSign = SignUtils.sign(param + salt);
