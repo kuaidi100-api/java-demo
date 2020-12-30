@@ -26,22 +26,9 @@ java-demo使用和测试可参考[java-demo-test](https://github.com/kuaidi100-a
 
 #### Gradle
 
-**Step 1.** Add it in your root build.gradle at the end of repositories:
-
-```css
-allprojects {
-	repositories {
-		...
-		maven { url 'https://www.jitpack.io' }
-	}
-}
-```
-
-**Step 2.** Add the dependency
-
 ```css
 dependencies {
-	implementation 'com.github.kuaidi100-api:java-demo:1.0.0'
+	implementation 'com.github.kuaidi100-api:sdk:1.0.1'
 }
 ```
 
@@ -51,7 +38,7 @@ dependencies {
 	<dependency>
             <groupId>com.github.kuaidi100-api</groupId>
             <artifactId>sdk</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
 ```
 
@@ -87,6 +74,33 @@ public class BaseServiceTest {
 
         IBaseClient baseClient = new QueryTrack();
         System.out.println(baseClient.execute(queryTrackReq));
+    }
+    
+     /**
+     * 快递信息地图轨迹
+     */
+    @Test
+    public void testQueryMapView() throws Exception{
+
+        QueryTrackReq queryTrackReq = new QueryTrackReq();
+        QueryTrackParam queryTrackParam = new QueryTrackParam();
+        queryTrackParam.setCom(CompanyConstant.YD);
+        queryTrackParam.setNum("4311159956248");
+        queryTrackParam.setPhone("17725390266");
+        queryTrackParam.setFrom("河北保定市");
+        queryTrackParam.setTo("湖南岳阳市");
+        queryTrackParam.setResultv2("2");
+        String param = new Gson().toJson(queryTrackParam);
+
+        queryTrackReq.setParam(param);
+        queryTrackReq.setCustomer(customer);
+        queryTrackReq.setSign(SignUtils.querySign(param ,key,customer));
+
+        IBaseClient baseClient = new QueryTrackMap();
+        HttpResult result = baseClient.execute(queryTrackReq);
+
+        QueryTrackMapResp queryTrackMapResp = new Gson().fromJson(result.getBody(),QueryTrackMapResp.class);
+        System.out.println(queryTrackMapResp);
     }
 
     /**
