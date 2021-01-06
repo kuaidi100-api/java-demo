@@ -296,6 +296,28 @@ public class BaseServiceTest {
     }
 
     /**
+     * 第三方授权
+     */
+    @Test
+    public void testThirdAuth() throws Exception{
+        PrintReq printReq = new PrintReq();
+        ThirdAuthReq thirdAuthReq = new ThirdAuthReq();
+        thirdAuthReq.setNet("cainiao");
+        thirdAuthReq.setCallBackUrl("http://www.baidu.com");
+
+        String t = System.currentTimeMillis() + "";
+        String param = new Gson().toJson(thirdAuthReq);
+
+        printReq.setKey(key);
+        printReq.setT(t);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setParam(param);
+
+        IBaseClient thirdAuth = new ThirdAuth();
+        System.out.println(thirdAuth.execute(printReq));
+    }
+
+    /**
      * 发送短信
      */
     @Test

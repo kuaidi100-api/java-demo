@@ -97,4 +97,8 @@ public class ApiInfoConstant {
      * 云平台通用请求url
      */
     public static final String CLOUD_NORMAL_URL = "http://cloud.kuaidi100.com/api";
+    /**
+     * 第三方电商平台账号授权请求url
+     */
+    public static final String THIRD_AUTH_URL = "https://poll.kuaidi100.com/printapi/authThird.do";
 }
