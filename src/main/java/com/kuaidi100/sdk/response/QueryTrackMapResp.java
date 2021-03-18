@@ -1,14 +1,14 @@
 package com.kuaidi100.sdk.response;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.ToString;
 
 /**
  * @Author: api.kuaidi100.com
  * @Date: 2020-12-24 17:34
  */
-@Getter
-@Setter
+@Data
+@ToString(callSuper = true)
 public class QueryTrackMapResp extends QueryTrackResp {
 
     /**

@@ -2,7 +2,6 @@ package com.kuaidi100.sdk.response;
 
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
