@@ -15,4 +15,9 @@ public class CompanyConstant {
     public static final String EMS = "ems";
     public static final String JD = "jd";
     public static final String ZJS = "zhaijisong";
+    public static final String DB = "debangkuaidi";
+
+
+    public static final String SS = "shansong";
+    public static final String KFW = "kfw";
 }

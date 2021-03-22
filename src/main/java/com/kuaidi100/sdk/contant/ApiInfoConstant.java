@@ -10,13 +10,17 @@ public class ApiInfoConstant {
      */
     public static final String QUERY_URL = "https://poll.kuaidi100.com/poll/query.do";
     /**
-     * 查询url
+     * 快递查询地图轨迹url
      */
     public static final String QUERY_MAP_VIEW_URL = "https://poll.kuaidi100.com/poll/maptrack.do";
     /**
      * 订阅url
      */
     public static final String SUBSCRIBE_URL = "https://poll.kuaidi100.com/poll";
+    /**
+     * 订阅带地图url
+     */
+    public static final String SUBSCRIBE_WITH_MAP_URL = "http://poll.kuaidi100.com/pollmap";
     /**
      * 订阅SCHEMA
      */
@@ -101,4 +105,40 @@ public class ApiInfoConstant {
      * 第三方电商平台账号授权请求url
      */
     public static final String THIRD_AUTH_URL = "https://poll.kuaidi100.com/printapi/authThird.do";
+    /**
+     * 商家寄件(官方寄件)请求url
+     */
+    public static final String B_ORDER_OFFICIAL_URL = "https://poll.kuaidi100.com/order/borderapi.do";
+    /**
+     * 商家寄件(官方寄件)下单
+     */
+    public static final String B_ORDER_OFFICIAL_ORDER_METHOD = "bOrder";
+    /**
+     * 商家寄件(官方寄件)取消
+     */
+    public static final String B_ORDER_OFFICIAL_CANCEL_METHOD = "cancel";
+    /**
+     * 商家寄件(官方寄件)查询价格
+     */
+    public static final String B_ORDER_OFFICIAL_PRICE_METHOD = "queryPrice";
+    /**
+     * 同城配送请求url
+     */
+    public static final String SAME_CITY_ORDER_URL = "https://order.kuaidi100.com/sameCity/order";
+    /**
+     * 同城配送授权方法
+     */
+    public static final String SAME_CITY_AUTH_METHOD = "auth";
+    /**
+     * 同城配送下单方法
+     */
+    public static final String SAME_CITY_ORDER_METHOD = "order";
+    /**
+     * 同城配送查询订单方法
+     */
+    public static final String SAME_CITY_QUERY_METHOD = "query";
+    /**
+     * 同城配送取消订单方法
+     */
+    public static final String SAME_CITY_CANCEL_METHOD = "cancel";
 }

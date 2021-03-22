@@ -25,14 +25,14 @@ import java.util.Map;
  */
 public class BaseServiceTest {
 
-    private String key = PropertiesReader.get("key");
-    private String customer = PropertiesReader.get("customer");
-    private String secret = PropertiesReader.get("secret");
-    private String siid = PropertiesReader.get("siid");
-    private String userid = PropertiesReader.get("userid");
-    private String tid = PropertiesReader.get("tid");
-    private String secret_key = PropertiesReader.get("secret_key");
-    private String secret_secret = PropertiesReader.get("secret_secret");
+    String key = PropertiesReader.get("key");
+    String customer = PropertiesReader.get("customer");
+    String secret = PropertiesReader.get("secret");
+    String siid = PropertiesReader.get("siid");
+    String userid = PropertiesReader.get("userid");
+    String tid = PropertiesReader.get("tid");
+    String secret_key = PropertiesReader.get("secret_key");
+    String secret_secret = PropertiesReader.get("secret_secret");
     /**
      * 查询物流轨迹
      */
@@ -464,7 +464,7 @@ public class BaseServiceTest {
         cOrderReq.setCom(CompanyConstant.JD);
         cOrderReq.setSendManName("张三");
         cOrderReq.setSendManMobile("15966666666");
-        cOrderReq.setSendManPrintAddr("广东深圳市南山区金蝶软件园");
+        cOrderReq.setSendManPrintAddr("深圳市南山区右炮台路海运大厦");
         cOrderReq.setRecManName("李四");
         cOrderReq.setRecManMobile("15966666666");
         cOrderReq.setRecManPrintAddr("广东深圳市福田区华强南");
@@ -487,8 +487,8 @@ public class BaseServiceTest {
     @Test
     public void testCOrderCancel() throws Exception {
         COrderCancelReq cOrderCancelReq = new COrderCancelReq();
-        cOrderCancelReq.setTaskId("B19BB4C6F33BE9E735A63D4142557751");
-        cOrderCancelReq.setOrderId("11115207");
+        cOrderCancelReq.setTaskId("6AFA8EEFCC1475996E90890300A3596C");
+        cOrderCancelReq.setOrderId("12302352");
         cOrderCancelReq.setCancelMsg("测试单");
         cOrderCancelReq.setSecret_key(secret_key);
         cOrderCancelReq.setSecret_code(CloudApiCodeConstant.ORDER_CANCEL);
