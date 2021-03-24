@@ -12,7 +12,7 @@ import org.junit.Test;
 /**
  * 电子面单测试用例
  *
- * @Author: ligl
+ * @Author: api.kuaidi100.com
  * @Date: 2021-03-22 18:55
  */
 public class ElecWaybill extends BaseServiceTest{

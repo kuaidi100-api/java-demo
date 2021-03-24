@@ -13,7 +13,7 @@ import java.io.File;
 /**
  * 云打印测试用例
  *
- * @Author: ligl
+ * @Author: api.kuaidi100.com
  * @Date: 2021-03-22 18:49
  */
 public class CloudPrintTest extends BaseServiceTest{

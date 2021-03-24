@@ -11,7 +11,7 @@ import org.junit.Test;
 /**
  * 订阅带地图版
  *
- * @Author: ligl
+ * @Author: api.kuaidi100.com
  * @Date: 2021-03-22 16:08
  */
 public class SubscribeWithMapTest extends BaseServiceTest{

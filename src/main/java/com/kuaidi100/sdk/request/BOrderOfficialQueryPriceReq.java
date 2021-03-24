@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * 商家寄件(官方快递)
  *
- * @Author: ligl
+ * @Author: api.kuaidi100.com
  * @Date: 2021-03-22 15:29
  */
 @Data

@@ -10,7 +10,7 @@ import org.junit.Test;
 /**
  * 商家寄件（优选快递）测试用例
  *
- * @Author: ligl
+ * @Author: api.kuaidi100.com
  * @Date: 2021-03-22 15:49
  */
 public class BOrderBestTest extends BaseServiceTest{

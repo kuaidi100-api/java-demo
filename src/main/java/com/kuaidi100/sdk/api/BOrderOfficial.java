@@ -7,7 +7,7 @@ import com.kuaidi100.sdk.request.BaseRequest;
 /**
  * 商家寄件（官方快递）
  *
- * @Author: ligl
+ * @Author: api.kuaidi100.com
  * @Date: 2021-01-21 15:55
  */
 public class BOrderOfficial extends BaseClient {

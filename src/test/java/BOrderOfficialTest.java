@@ -13,7 +13,7 @@ import org.junit.Test;
 /**
  * 商家寄件(官方寄件)测试用例
  *
- * @Author: ligl
+ * @Author: api.kuaidi100.com
  * @Date: 2021-03-22 15:00
  */
 public class BOrderOfficialTest extends BaseServiceTest{

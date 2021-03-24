@@ -3,7 +3,7 @@ package com.kuaidi100.sdk.response.samecity;
 import lombok.Data;
 
 /**
- * @Author: ligl
+ * @Author: api.kuaidi100.com
  * @Date: 2021-02-20 9:53
  */
 @Data

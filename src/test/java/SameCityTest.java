@@ -14,7 +14,7 @@ import org.junit.Test;
 /**
  * 同城配送测试用例
  *
- * @Author: ligl
+ * @Author: api.kuaidi100.com
  * @Date: 2021-03-22 16:53
  */
 public class SameCityTest extends BaseServiceTest{
