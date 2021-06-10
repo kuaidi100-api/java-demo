@@ -161,4 +161,17 @@ public class PrintCloudParam {
      * 打印方向（默认0） 0-正方向 1-反方向
      */
     private String direction;
+
+    /**
+     * 打印时间
+     */
+    private String printTime;
+    /**
+     * 额外服务（类似部分物流公司的需定义派送方式，包装等）
+     */
+    private String addService;
+    /*
+     *  到付金额（单位：元）
+     */
+    private String freight;
 }
