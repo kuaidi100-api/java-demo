@@ -20,6 +20,9 @@ import java.net.URLEncoder;
  * @Date: 2020-07-20 9:22
  */
 public class CloudPrintCustom extends BaseClient {
+    private int connectTimeout = 3000;
+
+    private int socketTimeout = 3000;
 
     public String getApiUrl(BaseRequest request) {
         return null;
@@ -35,7 +38,7 @@ public class CloudPrintCustom extends BaseClient {
                     printReq.getKey(),
                     printReq.getSign(),
                     URLEncoder.encode(printReq.getParam(), "UTF-8"));
-            return HttpUtils.doPost(url,printReq);
+            return HttpUtils.doPost(url,printReq,super.getConnectTimeout(),super.getSocketTimeout());
         }
         throw new ClassCastException();
     }

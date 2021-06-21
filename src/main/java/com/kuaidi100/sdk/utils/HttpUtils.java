@@ -3,6 +3,7 @@ package com.kuaidi100.sdk.utils;
 import com.kuaidi100.sdk.pojo.HttpResult;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -35,7 +36,7 @@ public class HttpUtils {
      * @param url     请求url
      * @return
      */
-    public static HttpResult doPost(String url,  Object obj) {
+    public static HttpResult doPost(String url,  Object obj,int connectTimeout,int socketTimeout) {
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         CloseableHttpResponse resp = null;
 
@@ -43,6 +44,11 @@ public class HttpUtils {
         try {
             Map<String, String> params = ObjectToMapUtils.objectToMap(obj);
             HttpPost httpPost = new HttpPost(url);
+
+            RequestConfig requestConfig = RequestConfig.custom()
+                    .setConnectTimeout(connectTimeout)
+                    .setSocketTimeout(socketTimeout).build();
+            httpPost.setConfig(requestConfig);
             if (params != null && params.size() > 0) {
                 List<NameValuePair> list = new ArrayList<NameValuePair>();
                 for (Map.Entry<String, String> entry : params.entrySet()) {
@@ -76,7 +82,7 @@ public class HttpUtils {
      * @param url     请求url
      * @return
      */
-    public static HttpResult doPostFile(String url,  File file) {
+    public static HttpResult doPostFile(String url,  File file,int connectTimeout,int socketTimeout) {
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         CloseableHttpResponse resp = null;
 
@@ -85,6 +91,10 @@ public class HttpUtils {
 
             HttpPost httpPost = new HttpPost(url);
             MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+            RequestConfig requestConfig = RequestConfig.custom()
+                    .setConnectTimeout(connectTimeout)
+                    .setSocketTimeout(socketTimeout).build();
+            httpPost.setConfig(requestConfig);
             // 把文件加到HTTP的post请求中
             builder.addBinaryBody(
                     "file",

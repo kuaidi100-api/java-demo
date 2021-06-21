@@ -35,7 +35,7 @@ public class CloudPrintOld extends BaseClient {
                     printReq.getKey(),
                     printReq.getSign(),
                     URLEncoder.encode(printReq.getParam(), "UTF-8"));
-            return HttpUtils.doPost(url,printReq);
+            return HttpUtils.doPost(url,printReq,super.getConnectTimeout(),super.getSocketTimeout());
         }
         throw new ClassCastException();
     }

@@ -11,9 +11,13 @@ import com.kuaidi100.sdk.utils.HttpUtils;
  */
 public abstract class BaseClient implements IBaseClient{
 
+    private int connectTimeout = 3000;
+
+    private int socketTimeout = 3000;
+
     public HttpResult execute(BaseRequest request) throws Exception{
 
-        return HttpUtils.doPost(getApiUrl(request),request);
+        return HttpUtils.doPost(getApiUrl(request),request,connectTimeout,socketTimeout);
     }
 
     public BaseResponse executeToObject(BaseRequest request) throws Exception{
@@ -21,7 +25,18 @@ public abstract class BaseClient implements IBaseClient{
         return null;
     }
 
-    
+    public void setTimeOut(int connectTimeout, int socketTimeout) {
+        this.connectTimeout = connectTimeout;
+        this.socketTimeout = socketTimeout;
+    }
+
     public abstract String getApiUrl(BaseRequest request);
 
+    public int getConnectTimeout() {
+        return connectTimeout;
+    }
+
+    public int getSocketTimeout() {
+        return socketTimeout;
+    }
 }

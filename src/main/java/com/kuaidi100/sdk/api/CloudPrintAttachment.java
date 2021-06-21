@@ -37,7 +37,7 @@ public class CloudPrintAttachment extends BaseClient {
                     cloudPrintAttachmentReq.getKey(),
                     cloudPrintAttachmentReq.getSign(),
                     URLEncoder.encode(cloudPrintAttachmentReq.getParam(), "UTF-8"));
-            return HttpUtils.doPostFile(url,cloudPrintAttachmentReq.getFile());
+            return HttpUtils.doPostFile(url,cloudPrintAttachmentReq.getFile(),super.getConnectTimeout(),super.getSocketTimeout());
         }
         throw new ClassCastException();
     }

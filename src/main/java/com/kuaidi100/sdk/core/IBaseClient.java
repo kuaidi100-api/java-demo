@@ -13,4 +13,6 @@ public interface IBaseClient {
     HttpResult execute(BaseRequest request) throws Exception;
 
     BaseResponse executeToObject(BaseRequest request) throws Exception;
+
+    void setTimeOut(int connectTimeout,int socketTimeout);
 }
