@@ -117,6 +117,10 @@ public class PrintCloudParam {
      */
     private String width;
     /**
+     * 打印状态回调地址
+     */
+    private String callBackUrl;
+    /**
      * 签名用随机字符串
      */
     private String salt;
