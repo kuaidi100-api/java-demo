@@ -10,13 +10,17 @@ import com.kuaidi100.sdk.request.*;
 import com.kuaidi100.sdk.request.cloud.COrderCancelReq;
 import com.kuaidi100.sdk.request.cloud.COrderQueryReq;
 import com.kuaidi100.sdk.request.cloud.COrderReq;
+import com.kuaidi100.sdk.response.PrintInternationResp;
 import com.kuaidi100.sdk.response.QueryTrackMapResp;
+import com.kuaidi100.sdk.utils.PdfUtils;
 import com.kuaidi100.sdk.utils.PropertiesReader;
 import com.kuaidi100.sdk.utils.SignUtils;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -186,6 +190,104 @@ public class BaseServiceTest {
 
         IBaseClient printHtml = new PrintHtml();
         System.out.println(printHtml.execute(printReq));
+    }
+
+    /**
+     * 国际电子面单下单接口
+     */
+    @Test
+    public void testPrintInternation() throws Exception{
+
+        PrintInternationParam printInternationParam = new PrintInternationParam();
+        /***************************************账户信息 start*******************************************/
+        printInternationParam.setPartnerId("155688270");
+        printInternationParam.setPartnerKey("SlEtjTKJwAWOPHtJ");
+        printInternationParam.setPartnerSecret("O4WH0w6DxQuXXLe7qVPx4LpVz");
+        printInternationParam.setCode("253860135");
+        printInternationParam.setKuaidicom(CompanyConstant.FEDEX);
+        // 产品类型
+        printInternationParam.setExpType("International Priority");
+        printInternationParam.setNeedChild("0");
+        printInternationParam.setPayType("SHIPPER");
+        /***************************************账户信息 end*******************************************/
+
+
+        /***************************************收件人 start*******************************************/
+        // 寄件人信息
+        ManInfo sendMan = new ManInfo();
+        sendMan.setName("Kaka");
+        sendMan.setMobile("13500000000");
+        sendMan.setAddr("Kingdee Software Park");
+        sendMan.setDistrict("Hi-tech Park,Nanshang District");
+        sendMan.setCountryCode("CN");
+        sendMan.setCity("SHEN ZHEN");
+        sendMan.setZipcode("518057");
+
+        // 收件人信息
+        ManInfo recMan  = new ManInfo();
+        recMan.setName("Mr. MALI");
+        recMan.setMobile("351213118020");
+        recMan.setAddr("EDIFICIO CONCARSUL,RUA ALFREDO SIL VA");
+        recMan.setDistrict("Powiat kaliski");
+        recMan.setCountryCode("PT");
+        recMan.setCity("AMADORA");
+        recMan.setZipcode("2610-016");
+
+        printInternationParam.setSendMan(sendMan);
+        printInternationParam.setRecMan(recMan);
+        /***************************************收件人 end*******************************************/
+
+        /***************************************货件详细信息 start*******************************************/
+        printInternationParam.setRemark("just a test demo");
+        printInternationParam.setCustomsValue(100D);
+        printInternationParam.setTradeTerm("DAP");
+        printInternationParam.setCurrency("CNY");
+
+        PackageInfo packageInfo = new PackageInfo();
+        packageInfo.setHeight("10");
+        packageInfo.setWidth("10");
+        packageInfo.setLength("10");
+        packageInfo.setWeight(0.2);
+        packageInfo.setPackageReference("just a user remark");
+        List<PackageInfo> packageInfos = new ArrayList<PackageInfo>();
+        packageInfos.add(packageInfo);
+        printInternationParam.setPackageInfos(packageInfos);
+        printInternationParam.setCount(packageInfos.size());
+        printInternationParam.setWeight(packageInfos.stream().mapToDouble(PackageInfo::getWeight).sum());
+
+        ExportInfo exportInfo = new ExportInfo();
+        exportInfo.setNetWeight(0.1);
+        exportInfo.setGrossWeight(0.1);
+        exportInfo.setManufacturingCountryCode("CN");
+        exportInfo.setUnitPrice(100D);
+        exportInfo.setQuantity(1D);
+        exportInfo.setQuantityUnitOfMeasurement("KG");
+        exportInfo.setDesc("just a user desc");
+        List<ExportInfo> exportInfos = new ArrayList<ExportInfo>();
+        exportInfos.add(exportInfo);
+        printInternationParam.setExportInfos(exportInfos);
+        /***************************************货件详细信息 end*******************************************/
+
+        String t = System.currentTimeMillis() + "";
+        String param = new Gson().toJson(printInternationParam);
+        String sign = SignUtils.printSign(param, t, key, secret);
+
+        PrintReq printReq = new PrintReq();
+        printReq.setKey(key);
+        printReq.setMethod(ApiInfoConstant.ELECTRONIC_INTERSHIP_METHOD);
+        printReq.setT(t);
+        printReq.setSign(sign);
+        printReq.setParam(param);
+
+        PrintInternation printInternation = new PrintInternation();
+        PrintInternationResp resp = printInternation.print(printReq);
+        System.out.println(resp);
+
+        // 转换PDF文件
+        PdfUtils.base64StringToPdf(resp.getData().get(0).getPdf(), "printInternation.pdf");
+
+        // 转换图片
+//        PdfUtils.base64PdfToImgBase64(resp.getData().get(0).getPdf());
     }
 
     /**
