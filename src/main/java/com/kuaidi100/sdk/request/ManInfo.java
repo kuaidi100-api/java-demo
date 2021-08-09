@@ -9,19 +9,51 @@ import lombok.Data;
 @Data
 public class ManInfo {
     /**
-     * 收件人姓名 (必填)
+     * 姓名 (必填)
      */
     private String name;
     /**
-     * 收件人的手机号，手机号和电话号二者其一必填 (必填)
+     * 手机号，手机号和电话号二者其一必填 (必填)
      */
     private String mobile;
     /**
-     * 收件人所在完整地址 (必填)
+     * 完整地址（国内快递）
      */
     private String printAddr;
+    /**
+     * 完整地址（国际快递）
+     */
+    private String addr;
     /**
      * 收件人所在公司名称(可选)
      */
     private String company;
+    /**
+     * 	郡|县,可作为收件地址补充
+     */
+    private String district;
+    /**
+     * 州|省,可作为收件地址补充
+     */
+    private String province;
+    /**
+     * 国家代号 CN-中国 ,US-美国等, 详见字典表
+     */
+    private String countryCode;
+    /**
+     * 城市
+     */
+    private String city;
+    /**
+     * 邮编
+     */
+    private String zipcode;
+    /**
+     * 电话
+     */
+    private String tel;
+    /**
+     * 邮箱
+     */
+    private String email;
 }

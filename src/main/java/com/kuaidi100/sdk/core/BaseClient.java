@@ -11,9 +11,9 @@ import com.kuaidi100.sdk.utils.HttpUtils;
  */
 public abstract class BaseClient implements IBaseClient{
 
-    private int connectTimeout = 3000;
+    private int connectTimeout = 10000;
 
-    private int socketTimeout = 3000;
+    private int socketTimeout = 10000;
 
     public HttpResult execute(BaseRequest request) throws Exception{
 

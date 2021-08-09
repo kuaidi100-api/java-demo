@@ -46,6 +46,14 @@ public class ApiInfoConstant {
      */
     public static final String ELECTRONIC_ORDER_PIC_METHOD = "getPrintImg";
     /**
+     * 国际电子面单下单 url
+     */
+    public static final String ELECTRONIC_INTERSHIP_URL = "http://poll.kuaidi100.com/eorderapi.do";
+    /**
+     * 国际电子面单下单
+     */
+    public static final String ELECTRONIC_INTERSHIP_METHOD = "intership";
+    /**
      * 电子面单打印 url
      */
     public static final String ELECTRONIC_ORDER_PRINT_URL = "https://poll.kuaidi100.com/printapi/printtask.do";
