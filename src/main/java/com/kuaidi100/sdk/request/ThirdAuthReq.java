@@ -22,4 +22,8 @@ public class ThirdAuthReq {
      * 已经授权完需要重新获取授权信息
      */
     private String partnerId;
+    /**
+     * web(默认），wap(只有淘宝和菜鸟可以使用）
+     */
+    private String view;
 }

@@ -54,6 +54,10 @@ public class PrintImgParam {
      */
     private String sendManMobile;
     /**
+     * 寄件人的手机号
+     */
+    private String sendManTel;
+    /**
      * 寄件人所在的完整地址
      */
     private String sendManPrintAddr;
@@ -176,4 +180,5 @@ public class PrintImgParam {
      * https://api.kuaidi100.com/help/doc/?code=5f0ff6e82977d50a94e10237&openKey=%E7%94%B5%E5%AD%90%E9%9D%A2%E5%8D%95
      */
     private String checkMan;
+
 }

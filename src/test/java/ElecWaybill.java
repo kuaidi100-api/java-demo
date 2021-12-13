@@ -1,4 +1,5 @@
 import com.google.gson.Gson;
+import com.kuaidi100.sdk.api.LabelCancel;
 import com.kuaidi100.sdk.api.PrintCloud;
 import com.kuaidi100.sdk.api.PrintHtml;
 import com.kuaidi100.sdk.api.PrintImg;
@@ -23,7 +24,7 @@ public class ElecWaybill extends BaseServiceTest{
     @Test
     public void testPrintImg() throws Exception{
         PrintImgParam printImgParam = new PrintImgParam();
-        printImgParam.setKuaidicom(CompanyConstant.ZJS);
+        printImgParam.setKuaidicom(CompanyConstant.SF);
         printImgParam.setSendManName("张三");
         printImgParam.setSendManMobile("15999566666");
         printImgParam.setSendManPrintAddr("广东省深圳市南山区科技南十二路");
@@ -122,6 +123,33 @@ public class ElecWaybill extends BaseServiceTest{
         printReq.setParam(param);
 
         IBaseClient baseClient = new PrintCloud();
+        System.out.println(baseClient.execute(printReq));
+    }
+
+    /**
+     * 面单取消（部分支持，详情请查看参数字典）
+     */
+    @Test
+    public void testLabelCancel() throws Exception{
+       LabelCancelParam labelCancelParam = new LabelCancelParam();
+       labelCancelParam.setPartnerId("test");
+       labelCancelParam.setKuaidicom(CompanyConstant.SF);
+       labelCancelParam.setKuaidinum("SF1342567604302");
+       //快递公司订单号(对应下单时返回的kdComOrderNum，如果没有可以不传，否则必传)
+       labelCancelParam.setOrderId("01639366271685GNkZEX");
+
+       labelCancelParam.setReason("暂时不寄了");
+        String param = new Gson().toJson(labelCancelParam);
+        String t = System.currentTimeMillis() + "";
+
+        PrintReq printReq = new PrintReq();
+        printReq.setT(t);
+        printReq.setKey(key);
+        printReq.setMethod(ApiInfoConstant.CANCEL_METHOD);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setParam(param);
+
+        IBaseClient baseClient = new LabelCancel();
         System.out.println(baseClient.execute(printReq));
     }
 }

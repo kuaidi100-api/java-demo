@@ -302,8 +302,9 @@ public class BaseServiceTest {
     public void testThirdAuth() throws Exception{
         PrintReq printReq = new PrintReq();
         ThirdAuthReq thirdAuthReq = new ThirdAuthReq();
-        thirdAuthReq.setNet("cainiao");
+        thirdAuthReq.setNet("taobao");
         thirdAuthReq.setCallBackUrl("http://www.baidu.com");
+        thirdAuthReq.setView("web");
 
         String t = System.currentTimeMillis() + "";
         String param = new Gson().toJson(thirdAuthReq);

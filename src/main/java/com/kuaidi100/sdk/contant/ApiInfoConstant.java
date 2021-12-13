@@ -141,4 +141,16 @@ public class ApiInfoConstant {
      * 同城配送取消订单方法
      */
     public static final String SAME_CITY_CANCEL_METHOD = "cancel";
+    /**
+     * 取消方法
+     */
+    public static final String CANCEL_METHOD = "cancel";
+    /**
+     * 指令打印
+     */
+    public static final String CLOUD_PRINT_COMMAND = "printCommand";
+    /**
+     * 指令打印
+     */
+    public static final String INTERNATIONAL_SHIPMENT_URL = "http://api.kuaidi100.com/sendAssistant/order/apiCall";
 }
