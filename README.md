@@ -28,7 +28,7 @@ java-demo使用和测试可参考[java-demo-test](https://github.com/kuaidi100-a
 
 ```css
 dependencies {
-	implementation 'com.github.kuaidi100-api:sdk:1.0.4'
+	implementation 'com.github.kuaidi100-api:sdk:1.0.5'
 }
 ```
 
@@ -38,7 +38,7 @@ dependencies {
 	<dependency>
             <groupId>com.github.kuaidi100-api</groupId>
             <artifactId>sdk</artifactId>
-            <version>1.0.4</version>
+            <version>1.0.5</version>
         </dependency>
 ```
 
@@ -496,6 +496,133 @@ public class BaseServiceTest {
 
         IBaseClient cloudBase = new CloudBase();
         System.out.println(cloudBase.execute(cOrderCancelReq));
+    }
+    
+    /**
+     * 指令打印接口
+     */
+    @Test
+    public void testCloudPrintCommand() throws Exception{
+        PrintReq printReq = new PrintReq();
+        CloudPrintCommandParam cloudPrintCommandParam = new CloudPrintCommandParam();
+        cloudPrintCommandParam.setContent("");
+        cloudPrintCommandParam.setSiid("");
+        String t = System.currentTimeMillis() + "";
+        String param = new Gson().toJson(cloudPrintCommandParam);
+   
+        printReq.setKey(key);
+        printReq.setMethod(ApiInfoConstant.CLOUD_PRINT_COMMAND);
+        printReq.setT(t);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setParam(param);
+   
+        IBaseClient cloudPrintOld = new CloudPrintCommand();
+        System.out.println(cloudPrintOld.execute(printReq));
+    }
+    
+    /**
+     * 国际下单
+     */
+    @Test
+    public void testShipment() throws Exception {
+        ShipmentReq shipmentReq = new ShipmentReq();
+        shipmentReq.setPartnerId("");
+        shipmentReq.setPartnerKey("");
+        shipmentReq.setPartnerSecret("");
+        shipmentReq.setCode("");
+        shipmentReq.setKuaidicom("fedex");
+        shipmentReq.setCargo("invoice");
+        shipmentReq.setExpType("International First");
+        shipmentReq.setUnitOfMeasurement("SU");
+        shipmentReq.setWeight(50.00);
+        shipmentReq.setCustomsValue(1000.00);
+
+        ManInfo sendMan = new ManInfo();
+        sendMan.setName("test");
+        sendMan.setMobile("16888888888");
+        sendMan.setCountryCode("CN");
+        sendMan.setCity("SHENZHEN");
+        sendMan.setAddr("Kingdee Software Park");
+        sendMan.setDistrict("Hi-tech Park,Nanshang District");
+        sendMan.setZipcode("518057");
+        sendMan.setEmail("test@qq.com");
+        shipmentReq.setSendMan(sendMan);
+
+        ManInfo recMan = new ManInfo();
+        recMan.setName("test");
+        recMan.setMobile("16888888888");
+        recMan.setCountryCode("US");
+        recMan.setCity("NEW YORK");
+        recMan.setAddr(" 70 Washington Square South");
+        recMan.setZipcode("10012");
+        recMan.setEmail("test@qq.com");
+        recMan.setStateOrProvinceCode("NY");
+        shipmentReq.setRecMan(recMan);
+
+        List<PackageInfo> packageInfoList = new ArrayList<>();
+        PackageInfo packageInfo = new PackageInfo();
+        packageInfo.setLength(10.00);
+        packageInfo.setWidth(20.00);
+        packageInfo.setHeight(10.00);
+        packageInfo.setWeight(50.00);
+        packageInfoList.add(packageInfo);
+        shipmentReq.setPackageInfos(packageInfoList);
+
+        List<ExportInfo> exportInfoList = new ArrayList<>();
+        ExportInfo exportInfo = new ExportInfo();
+        exportInfo.setDesc("test");
+        exportInfo.setGrossWeight(50.00);
+        exportInfo.setQuantity(1);
+        exportInfo.setQuantityUnitOfMeasurement("PCS");
+        exportInfo.setManufacturingCountryCode("CN");
+        exportInfoList.add(exportInfo);
+        shipmentReq.setExportInfos(exportInfoList);
+
+        CustomsClearance customsClearance = new CustomsClearance();
+        customsClearance.setPurpose("GIFT");
+        customsClearance.setDocument(true);
+
+        String param = new Gson().toJson(shipmentReq);
+        String t = System.currentTimeMillis() + "";
+        String sign = SignUtils.printSign(param,t,key,secret);
+
+        PrintReq printReq = new PrintReq();
+        printReq.setKey(key);
+        printReq.setMethod(ApiInfoConstant.ELECTRONIC_ORDER_PIC_METHOD);
+        printReq.setSign(sign);
+        printReq.setParam(param);
+        printReq.setT(t);
+
+        IBaseClient baseClient = new InternationalShipment();
+        //国际面单耗时比较长，尽量调整10s以上
+        baseClient.setTimeOut(1000,10000);
+        System.out.println(baseClient.execute(printReq));
+    }
+    /**
+     * 面单取消（部分支持，详情请查看参数字典）
+     */
+    @Test
+    public void testLabelCancel() throws Exception{
+       LabelCancelParam labelCancelParam = new LabelCancelParam();
+       labelCancelParam.setPartnerId("test");
+       labelCancelParam.setKuaidicom(CompanyConstant.SF);
+       labelCancelParam.setKuaidinum("SF1342567604302");
+       //快递公司订单号(对应下单时返回的kdComOrderNum，如果没有可以不传，否则必传)
+       labelCancelParam.setOrderId("01639366271685GNkZEX");
+
+       labelCancelParam.setReason("暂时不寄了");
+        String param = new Gson().toJson(labelCancelParam);
+        String t = System.currentTimeMillis() + "";
+
+        PrintReq printReq = new PrintReq();
+        printReq.setT(t);
+        printReq.setKey(key);
+        printReq.setMethod(ApiInfoConstant.CANCEL_METHOD);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setParam(param);
+
+        IBaseClient baseClient = new LabelCancel();
+        System.out.println(baseClient.execute(printReq));
     }
 }
 
