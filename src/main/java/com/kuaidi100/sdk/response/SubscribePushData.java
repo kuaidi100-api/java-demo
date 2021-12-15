@@ -32,4 +32,16 @@ public class SubscribePushData {
      * 本数据元对应的行政区域的名称，开通签收状态服务（见上面"status"后的说明）且在订阅接口中提交resultv2标记后才会出现
      */
     private String areaName;
+    /**
+     * 本数据元对应的行政区域经纬度，resultv2=4或6标记后才会出现
+     */
+    private String areaCenter;
+    /**
+     * 本数据元对应的行政区域拼音，resultv2=4或6标记后才会出现
+     */
+    private String areaPinYin;
+    /**
+     * 状态值
+     */
+    private String statusCode;
 }

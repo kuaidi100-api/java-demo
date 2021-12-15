@@ -32,4 +32,16 @@ public class QueryTrackData {
      * 签收状态 (0在途，1揽收，2疑难，3签收，4退签，5派件，6退回，7转投)
      */
     private String status;
+    /**
+     * 本数据元对应的行政区域经纬度，resultv2=4或6标记后才会出现
+     */
+    private String areaCenter;
+    /**
+     * 本数据元对应的行政区域拼音，resultv2=4或6标记后才会出现
+     */
+    private String areaPinYin;
+    /**
+     * 状态值
+     */
+    private String statusCode;
 }
