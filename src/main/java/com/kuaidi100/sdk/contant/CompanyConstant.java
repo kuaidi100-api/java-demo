@@ -20,4 +20,7 @@ public class CompanyConstant {
 
     public static final String SS = "shansong";
     public static final String KFW = "kfw";
+
+    public static final String DHL = "dhl";
+    public static final String FEDEX = "fedex";
 }
