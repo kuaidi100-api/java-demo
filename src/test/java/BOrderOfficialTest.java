@@ -78,7 +78,10 @@ public class BOrderOfficialTest extends BaseServiceTest{
     public void testBorderOfficialQueryPrice() throws Exception {
         PrintReq printReq = new PrintReq();
         BOrderOfficialQueryPriceReq officialQueryPriceReq = new BOrderOfficialQueryPriceReq();
-        officialQueryPriceReq.setAddress("广东深圳市南山区金蝶软件园");
+
+        officialQueryPriceReq.setKuaidiCom("jtexpress");
+        officialQueryPriceReq.setSendManPrintAddr("广东省深圳市");
+        officialQueryPriceReq.setRecManPrintAddr("福建省厦门市");
 
         String t = String.valueOf(System.currentTimeMillis());
         String param = new Gson().toJson(officialQueryPriceReq);

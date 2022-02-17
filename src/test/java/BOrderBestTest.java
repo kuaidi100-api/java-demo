@@ -8,11 +8,12 @@ import com.kuaidi100.sdk.utils.SignUtils;
 import org.junit.Test;
 
 /**
- * 商家寄件（优选快递）测试用例
- *
+ * 商家寄件（优选快递）测试用例 接口以下架
+ *　
  * @Author: api.kuaidi100.com
  * @Date: 2021-03-22 15:49
  */
+@Deprecated
 public class BOrderBestTest extends BaseServiceTest{
 
     /**

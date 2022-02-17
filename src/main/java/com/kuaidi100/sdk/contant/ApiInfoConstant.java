@@ -120,7 +120,7 @@ public class ApiInfoConstant {
     /**
      * 商家寄件(官方寄件)查询价格
      */
-    public static final String B_ORDER_OFFICIAL_PRICE_METHOD = "queryPrice";
+    public static final String B_ORDER_OFFICIAL_PRICE_METHOD = "Price";
     /**
      * 同城配送请求url
      */
@@ -146,11 +146,31 @@ public class ApiInfoConstant {
      */
     public static final String CANCEL_METHOD = "cancel";
     /**
-     * 指令打印
+     * 指令打印方法
      */
     public static final String CLOUD_PRINT_COMMAND = "printCommand";
     /**
      * 指令打印
      */
     public static final String INTERNATIONAL_SHIPMENT_URL = "http://api.kuaidi100.com/sendAssistant/order/apiCall";
+    /**
+     * 订单导入授权url
+     */
+    public static final String THIRD_PLATFORM_ORDER_SHOP_AUTHORIZE_url = "https://api.kuaidi100.com/ent/shop/authorize";
+    /**
+     * 订单导入提交订单获取任务接口
+     */
+    public static final String THIRD_PLATFORM_ORDER_COMMIT_TASK = "https://api.kuaidi100.com/ent/order/task";
+    /**
+     * 订单导入提交订单回填单号
+     */
+    public static final String THIRD_PLATFORM_ORDER_UPLOAD_NUM = "https://api.kuaidi100.com/ent/logistics/send";
+    /**
+     * 发货单接口url
+     */
+    public static final String BILL_PARCELS_URL = "https://poll.kuaidi100.com/print/billparcels.do";
+    /**
+     * 发货单接口url
+     */
+    public static final String BILL_PARCELS_METHOD = "billparcels";
 }

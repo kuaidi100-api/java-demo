@@ -33,4 +33,6 @@ public class PrintReq extends BaseRequest {
      * 快递100分配给贵司的的授权key
      */
     private String secret;
+
+    private String settings;
 }

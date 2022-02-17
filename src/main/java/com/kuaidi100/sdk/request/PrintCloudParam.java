@@ -178,4 +178,16 @@ public class PrintCloudParam {
      *  到付金额（单位：元）
      */
     private String freight;
+    /**
+     * 第三方平台面单基础模板链接，如为第三方平台导入订单选填，如不填写，默认返回两联面单模板
+     */
+    private String thirdTemplateURL;
+    /**
+     * 淘宝订单收件人ID (Open Addressee ID)，长度不超过128个字符，淘宝订单加密情况用于解密
+     */
+    private String oaid;
+    /**
+     * 平台导入返回的订单id：如平台类加密订单，使用此下单为必填
+     */
+    private String thirdOrderId;
 }

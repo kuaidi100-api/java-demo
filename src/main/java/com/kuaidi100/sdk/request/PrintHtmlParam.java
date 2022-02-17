@@ -142,4 +142,16 @@ public class PrintHtmlParam {
      * https://api.kuaidi100.com/help/doc/?code=5f0ff6e82977d50a94e10237&openKey=%E7%94%B5%E5%AD%90%E9%9D%A2%E5%8D%95
      */
     private String checkMan;
+    /**
+     * 第三方平台面单基础模板链接，如为第三方平台导入订单选填，如不填写，默认返回两联面单模板
+     */
+    private String thirdTemplateURL;
+    /**
+     * 淘宝订单收件人ID (Open Addressee ID)，长度不超过128个字符，淘宝订单加密情况用于解密
+     */
+    private String oaid;
+    /**
+     * 平台导入返回的订单id：如平台类加密订单，使用此下单为必填
+     */
+    private String thirdOrderId;
 }

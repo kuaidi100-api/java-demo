@@ -337,108 +337,7 @@ public class BaseServiceTest {
         System.out.println(sendSms.execute(sendSmsReq));
     }
 
-    /**
-     * 商家寄件查询运力
-     */
-    @Test
-    public void testBorderQuery() throws Exception {
-        BOrderQueryReq bOrderQueryReq = new BOrderQueryReq();
-        bOrderQueryReq.setSendAddr("福田区华强南");
-
-        String t = String.valueOf(System.currentTimeMillis());
-        String param = new Gson().toJson(bOrderQueryReq);
-
-        PrintReq printReq = new PrintReq();
-        printReq.setKey(key);
-        printReq.setSign(SignUtils.printSign(param,t,key,secret));
-        printReq.setT(t);
-        printReq.setParam(param);
-        printReq.setMethod(ApiInfoConstant.B_ORDER_QUERY_TRANSPORT_CAPACITY_METHOD);
-
-        IBaseClient bOrder = new BOrder();
-        System.out.println(bOrder.execute(printReq));
-    }
-
-    /**
-     * 商家寄件
-     */
-    @Test
-    public void testBorder() throws Exception {
-        PrintReq printReq = new PrintReq();
-        BOrderReq bOrderReq = new BOrderReq();
-        bOrderReq.setKuaidicom(CompanyConstant.ZT);
-        bOrderReq.setSendManName("张三");
-        bOrderReq.setSendManMobile("15966666666");
-        bOrderReq.setSendManPrintAddr("广东深圳市福田区华强南");
-        bOrderReq.setRecManName("李四");
-        bOrderReq.setRecManMobile("15966666666");
-        bOrderReq.setRecManPrintAddr("广东深圳市南山区金蝶软件园");
-        bOrderReq.setCallBackUrl("http://www.baidu.com");
-        bOrderReq.setCargo("文件");
-        bOrderReq.setRemark("测试下单，待会取消");
-        bOrderReq.setWeight("1");
-        bOrderReq.setSalt("123456");
-        bOrderReq.setServiceType("标准快递");
-
-        String t = String.valueOf(System.currentTimeMillis());
-        String param = new Gson().toJson(bOrderReq);
-
-        printReq.setKey(key);
-        printReq.setSign(SignUtils.printSign(param,t,key,secret));
-        printReq.setT(t);
-        printReq.setParam(param);
-        printReq.setMethod(ApiInfoConstant.B_ORDER_SEND_METHOD);
-
-        IBaseClient bOrder = new BOrder();
-        System.out.println(bOrder.execute(printReq));
-    }
-
-    /**
-     * 商家寄件获取验证码
-     */
-    @Test
-    public void testBorderGetCode() throws Exception {
-        PrintReq printReq = new PrintReq();
-        BOrderGetCodeReq bOrderGetCodeReq = new BOrderGetCodeReq();
-        bOrderGetCodeReq.setTaskId("4D07550D8E685E06B3C679632E68ACDD");
-        bOrderGetCodeReq.setOrderId("100012022010566");
-
-        String t = String.valueOf(System.currentTimeMillis());
-        String param = new Gson().toJson(bOrderGetCodeReq);
-
-        printReq.setKey(key);
-        printReq.setSign(SignUtils.printSign(param,t,key,secret));
-        printReq.setT(t);
-        printReq.setParam(param);
-        printReq.setMethod(ApiInfoConstant.B_ORDER_CODE_METHOD);
-
-        IBaseClient bOrder = new BOrder();
-        System.out.println(bOrder.execute(printReq));
-    }
-
-    /**
-     * 商家寄件取消
-     */
-    @Test
-    public void testBorderCancel() throws Exception {
-        PrintReq printReq = new PrintReq();
-        BOrderCancelReq bOrderCancelReq = new BOrderCancelReq();
-        bOrderCancelReq.setTaskId("4D07550D8E685E06B3C679632E68ACDD");
-        bOrderCancelReq.setOrderId("100012022010566");
-        bOrderCancelReq.setCancelMsg("测试单取消");
-
-        String t = String.valueOf(System.currentTimeMillis());
-        String param = new Gson().toJson(bOrderCancelReq);
-
-        printReq.setKey(key);
-        printReq.setSign(SignUtils.printSign(param,t,key,secret));
-        printReq.setT(t);
-        printReq.setParam(param);
-        printReq.setMethod(ApiInfoConstant.B_ORDER_CANCEL_METHOD);
-
-        IBaseClient bOrder = new BOrder();
-        System.out.println(bOrder.execute(printReq));
-    }
+   
 
     /**
      * C端查询运力
@@ -623,6 +522,119 @@ public class BaseServiceTest {
 
         IBaseClient baseClient = new LabelCancel();
         System.out.println(baseClient.execute(printReq));
+    }
+
+    /**
+     * 发货单接口
+     *
+     * @throws Exception
+     */
+    @Test
+    public void  testCloudPrintParcelsBill() throws Exception {
+
+        CloudPrintParcelsBillReq cloudPrintParcelsBillReq = new CloudPrintParcelsBillReq();
+
+        cloudPrintParcelsBillReq.setCallBackUrl("http://www.baidu.com");
+        cloudPrintParcelsBillReq.setTempid("164509714515858026");
+        cloudPrintParcelsBillReq.setSiid(siid);
+
+
+        String t = System.currentTimeMillis() + "";
+        String param = new Gson().toJson(cloudPrintParcelsBillReq);
+
+        PrintReq printReq = new PrintReq();
+        printReq.setKey(key);
+        printReq.setMethod(ApiInfoConstant.BILL_PARCELS_METHOD);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setT(t);
+        printReq.setParam(param);
+
+        IBaseClient parcelsBill = new CloudPrintParcelsBill();
+        System.out.println(parcelsBill.execute(printReq));
+    }
+
+   /**
+     * 获取店铺授权超链接接口
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testStoreAuth() throws Exception {
+        StoreAuthReq storeAuthReq = new StoreAuthReq();
+        storeAuthReq.setShopType(ThirdPlatformConstant.TAO_BAO);
+        storeAuthReq.setCallbackUrl("http://www.baidu.com");
+        storeAuthReq.setSalt("12345678");
+        String param = new Gson().toJson(storeAuthReq);
+
+        PrintReq printReq = new PrintReq();
+        printReq.setKey(key);
+        printReq.setSign(SignUtils.sign(param + key + secret));
+        printReq.setParam(param);
+
+        IBaseClient baseClient = new ThirdPlatformStoreAuth();
+        HttpResult result = baseClient.execute(printReq);
+        System.out.println(result);
+        if (result!=null && result.getStatus() == HttpStatus.SC_OK && result.getBody()!= null){
+            ThirdPlatformBaseResp<StoreAuthResp> storeAuthResp = new Gson().fromJson(result.getBody(),new TypeToken<ThirdPlatformBaseResp<StoreAuthResp>>(){}.getType());
+        }
+    }
+
+    /**
+     * 提交订单获取任务接口
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testCommitTask() throws Exception {
+        CommitTaskReq commitTaskReq = new CommitTaskReq();
+        commitTaskReq.setShopType(ThirdPlatformConstant.TAO_BAO);
+        commitTaskReq.setShopId("21231");
+        commitTaskReq.setOrderStatus(OrderStatus.UNSHIP.toString());
+        commitTaskReq.setUpdateAtMin("2022-02-17 16:00:00");
+        commitTaskReq.setUpdateAtMax("2022-02-17 16:30:00");
+        commitTaskReq.setCallbackUrl("http://www.baidu.com");
+        commitTaskReq.setSalt("12345678");
+        String param = new Gson().toJson(commitTaskReq);
+
+        PrintReq printReq = new PrintReq();
+        printReq.setKey(key);
+        printReq.setSign(SignUtils.sign(param + key + secret));
+        printReq.setParam(param);
+
+        IBaseClient baseClient = new ThirdPlatformOrderCommitTask();
+        HttpResult result = baseClient.execute(printReq);
+        System.out.println(result);
+        if (result!=null && result.getStatus() == HttpStatus.SC_OK && result.getBody()!= null){
+            ThirdPlatformBaseResp<CommitTaskResp> commitTaskResp = new Gson().fromJson(result.getBody(),new TypeToken<ThirdPlatformBaseResp<CommitTaskResp>>(){}.getType());
+        }
+    }
+
+    /**
+     * 获取店铺授权超链接接口
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testUploadNum() throws Exception {
+        UploadNumReq uploadNumReq = new UploadNumReq();
+        uploadNumReq.setShopType(ThirdPlatformConstant.TAO_BAO);
+        uploadNumReq.setShopId("413979377");
+        uploadNumReq.setOrderNum("1232321");
+        uploadNumReq.setKuaidiCom(CompanyConstant.YD);
+        uploadNumReq.setKuaidiNum("12345678");
+        String param = new Gson().toJson(uploadNumReq);
+
+        PrintReq printReq = new PrintReq();
+        printReq.setKey(key);
+        printReq.setSign(SignUtils.sign(param + key + secret));
+        printReq.setParam(param);
+
+        IBaseClient baseClient = new ThirdPlatformOrderUploadNum();
+        HttpResult result = baseClient.execute(printReq);
+        System.out.println(result);
+        if (result!=null && result.getStatus() == HttpStatus.SC_OK && result.getBody()!= null){
+            ThirdPlatformBaseResp baseResp = new Gson().fromJson(result.getBody(),new TypeToken<ThirdPlatformBaseResp>(){}.getType());
+        }
     }
 }
 

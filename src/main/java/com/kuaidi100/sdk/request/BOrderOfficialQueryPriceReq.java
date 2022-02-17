@@ -18,4 +18,8 @@ public class BOrderOfficialQueryPriceReq {
      * 出发地地址，最小颗粒到市级，例如：广东省深圳市
      */
     private String address;
+
+    private String sendManPrintAddr;
+
+    private String recManPrintAddr;
 }

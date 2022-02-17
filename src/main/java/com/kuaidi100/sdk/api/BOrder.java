@@ -16,11 +16,12 @@ import org.apache.http.HttpStatus;
 import java.util.Map;
 
 /**
- * 商家寄件(优选寄件)
+ * 商家寄件(优选寄件) 该接口功能目前已下线
  *
  * @Author: api.kuaidi100.com
  * @Date: 2020-09-17 11:14
  */
+@Deprecated
 public class BOrder extends BaseClient {
 
     @Override
