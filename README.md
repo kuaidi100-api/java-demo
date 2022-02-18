@@ -28,7 +28,7 @@ java-demo使用和测试可参考[java-demo-test](https://github.com/kuaidi100-a
 
 ```css
 dependencies {
-	implementation 'com.github.kuaidi100-api:sdk:1.0.5'
+	implementation 'com.github.kuaidi100-api:sdk:1.0.6'
 }
 ```
 
@@ -38,7 +38,7 @@ dependencies {
 	<dependency>
             <groupId>com.github.kuaidi100-api</groupId>
             <artifactId>sdk</artifactId>
-            <version>1.0.5</version>
+            <version>1.0.6</version>
         </dependency>
 ```
 
