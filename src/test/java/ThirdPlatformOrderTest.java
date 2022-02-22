@@ -82,7 +82,7 @@ public class ThirdPlatformOrderTest extends BaseServiceTest{
     }
 
     /**
-     * 获取店铺授权超链接接口
+     * 快递单号回传及订单发货接口
      *
      * @throws Exception
      */
@@ -90,7 +90,7 @@ public class ThirdPlatformOrderTest extends BaseServiceTest{
     public void testUploadNum() throws Exception {
         UploadNumReq uploadNumReq = new UploadNumReq();
         uploadNumReq.setShopType(ThirdPlatformConstant.TAO_BAO);
-        uploadNumReq.setShopId("413979377");
+        uploadNumReq.setShopId("2333");
         uploadNumReq.setOrderNum("1232321");
         uploadNumReq.setKuaidiCom(CompanyConstant.YD);
         uploadNumReq.setKuaidiNum("12345678");

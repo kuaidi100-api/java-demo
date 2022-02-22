@@ -17,6 +17,14 @@ public class LabelCancelParam {
      */
     private String partnerKey;
     /**
+     * 电子面单密钥，需贵司向当地快递公司网点申请； 是否必填该属性，请查看参数字典
+     */
+    private String partnerSecret;
+    /**
+     * 电子面单客户账户名称，需贵司向当地快递公司网点申请； 是否必填该属性，请查看参数字典
+     */
+    private String partnerName;
+    /**
      * 收件网点名称,由快递公司当地网点分配，
      * 若使用淘宝授权填入（taobao），使用菜鸟授权填入（cainiao）
      */

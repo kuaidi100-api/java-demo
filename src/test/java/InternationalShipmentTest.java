@@ -27,7 +27,7 @@ public class InternationalShipmentTest  extends BaseServiceTest{
         shipmentReq.setCode("");
         shipmentReq.setKuaidicom("fedex");
         shipmentReq.setCargo("invoice");
-        shipmentReq.setExpType("International First");
+        shipmentReq.setExpType("FedEx International First®");
         shipmentReq.setUnitOfMeasurement("SU");
         shipmentReq.setWeight(50.00);
         shipmentReq.setCustomsValue(1000.00);
@@ -68,6 +68,7 @@ public class InternationalShipmentTest  extends BaseServiceTest{
         exportInfo.setDesc("test");
         exportInfo.setGrossWeight(50.00);
         exportInfo.setQuantity(1);
+        exportInfo.setUnitPrice(1000.00);
         exportInfo.setQuantityUnitOfMeasurement("PCS");
         exportInfo.setManufacturingCountryCode("CN");
         exportInfoList.add(exportInfo);
