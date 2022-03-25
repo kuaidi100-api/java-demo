@@ -66,11 +66,11 @@ public class ElecWaybill extends BaseServiceTest{
         sendManInfo.setPrintAddr("北京市海淀区xxx路");
 
         PrintHtmlParam printHtmlParam = new PrintHtmlParam();
-        printHtmlParam.setKuaidicom(CompanyConstant.ZJS);
-        printHtmlParam.setCount(2);
-        printHtmlParam.setNeedChild(1);
+        printHtmlParam.setKuaidicom(CompanyConstant.SF);
+        printHtmlParam.setCount("2");
+        printHtmlParam.setNeedChild("1");
         //如果需要返回电子面单，需要设置
-        printHtmlParam.setNeedTemplate("1");
+        printHtmlParam.setNeedTemplate("0");
         printHtmlParam.setSendMan(sendManInfo);
         printHtmlParam.setRecMan(recManInfo);
 

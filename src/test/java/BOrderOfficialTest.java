@@ -55,8 +55,8 @@ public class BOrderOfficialTest extends BaseServiceTest{
     public void testBorderOfficialCancel() throws Exception {
         PrintReq printReq = new PrintReq();
         BOrderCancelReq bOrderCancelReq = new BOrderCancelReq();
-        bOrderCancelReq.setTaskId("F1F0BCB0BB0BF3D9388A6CA239835A82");
-        bOrderCancelReq.setOrderId("12301004");
+        bOrderCancelReq.setTaskId("2DB69EAE2F48F8AEF00C4BB6F57BF79E");
+        bOrderCancelReq.setOrderId("17390954");
         bOrderCancelReq.setCancelMsg("测试单取消");
 
         String t = String.valueOf(System.currentTimeMillis());

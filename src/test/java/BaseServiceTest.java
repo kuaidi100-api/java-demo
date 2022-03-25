@@ -165,8 +165,8 @@ public class BaseServiceTest {
 
         PrintHtmlParam printHtmlParam = new PrintHtmlParam();
         printHtmlParam.setKuaidicom(CompanyConstant.ZJS);
-        printHtmlParam.setCount(2);
-        printHtmlParam.setNeedChild(1);
+        printHtmlParam.setCount("2");
+        printHtmlParam.setNeedChild("1");
         //如果需要返回电子面单，需要设置
         printHtmlParam.setNeedTemplate("1");
         printHtmlParam.setSendMan(sendManInfo);
@@ -279,7 +279,7 @@ public class BaseServiceTest {
     public void testCloudPrintOld() throws Exception{
         PrintReq printReq = new PrintReq();
         CloudPrintOldParam cloudPrintOldParam = new CloudPrintOldParam();
-        cloudPrintOldParam.setTaskId("D21DB1AC74A260E6F5604FC43B4598B8");
+        cloudPrintOldParam.setTaskId("A32AA6754669C14CBE26EB79664D2266");
 
         String t = System.currentTimeMillis() + "";
         String param = new Gson().toJson(cloudPrintOldParam);
@@ -358,7 +358,7 @@ public class BaseServiceTest {
     @Test
     public void testCOrder() throws Exception {
         COrderReq cOrderReq = new COrderReq();
-        cOrderReq.setCom(CompanyConstant.JD);
+        cOrderReq.setCom(CompanyConstant.SF);
         cOrderReq.setSendManName("张三");
         cOrderReq.setSendManMobile("15966666666");
         cOrderReq.setSendManPrintAddr("深圳市南山区右炮台路海运大厦");
@@ -384,8 +384,8 @@ public class BaseServiceTest {
     @Test
     public void testCOrderCancel() throws Exception {
         COrderCancelReq cOrderCancelReq = new COrderCancelReq();
-        cOrderCancelReq.setTaskId("6AFA8EEFCC1475996E90890300A3596C");
-        cOrderCancelReq.setOrderId("12302352");
+        cOrderCancelReq.setTaskId("B9D3FF44B7439F298BA62211E3AC7126");
+        cOrderCancelReq.setOrderId("17561388");
         cOrderCancelReq.setCancelMsg("测试单");
         cOrderCancelReq.setSecret_key(secret_key);
         cOrderCancelReq.setSecret_code(CloudApiCodeConstant.ORDER_CANCEL);

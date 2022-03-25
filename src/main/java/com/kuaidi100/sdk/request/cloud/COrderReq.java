@@ -72,4 +72,8 @@ public class COrderReq extends CloudBaseReq{
      * 支付方式，SHIPPER: 寄付（默认），CONSIGNEE: 到付
      */
     private String payment;
+    /**
+     * 产品类型
+     */
+    private String expType;
 }

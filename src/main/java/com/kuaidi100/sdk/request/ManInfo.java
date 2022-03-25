@@ -9,19 +9,43 @@ import lombok.Data;
 @Data
 public class ManInfo {
     /**
-     * 收件人姓名 (必填)
+     * 姓名 (必填)
      */
     private String name;
     /**
-     * 收件人的手机号，手机号和电话号二者其一必填 (必填)
+     * 手机号，手机号和电话号二者其一必填 (必填)
      */
     private String mobile;
     /**
-     * 收件人所在完整地址 (必填)
+     * 电话号，手机号和电话号二者其一必填 (必填)
+     */
+    private String tel;
+    /**
+     * 所在完整地址 (必填)
      */
     private String printAddr;
     /**
-     * 收件人所在公司名称(可选)
+     * 所在公司名称(可选)
      */
     private String company;
+    /**
+     * 省(printAddr为空时必填)
+     */
+    private String province;
+    /**
+     * 市(printAddr为空时必填)
+     */
+    private String city;
+    /**
+     * 区／县(printAddr为空时必填)
+     */
+    private String district;
+    /**
+     * 详细地址(printAddr为空时必填)
+     */
+    private String addr;
+    /**
+     * 详细地址加密，目前抖音／拼多多用到
+     */
+    private String detailAddrEnc;
 }
