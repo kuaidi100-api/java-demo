@@ -89,7 +89,7 @@ public class BaseServiceTest {
         queryTrackParam.setPhone("17725390266");
         queryTrackParam.setFrom("河北保定市");
         queryTrackParam.setTo("湖南岳阳市");
-        queryTrackParam.setResultv2("2");
+        queryTrackParam.setResultv2("1");
         String param = new Gson().toJson(queryTrackParam);
 
         queryTrackReq.setParam(param);
@@ -188,10 +188,10 @@ public class BaseServiceTest {
 
         PrintHtmlParam printHtmlParam = new PrintHtmlParam();
         printHtmlParam.setKuaidicom(CompanyConstant.ZJS);
-        printHtmlParam.setCount(2);
-        printHtmlParam.setNeedChild(1);
+        printHtmlParam.setCount("2");
+        printHtmlParam.setNeedChild("1");
         //如果需要返回电子面单，需要设置
-        printHtmlParam.setNeedTemplate("1");
+        printHtmlParam.setNeedTemplate("0");
         printHtmlParam.setSendMan(sendManInfo);
         printHtmlParam.setRecMan(recManInfo);
 
