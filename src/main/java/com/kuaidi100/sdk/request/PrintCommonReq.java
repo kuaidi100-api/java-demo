@@ -37,6 +37,10 @@ public class PrintCommonReq {
      */
     private String kuaidicom;
     /**
+     * 快递公司单号
+     */
+    private String kuaidinum;
+    /**
      * 收件人信息
      */
     private ManInfo recMan;
@@ -260,4 +264,12 @@ public class PrintCommonReq {
      * 整车单号
      */
     private String vehicleOrderNo;
+    /**
+     * 生成图片的宽，以mm为单位，例如：100
+     */
+    private String width;
+    /**
+     * 生成图片的高，以mm为单位，例如：180
+     */
+    private String height;
 }
