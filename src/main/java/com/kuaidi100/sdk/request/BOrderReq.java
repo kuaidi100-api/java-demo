@@ -61,4 +61,39 @@ public class BOrderReq {
      * 快递业务服务类型，例：标准快递，默认为标准快递
      */
     private String serviceType;
+    /**
+     * 预约日期，例如：今天/明天/后天
+     */
+    private String dayType;
+    /**
+     * 预约起始时间（HH:mm），例如：09:00，顺丰必填
+     */
+    private String pickupStartTime;
+    /**
+     * 预约截止时间（HH:mm），例如：10:00，顺丰必填
+     */
+    private String pickupEndTime;
+    /**
+     * 保价额度，单位：元
+     */
+    private String valinsPay;
+    /**
+     * 是否口令签收，Y：需要 N: 不需要，默认值为N（德邦快递专属参数）
+     */
+    private String passwordSigning;
+    /**
+     * 是否开启订阅功能 0：不开启(默认) 1：开启 说明开启订阅功能时：pollCallBackUrl必须填入 此功能只针对有快递单号的单
+     */
+    private String op;
+    /**
+     * 如果op设置为1时，pollCallBackUrl必须填入，用于跟踪回调
+     */
+    private String pollCallBackUrl;
+    /**
+     * 添加此字段表示开通行政区域解析或地图轨迹功能 。
+     * 0：关闭（默认）
+     * 1：开通行政区域解析功能(详见：快递信息推送接口文档-2.3 推送输入参数),
+     * 3：开通地图轨迹及时效返回（回调报文参考地图轨迹推送服务技术文档-推送接口）
+     */
+    private String resultv2;
 }

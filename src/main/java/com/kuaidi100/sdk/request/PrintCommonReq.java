@@ -2,8 +2,6 @@ package com.kuaidi100.sdk.request;
 
 import lombok.Data;
 
-import java.util.Date;
-
 /**
  * @Author: ligl
  * @Date: 2022-03-25 9:42
@@ -186,11 +184,11 @@ public class PrintCommonReq {
     /**
      * 取件时间
      */
-    private Date startGotTime;
+    private Long startGotTime;
     /**
      * 最晚取件时间
      */
-    private Date endGotTime;
+    private Long endGotTime;
     /**
      * 代收账户
      */

@@ -1,17 +1,14 @@
 package com.kuaidi100.sdk.api;
 
 import com.google.gson.Gson;
-import com.kuaidi100.sdk.core.BaseClient;
-import com.kuaidi100.sdk.request.BaseRequest;
 import com.kuaidi100.sdk.contant.ApiInfoConstant;
+import com.kuaidi100.sdk.core.BaseClient;
 import com.kuaidi100.sdk.pojo.HttpResult;
+import com.kuaidi100.sdk.request.BaseRequest;
 import com.kuaidi100.sdk.request.PrintReq;
 import com.kuaidi100.sdk.response.PrintBaseResp;
-import com.kuaidi100.sdk.utils.HttpUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
-
-import java.net.URLEncoder;
 
 /**
  * 复打
@@ -22,23 +19,10 @@ import java.net.URLEncoder;
 public class CloudPrintOld extends BaseClient {
 
     public String getApiUrl(BaseRequest request) {
-        return null;
+        return ApiInfoConstant.ELECTRONIC_ORDER_PRINT_URL;
     }
 
-    @Override
-    public HttpResult execute(BaseRequest request) throws Exception{
-        if (request instanceof PrintReq){
-            PrintReq printReq = (PrintReq)request;
-            String url = String.format(ApiInfoConstant.CLOUD_PRINT_URL,
-                    printReq.getMethod(),
-                    printReq.getT(),
-                    printReq.getKey(),
-                    printReq.getSign(),
-                    URLEncoder.encode(printReq.getParam(), "UTF-8"));
-            return HttpUtils.doPost(url,printReq,super.getConnectTimeout(),super.getSocketTimeout());
-        }
-        throw new ClassCastException();
-    }
+
 
     public PrintBaseResp print(PrintReq request) throws Exception{
         HttpResult httpResult = this.execute(request);
