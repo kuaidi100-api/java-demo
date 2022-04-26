@@ -173,4 +173,8 @@ public class ApiInfoConstant {
      * 发货单接口url
      */
     public static final String BILL_PARCELS_METHOD = "billparcels";
+    /**
+     * 第三方平台网点&面单余额接口url
+     */
+    public static final String THIRD_PLATFORM_REST = "getThirdInfo";
 }

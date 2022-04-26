@@ -1,14 +1,17 @@
 import com.google.gson.Gson;
-import com.kuaidi100.sdk.api.LabelCancel;
-import com.kuaidi100.sdk.api.PrintCloud;
-import com.kuaidi100.sdk.api.PrintHtml;
-import com.kuaidi100.sdk.api.PrintImg;
+import com.google.gson.reflect.TypeToken;
+import com.kuaidi100.sdk.api.*;
 import com.kuaidi100.sdk.contant.ApiInfoConstant;
 import com.kuaidi100.sdk.contant.CompanyConstant;
 import com.kuaidi100.sdk.core.IBaseClient;
+import com.kuaidi100.sdk.pojo.HttpResult;
 import com.kuaidi100.sdk.request.*;
+import com.kuaidi100.sdk.response.BaseResponse;
+import com.kuaidi100.sdk.response.ThirdPlatformRestData;
 import com.kuaidi100.sdk.utils.SignUtils;
 import org.junit.Test;
+
+import java.util.List;
 
 /**
  * 电子面单测试用例
@@ -151,5 +154,33 @@ public class ElecWaybill extends BaseServiceTest{
 
         IBaseClient baseClient = new LabelCancel();
         System.out.println(baseClient.execute(printReq));
+    }
+
+    /**
+     * 第三方平台网点&面单余额接口
+     */
+    @Test
+    public void testRest() throws Exception{
+        ThirdPlatformRestReq thirdPlatformRestReq = new ThirdPlatformRestReq();
+        thirdPlatformRestReq.setPartnerId("123456");
+        thirdPlatformRestReq.setCom(CompanyConstant.SF);
+        thirdPlatformRestReq.setPartnerKey("123456");
+        thirdPlatformRestReq.setNet("jdalpha");
+        String param = new Gson().toJson(thirdPlatformRestReq);
+        String t = System.currentTimeMillis() + "";
+
+        PrintReq printReq = new PrintReq();
+        printReq.setT(t);
+        printReq.setKey(key);
+        printReq.setMethod(ApiInfoConstant.THIRD_PLATFORM_REST);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setParam(param);
+
+        IBaseClient baseClient = new ThirdPlatformRest();
+
+        HttpResult result = baseClient.execute(printReq);
+        BaseResponse<List<ThirdPlatformRestData>> resp= new Gson().fromJson(result.getBody(), new TypeToken<BaseResponse<List<ThirdPlatformRestData>>>() {
+        }.getType());
+        System.out.println(result);
     }
 }
