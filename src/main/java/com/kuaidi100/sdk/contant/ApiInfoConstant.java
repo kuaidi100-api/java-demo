@@ -177,4 +177,8 @@ public class ApiInfoConstant {
      * 第三方平台网点&面单余额接口url
      */
     public static final String THIRD_PLATFORM_REST = "getThirdInfo";
+    /**
+     * 快递面单OCR识别接口url
+     */
+    public static final String ELEC_DETOCR_URL = "http://api.kuaidi100.com/elec/detocr";
 }
