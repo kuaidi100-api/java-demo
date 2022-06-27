@@ -3,10 +3,7 @@ import com.kuaidi100.sdk.api.BOrderOfficial;
 import com.kuaidi100.sdk.contant.ApiInfoConstant;
 import com.kuaidi100.sdk.contant.CompanyConstant;
 import com.kuaidi100.sdk.core.IBaseClient;
-import com.kuaidi100.sdk.request.BOrderCancelReq;
-import com.kuaidi100.sdk.request.BOrderOfficialQueryPriceReq;
-import com.kuaidi100.sdk.request.BOrderReq;
-import com.kuaidi100.sdk.request.PrintReq;
+import com.kuaidi100.sdk.request.*;
 import com.kuaidi100.sdk.utils.SignUtils;
 import org.junit.Test;
 
@@ -91,6 +88,28 @@ public class BOrderOfficialTest extends BaseServiceTest{
         printReq.setT(t);
         printReq.setParam(param);
         printReq.setMethod(ApiInfoConstant.B_ORDER_OFFICIAL_PRICE_METHOD);
+
+        IBaseClient bOrder = new BOrderOfficial();
+        System.out.println(bOrder.execute(printReq));
+    }
+    /**
+     * 查询订单详情
+     */
+    @Test
+    public void testBorderOfficialQueryDetail() throws Exception {
+        PrintReq printReq = new PrintReq();
+        BOrderOfficialQueryDetailReq officialQueryPriceReq = new BOrderOfficialQueryDetailReq();
+
+        officialQueryPriceReq.setTaskId("8CE30D*******4E2F5F");
+
+        String t = String.valueOf(System.currentTimeMillis());
+        String param = new Gson().toJson(officialQueryPriceReq);
+
+        printReq.setKey(key);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setT(t);
+        printReq.setParam(param);
+        printReq.setMethod(ApiInfoConstant.DETAIL);
 
         IBaseClient bOrder = new BOrderOfficial();
         System.out.println(bOrder.execute(printReq));

@@ -96,4 +96,20 @@ public class BOrderReq {
      * 3：开通地图轨迹及时效返回（回调报文参考地图轨迹推送服务技术文档-推送接口）
      */
     private String resultv2;
+    /**
+     * 面单返回类型，默认为空，不返回面单内容。10：设备打印，20：图片回调。
+     */
+    private String returnType;
+    /**
+     * 设备码，returnType为10时必填
+     */
+    private String siid;
+    /**
+     * 模板编码，通过管理后台的电子面单模板信息获取 ，returnType不为空时必填
+     */
+    private String tempid;
+    /**
+     * 打印状态回调地址，returnType为10时必填
+     */
+    private String printCallBackUrl;
 }

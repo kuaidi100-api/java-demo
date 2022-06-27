@@ -181,4 +181,20 @@ public class ApiInfoConstant {
      * 快递面单OCR识别接口url
      */
     public static final String ELEC_DETOCR_URL = "http://api.kuaidi100.com/elec/detocr";
+    /**
+     * 新版编辑器请求地址
+     */
+    public static final String NEW_TEMPLATE_URL = "https://api.kuaidi100.com/label/order";
+    /**
+     * 下单
+     */
+    public static final String ORDER = "order";
+    /**
+     * 自定义
+     */
+    public static final String CUSTOM = "custom";
+    /**
+     * 详情
+     */
+    public static final String DETAIL = "detail";
 }
