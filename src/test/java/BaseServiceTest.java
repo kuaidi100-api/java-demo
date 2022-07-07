@@ -121,7 +121,7 @@ public class BaseServiceTest {
     }
 
     /**
-     * 电子面单图片接口
+     * 电子面单图片接口(v1版本示例，建议使用v2)
      */
     @Test
     public void testPrintImg() throws Exception{
@@ -153,7 +153,7 @@ public class BaseServiceTest {
     }
 
     /**
-     * 电子面单html接口
+     * 电子面单html接口(v1版本示例，建议使用v2)
      */
     @Test
     public void testPrintHtml() throws Exception{
@@ -192,7 +192,7 @@ public class BaseServiceTest {
     }
 
     /**
-     * 电子面单打印
+     * 电子面单打印(v1版本示例，建议使用v2)
      */
     @Test
     public void testPrintCloud() throws Exception{
@@ -229,7 +229,7 @@ public class BaseServiceTest {
     }
 
     /**
-     * 云打印自定义
+     * 云打印自定义(v1版本示例，建议使用v2)
      */
     @Test
     public void testCloudCustom() throws Exception{
@@ -277,7 +277,7 @@ public class BaseServiceTest {
     }
 
     /**
-     * 复打
+     * 复打(v1版本示例，建议使用v2)
      */
     @Test
     public void testCloudPrintOld() throws Exception{

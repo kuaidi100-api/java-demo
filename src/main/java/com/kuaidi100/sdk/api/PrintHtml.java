@@ -14,6 +14,7 @@ import org.apache.http.HttpStatus;
  * @Author: api.kuaidi100.com
  * @Date: 2020-07-17 17:20
  */
+@Deprecated
 public class PrintHtml extends BaseClient {
 
     public String getApiUrl(BaseRequest request) {

@@ -19,6 +19,7 @@ import java.util.List;
  * @Author: api.kuaidi100.com
  * @Date: 2020-07-17 15:46
  */
+@Deprecated
 public class PrintImg extends BaseClient {
 
     public String getApiUrl(BaseRequest request) {

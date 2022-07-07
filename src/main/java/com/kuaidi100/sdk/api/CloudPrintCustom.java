@@ -19,6 +19,7 @@ import java.net.URLEncoder;
  * @Author: api.kuaidi100.com
  * @Date: 2020-07-20 9:22
  */
+@Deprecated
 public class CloudPrintCustom extends BaseClient {
     private int connectTimeout = 3000;
 

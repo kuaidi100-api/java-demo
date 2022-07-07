@@ -16,6 +16,7 @@ import org.apache.http.HttpStatus;
  * @Author: api.kuaidi100.com
  * @Date: 2020-07-17 15:46
  */
+@Deprecated
 public class PrintCloud extends BaseClient {
 
     public String getApiUrl(BaseRequest request) {
