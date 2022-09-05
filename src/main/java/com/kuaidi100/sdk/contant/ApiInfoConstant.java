@@ -197,4 +197,16 @@ public class ApiInfoConstant {
      * 详情
      */
     public static final String DETAIL = "detail";
+    /**
+     * C端寄件下单接口请求地址
+     */
+    public static final String C_ORDER_URL = "https://order.kuaidi100.com/order/corderapi.do";
+    /**
+     * C端寄件下单接口方法
+     */
+    public static final String C_ORDER_METHOD = "cOrder";
+    /**
+     * C端寄件查价接口方法
+     */
+    public static final String C_ORDER_PRICE_METHOD = "price";
 }

@@ -36,7 +36,7 @@ public class HttpUtils {
      * @param url     请求url
      * @return
      */
-    public static HttpResult doPost(String url,  Object obj,int connectTimeout,int socketTimeout) {
+    public static HttpResult doPost(String url,  Object obj,int connectTimeout,int socketTimeout) throws IOException, IllegalAccessException {
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         CloseableHttpResponse resp = null;
 
@@ -62,15 +62,9 @@ public class HttpUtils {
             int statusCode = resp.getStatusLine().getStatusCode();
             result.setStatus(statusCode);
             result.setBody(body);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
+        }  finally {
             if (null != resp) {
-                try {
-                    resp.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                resp.close();
             }
         }
         return result;
@@ -82,7 +76,7 @@ public class HttpUtils {
      * @param url     请求url
      * @return
      */
-    public static HttpResult doPostFile(String url,  File file,int connectTimeout,int socketTimeout) {
+    public static HttpResult doPostFile(String url,  File file,int connectTimeout,int socketTimeout) throws IOException {
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         CloseableHttpResponse resp = null;
 
@@ -108,15 +102,9 @@ public class HttpUtils {
             resp = httpClient.execute(httpPost);
             result.setStatus(resp.getStatusLine().getStatusCode());
             result.setBody(EntityUtils.toString(resp.getEntity(), CHARSET_DEFAULT));
-        } catch (Exception e) {
-            e.printStackTrace();
         } finally {
             if (null != resp) {
-                try {
-                    resp.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                resp.close();
             }
         }
         return result;

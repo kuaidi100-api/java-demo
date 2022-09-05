@@ -18,6 +18,11 @@ import java.util.List;
  */
 public class InternationalShipmentTest  extends BaseServiceTest{
 
+    /**
+     * 国际电子面单下单API
+     *
+     * @throws Exception
+     */
     @Test
     public void testShipment() throws Exception {
         ShipmentReq shipmentReq = new ShipmentReq();

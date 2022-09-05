@@ -16,7 +16,7 @@ import org.junit.Test;
 public class BOrderOfficialTest extends BaseServiceTest{
 
     /**
-     * 寄件
+     * 商家寄件下单接口
      */
     @Test
     public void testBorderOfficial() throws Exception {
@@ -46,7 +46,7 @@ public class BOrderOfficialTest extends BaseServiceTest{
     }
 
     /**
-     * 取消寄件
+     * 商家寄件下单取消接口
      */
     @Test
     public void testBorderOfficialCancel() throws Exception {
@@ -69,7 +69,7 @@ public class BOrderOfficialTest extends BaseServiceTest{
         System.out.println(bOrder.execute(printReq));
     }
     /**
-     * 查询价格
+     * 商家寄件下单价格接口
      */
     @Test
     public void testBorderOfficialQueryPrice() throws Exception {
@@ -93,7 +93,7 @@ public class BOrderOfficialTest extends BaseServiceTest{
         System.out.println(bOrder.execute(printReq));
     }
     /**
-     * 查询订单详情
+     * 商家寄件订单详情查询接口
      */
     @Test
     public void testBorderOfficialQueryDetail() throws Exception {

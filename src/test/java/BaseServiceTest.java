@@ -20,7 +20,8 @@ import com.kuaidi100.sdk.utils.SignUtils;
 import org.junit.Test;
 
 import java.io.File;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author: api.kuaidi100.com
@@ -37,7 +38,7 @@ public class BaseServiceTest {
     String secret_key = PropertiesReader.get("secret_key");
     String secret_secret = PropertiesReader.get("secret_secret");
     /**
-     * 查询物流轨迹
+     * 实时快递查询接口
      */
     @Test
     public void testQueryTrack() throws Exception{
@@ -58,7 +59,7 @@ public class BaseServiceTest {
     }
 
     /**
-     * 快递信息地图轨迹
+     * 快递查询地图轨迹
      */
     @Test
     public void testQueryMapView() throws Exception{
@@ -85,7 +86,7 @@ public class BaseServiceTest {
     }
 
     /**
-     * 订阅
+     * 订阅接口
      */
     @Test
     public void testSubscribe() throws Exception{
@@ -121,7 +122,106 @@ public class BaseServiceTest {
     }
 
     /**
-     * 电子面单图片接口(v1版本示例，建议使用v2)
+     * 电子面单下单接口(V2)
+     *
+     * @throws Exception
+     */
+    @Test
+    public void  testLabelOrder() throws Exception {
+
+        ManInfo recManInfo  = new ManInfo();
+        recManInfo.setName("张三");
+        recManInfo.setMobile("15999566666");
+        recManInfo.setPrintAddr("广东省深圳市南山区科技南十二路");
+
+        ManInfo sendManInfo = new ManInfo();
+        sendManInfo.setName("李四");
+        sendManInfo.setMobile("15999566666");
+        sendManInfo.setPrintAddr("北京市海淀区xxx路");
+
+        OrderReq orderReq = new OrderReq();
+        orderReq.setKuaidicom(CompanyConstant.ZJS);
+        orderReq.setCount(1);
+        orderReq.setSiid(siid);
+        orderReq.setTempId("60f6c17c7c223700131d8bc3");
+        orderReq.setSendMan(sendManInfo);
+        orderReq.setRecMan(recManInfo);
+
+        orderReq.setPrintType(PrintType.CLOUD);
+
+        String param = new Gson().toJson(orderReq);
+        String t = System.currentTimeMillis() + "";
+
+        PrintReq printReq = new PrintReq();
+        printReq.setT(t);
+        printReq.setKey(key);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setMethod(ApiInfoConstant.ORDER);
+        printReq.setParam(param);
+
+        IBaseClient baseClient = new LabelV2();
+        System.out.println(baseClient.execute(printReq));
+
+    }
+
+
+    /**
+     * 云打印复打(V2)
+     *
+     * @throws Exception
+     */
+    @Test
+    public void  testPrintOld() throws Exception {
+        RepeatPrintReq repeatPrintReq = new RepeatPrintReq();
+
+        repeatPrintReq.setTaskId("027B34AD22DE4F299643A13642B70D5F");
+
+        String param = new Gson().toJson(repeatPrintReq);
+        String t = System.currentTimeMillis() + "";
+
+        PrintReq printReq = new PrintReq();
+        printReq.setT(t);
+        printReq.setKey(key);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setMethod(ApiInfoConstant.CLOUD_PRINT_OLD_METHOD);
+        printReq.setParam(param);
+
+        IBaseClient baseClient = new LabelV2();
+        System.out.println(baseClient.execute(printReq));
+    }
+
+    /**
+     * 自定义打印(V2)
+     *
+     * @throws Exception
+     */
+    @Test
+    public void  testCustom() throws Exception {
+        CustomReq customReq = new CustomReq();
+
+        customReq.setPrintType(PrintType.IMAGE);
+        customReq.setTempId("41b9d19ee56b45b5a23d7b6ace4f9029");
+
+        Map<String,Object> customParam = new HashMap<>();
+        customParam.put("qrcode","888888888");
+        customReq.setCustomParam(customParam);
+
+        String param = new Gson().toJson(customReq);
+        String t = System.currentTimeMillis() + "";
+
+        PrintReq printReq = new PrintReq();
+        printReq.setT(t);
+        printReq.setKey(key);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setMethod(ApiInfoConstant.CUSTOM);
+        printReq.setParam(param);
+
+        IBaseClient baseClient = new LabelV2();
+        System.out.println(baseClient.execute(printReq));
+    }
+
+    /**
+     * 电子面单图片接口(v1版本示例，后续不维护新功能，建议使用v2)
      */
     @Test
     public void testPrintImg() throws Exception{
@@ -153,7 +253,7 @@ public class BaseServiceTest {
     }
 
     /**
-     * 电子面单html接口(v1版本示例，建议使用v2)
+     * 电子面单HTML接口(v1版本示例，后续不维护新功能，建议使用v2)
      */
     @Test
     public void testPrintHtml() throws Exception{
@@ -192,7 +292,7 @@ public class BaseServiceTest {
     }
 
     /**
-     * 电子面单打印(v1版本示例，建议使用v2)
+     * 电子面单打印接口(v1版本示例，后续不维护新功能，建议使用v2)
      */
     @Test
     public void testPrintCloud() throws Exception{
@@ -229,7 +329,7 @@ public class BaseServiceTest {
     }
 
     /**
-     * 云打印自定义(v1版本示例，建议使用v2)
+     * 云打印自定义(v1版本示例，后续不维护新功能，建议使用v2)
      */
     @Test
     public void testCloudCustom() throws Exception{
@@ -253,7 +353,7 @@ public class BaseServiceTest {
     }
 
     /**
-     * 云打印附件
+     * 附件打印接口
      */
     @Test
     public void testCloudAttachment() throws Exception{
@@ -299,7 +399,7 @@ public class BaseServiceTest {
     }
 
     /**
-     * 第三方授权
+     * 第三方平台账号授权
      */
     @Test
     public void testThirdAuth() throws Exception{
@@ -322,7 +422,7 @@ public class BaseServiceTest {
     }
 
     /**
-     * 发送短信
+     * 快递100短信发送接口
      */
     @Test
     public void testSendSms() throws Exception{
@@ -342,7 +442,7 @@ public class BaseServiceTest {
     }
 
     /**
-     * C端查询运力
+     * C端查询运力(云平台接口)
      */
     @Test
     public void testCOrderQuery() throws Exception {
@@ -357,7 +457,7 @@ public class BaseServiceTest {
     }
 
     /**
-     * c端寄件
+     * c端寄件(云平台接口)
      */
     @Test
     public void testCOrder() throws Exception {
@@ -383,7 +483,7 @@ public class BaseServiceTest {
     }
 
     /**
-     * c端取消寄件
+     * c端取消寄件(云平台接口)
      */
     @Test
     public void testCOrderCancel() throws Exception {
@@ -449,102 +549,4 @@ public class BaseServiceTest {
 
     }
 
-    /**
-     * 电子面单下单接口
-     *
-     * @throws Exception
-     */
-    @Test
-    public void  testLabelOrder() throws Exception {
-
-        ManInfo recManInfo  = new ManInfo();
-        recManInfo.setName("张三");
-        recManInfo.setMobile("15999566666");
-        recManInfo.setPrintAddr("广东省深圳市南山区科技南十二路");
-
-        ManInfo sendManInfo = new ManInfo();
-        sendManInfo.setName("李四");
-        sendManInfo.setMobile("15999566666");
-        sendManInfo.setPrintAddr("北京市海淀区xxx路");
-
-        OrderReq orderReq = new OrderReq();
-        orderReq.setKuaidicom(CompanyConstant.ZJS);
-        orderReq.setCount(1);
-        orderReq.setSiid(siid);
-        orderReq.setTempId("60f6c17c7c223700131d8bc3");
-        orderReq.setSendMan(sendManInfo);
-        orderReq.setRecMan(recManInfo);
-
-        orderReq.setPrintType(PrintType.CLOUD);
-
-        String param = new Gson().toJson(orderReq);
-        String t = System.currentTimeMillis() + "";
-
-        PrintReq printReq = new PrintReq();
-        printReq.setT(t);
-        printReq.setKey(key);
-        printReq.setSign(SignUtils.printSign(param,t,key,secret));
-        printReq.setMethod(ApiInfoConstant.ORDER);
-        printReq.setParam(param);
-
-        IBaseClient baseClient = new LabelV2();
-        System.out.println(baseClient.execute(printReq));
-
-    }
-
-
-    /**
-     * 云打印复打
-     *
-     * @throws Exception
-     */
-    @Test
-    public void  testPrintOld() throws Exception {
-        RepeatPrintReq repeatPrintReq = new RepeatPrintReq();
-
-        repeatPrintReq.setTaskId("027B34AD22DE4F299643A13642B70D5F");
-
-        String param = new Gson().toJson(repeatPrintReq);
-        String t = System.currentTimeMillis() + "";
-
-        PrintReq printReq = new PrintReq();
-        printReq.setT(t);
-        printReq.setKey(key);
-        printReq.setSign(SignUtils.printSign(param,t,key,secret));
-        printReq.setMethod(ApiInfoConstant.CLOUD_PRINT_OLD_METHOD);
-        printReq.setParam(param);
-
-        IBaseClient baseClient = new LabelV2();
-        System.out.println(baseClient.execute(printReq));
-    }
-
-    /**
-     * 自定义打印
-     *
-     * @throws Exception
-     */
-    @Test
-    public void  testCustom() throws Exception {
-        CustomReq customReq = new CustomReq();
-
-        customReq.setPrintType(PrintType.IMAGE);
-        customReq.setTempId("41b9d19ee56b45b5a23d7b6ace4f9029");
-
-        Map<String,Object> customParam = new HashMap<>();
-        customParam.put("qrcode","888888888");
-        customReq.setCustomParam(customParam);
-
-        String param = new Gson().toJson(customReq);
-        String t = System.currentTimeMillis() + "";
-
-        PrintReq printReq = new PrintReq();
-        printReq.setT(t);
-        printReq.setKey(key);
-        printReq.setSign(SignUtils.printSign(param,t,key,secret));
-        printReq.setMethod(ApiInfoConstant.CUSTOM);
-        printReq.setParam(param);
-
-        IBaseClient baseClient = new LabelV2();
-        System.out.println(baseClient.execute(printReq));
-    }
 }

@@ -80,7 +80,7 @@ public class SameCityTest extends BaseServiceTest{
         printReq.setSign(SignUtils.printSign(param,t,key,secret));
         printReq.setT(t);
         printReq.setParam(param);
-        printReq.setMethod(ApiInfoConstant.SAME_CITY_ORDER_METHOD);
+        printReq.setMethod(ApiInfoConstant.ORDER);
 
         IBaseClient sameCityOrder = new SameCityOrder();
         System.out.println(sameCityOrder.execute(printReq));
@@ -128,7 +128,7 @@ public class SameCityTest extends BaseServiceTest{
         printReq.setSign(SignUtils.printSign(param,t,key,secret));
         printReq.setT(t);
         printReq.setParam(param);
-        printReq.setMethod(ApiInfoConstant.SAME_CITY_CANCEL_METHOD);
+        printReq.setMethod(ApiInfoConstant.CANCEL_METHOD);
 
         IBaseClient sameCityOrder = new SameCityOrder();
         System.out.println(sameCityOrder.execute(printReq));
