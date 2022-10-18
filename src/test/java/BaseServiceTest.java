@@ -465,10 +465,10 @@ public class BaseServiceTest {
         cOrderReq.setCom(CompanyConstant.SF);
         cOrderReq.setSendManName("张三");
         cOrderReq.setSendManMobile("15966666666");
-        cOrderReq.setSendManPrintAddr("深圳市南山区右炮台路海运大厦");
+        cOrderReq.setSendManPrintAddr("西藏日喀则市定日县珠穆朗玛峰");
         cOrderReq.setRecManName("李四");
         cOrderReq.setRecManMobile("15966666666");
-        cOrderReq.setRecManPrintAddr("广东深圳市福田区华强南");
+        cOrderReq.setRecManPrintAddr("西藏日喀则市定日县珠穆朗玛峰");
         cOrderReq.setCallBackUrl("http://www.baidu.com");
         cOrderReq.setCargo("文件");
         cOrderReq.setRemark("测试下单，待会取消");

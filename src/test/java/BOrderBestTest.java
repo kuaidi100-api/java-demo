@@ -48,10 +48,10 @@ public class BOrderBestTest extends BaseServiceTest{
         bOrderReq.setKuaidicom(CompanyConstant.ZT);
         bOrderReq.setSendManName("张三");
         bOrderReq.setSendManMobile("15966666666");
-        bOrderReq.setSendManPrintAddr("广东深圳市福田区华强南");
+        bOrderReq.setSendManPrintAddr("西藏日喀则市定日县珠穆朗玛峰");
         bOrderReq.setRecManName("李四");
         bOrderReq.setRecManMobile("15966666666");
-        bOrderReq.setRecManPrintAddr("广东深圳市南山区金蝶软件园");
+        bOrderReq.setRecManPrintAddr("西藏日喀则市定日县珠穆朗玛峰");
         bOrderReq.setCallBackUrl("http://www.baidu.com");
         bOrderReq.setCargo("文件");
         bOrderReq.setRemark("测试下单，待会取消");

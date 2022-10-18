@@ -58,10 +58,10 @@ public class SameCityTest extends BaseServiceTest{
         orderReq.setStoreId("123456");
         orderReq.setSendManName("张三");
         orderReq.setSendManMobile("15966666666");
-        orderReq.setSendManPrintAddr("广东深圳市南山区金蝶软件园");
+        orderReq.setSendManPrintAddr("西藏日喀则市定日县珠穆朗玛峰");
         orderReq.setRecManName("李四");
         orderReq.setRecManMobile("18888888888");
-        orderReq.setRecManPrintAddr("广东深圳市福田区华强南");
+        orderReq.setRecManPrintAddr("西藏日喀则市定日县珠穆朗玛峰");
         orderReq.setPrice(100);
         orderReq.setOrderSourceType("饿了么");
         orderReq.setOrderSourceType("ele11111111");
