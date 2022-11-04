@@ -209,4 +209,12 @@ public class ApiInfoConstant {
      * C端寄件查价接口方法
      */
     public static final String C_ORDER_PRICE_METHOD = "price";
+    /**
+     * 可用性请求地址
+     */
+    public static final String REACHABLE_URL = "http://api.kuaidi100.com/reachable.do";
+    /**
+     * 可用性方法
+     */
+    public static final String REACHABLE_METHOD = "reachable";
 }

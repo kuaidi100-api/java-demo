@@ -854,6 +854,39 @@ public class BaseServiceTest {
             IBaseClient bOrder = new BOrderOfficial();
             System.out.println(bOrder.execute(printReq));
         }
+
+         /**
+             * 快递可用性查询
+             *
+             * @throws Exception
+             */
+       　@Test
+         public void  testExpressReachable() throws Exception {
+     
+             PrintReq printReq = new PrintReq();
+             ExpressReachableReq expressReachableReq = new ExpressReachableReq();
+             expressReachableReq.setKuaidicom("ems");
+             expressReachableReq.setRecManName("张三");
+             expressReachableReq.setRecManMobile("12345678910");
+             expressReachableReq.setRecManPrintAddr("西藏日喀则市定日县珠穆朗玛峰");
+             expressReachableReq.setSendManName("李四");
+             expressReachableReq.setSendManMobile("12345678910");
+             expressReachableReq.setSendManPrintAddr("西藏日喀则市定日县珠穆朗玛峰");
+     
+     
+             String t = System.currentTimeMillis() + "";
+             String param = new Gson().toJson(expressReachableReq);
+     
+             printReq.setKey(key);
+             printReq.setMethod(ApiInfoConstant.REACHABLE_METHOD);
+             printReq.setT(t);
+             printReq.setSign(SignUtils.printSign(param,t,key,secret));
+             printReq.setParam(param);
+     
+             IBaseClient baseClient = new ExpressReachable();
+             System.out.println(baseClient.execute(printReq));
+     
+         }
 }
 
 ```
