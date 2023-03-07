@@ -683,6 +683,7 @@ public class BaseServiceTest {
         goods_list.add(goods);
         bsamecityOrderReq.setGoods(goods_list);
         bsamecityOrderReq.setCallbackUrl("http://baidu.com");
+        bsamecityOrderReq.setSalt("");
 
         String t = System.currentTimeMillis() + "";
         String param = new Gson().toJson(bsamecityOrderReq);

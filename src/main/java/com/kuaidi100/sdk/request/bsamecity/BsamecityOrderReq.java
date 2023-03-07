@@ -128,6 +128,9 @@ public class BsamecityOrderReq {
      * 下单结果回调地址
      */
     private String callbackUrl;
-
+    /**
+     *  签名用随机字符串，长度最多20
+     */
+    private String salt;
 
 }
