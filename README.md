@@ -887,6 +887,199 @@ public class BaseServiceTest {
              System.out.println(baseClient.execute(printReq));
      
          }
+
+    /**
+     * 同城寄件-预下单
+     *
+     * @throws Exception
+     */
+    @Test
+    public void  testBsamecityPrice() throws Exception {
+
+        PrintReq printReq = new PrintReq();
+        BsamecityOrderReq bsamecityOrderReq = new BsamecityOrderReq();
+        bsamecityOrderReq.setKuaidicom("shunfengtongcheng");
+        bsamecityOrderReq.setLbsType(2);
+        bsamecityOrderReq.setRecManName("张三");
+        bsamecityOrderReq.setRecManMobile("13012345678");
+        bsamecityOrderReq.setRecManProvince("北京市");
+        bsamecityOrderReq.setRecManCity("北京市");
+        bsamecityOrderReq.setRecManDistrict("海淀区");
+        bsamecityOrderReq.setRecManAddr("学清嘉创大厦A座15层");
+        bsamecityOrderReq.setRecManLat("40.014838");
+        bsamecityOrderReq.setRecManLng("116.352569");
+        bsamecityOrderReq.setSendManName("李四");
+        bsamecityOrderReq.setSendManMobile("13012345679");
+        bsamecityOrderReq.setSendManProvince("北京市");
+        bsamecityOrderReq.setSendManCity("北京市");
+        bsamecityOrderReq.setSendManDistrict("海淀区");
+        bsamecityOrderReq.setSendManAddr("清华大学");
+        bsamecityOrderReq.setSendManLat("40.002436");
+        bsamecityOrderReq.setSendManLng("116.326582");
+        bsamecityOrderReq.setWeight("1");
+        bsamecityOrderReq.setRemark("测试下单");
+        bsamecityOrderReq.setVolume("");
+        bsamecityOrderReq.setOrderType(0);
+        bsamecityOrderReq.setExpectPickupTime("");
+        bsamecityOrderReq.setExpectFinishTime("");
+        bsamecityOrderReq.setInsurance("");
+        bsamecityOrderReq.setPrice("0");
+        Goods goods = new Goods("外卖", "食品", 1);
+        ArrayList<Goods> goods_list = new ArrayList<Goods>();
+        goods_list.add(goods);
+        bsamecityOrderReq.setGoods(goods_list);
+
+        String t = System.currentTimeMillis() + "";
+        String param = new Gson().toJson(bsamecityOrderReq);
+
+        printReq.setKey(key);
+        printReq.setMethod(ApiInfoConstant.BSAMECITY_PRICE);
+        printReq.setT(t);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setParam(param);
+
+        IBaseClient bsamecityPrice = new BsameCityExpress();
+        System.out.println(bsamecityPrice.execute(printReq));
+    }
+
+    /**
+     * 同城寄件-下单
+     *
+     * @throws Exception
+     */
+    @Test
+    public void  testBsamecityOrder() throws Exception {
+
+        PrintReq printReq = new PrintReq();
+        BsamecityOrderReq bsamecityOrderReq = new BsamecityOrderReq();
+        bsamecityOrderReq.setKuaidicom("shunfengtongcheng");
+        bsamecityOrderReq.setLbsType(2);
+        bsamecityOrderReq.setRecManName("张三");
+        bsamecityOrderReq.setRecManMobile("13012345678");
+        bsamecityOrderReq.setRecManProvince("北京市");
+        bsamecityOrderReq.setRecManCity("北京市");
+        bsamecityOrderReq.setRecManDistrict("海淀区");
+        bsamecityOrderReq.setRecManAddr("学清嘉创大厦A座15层");
+        bsamecityOrderReq.setRecManLat("40.014838");
+        bsamecityOrderReq.setRecManLng("116.352569");
+        bsamecityOrderReq.setSendManName("李四");
+        bsamecityOrderReq.setSendManMobile("13012345679");
+        bsamecityOrderReq.setSendManProvince("北京市");
+        bsamecityOrderReq.setSendManCity("北京市");
+        bsamecityOrderReq.setSendManDistrict("海淀区");
+        bsamecityOrderReq.setSendManAddr("清华大学");
+        bsamecityOrderReq.setSendManLat("40.002436");
+        bsamecityOrderReq.setSendManLng("116.326582");
+        bsamecityOrderReq.setWeight("1");
+        bsamecityOrderReq.setRemark("测试下单");
+        bsamecityOrderReq.setVolume("");
+        bsamecityOrderReq.setOrderType(0);
+        bsamecityOrderReq.setExpectPickupTime("");
+        bsamecityOrderReq.setExpectFinishTime("");
+        bsamecityOrderReq.setInsurance("");
+        bsamecityOrderReq.setPrice("0");
+        Goods goods = new Goods("外卖", "食品", 1);
+        ArrayList<Goods> goods_list = new ArrayList<Goods>();
+        goods_list.add(goods);
+        bsamecityOrderReq.setGoods(goods_list);
+        bsamecityOrderReq.setCallbackUrl("http://baidu.com");
+
+        String t = System.currentTimeMillis() + "";
+        String param = new Gson().toJson(bsamecityOrderReq);
+
+        printReq.setKey(key);
+        printReq.setMethod(ApiInfoConstant.BSAMECITY_ORDER);
+        printReq.setT(t);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setParam(param);
+
+        IBaseClient bsamecityPrice = new BsameCityExpress();
+        System.out.println(bsamecityPrice.execute(printReq));
+    }
+
+    /**
+     * 同城寄件-预取消
+     *
+     * @throws Exception
+     */
+    @Test
+    public void  testBsamecityPrecancel() throws Exception {
+
+        PrintReq printReq = new PrintReq();
+        BsamecityCancelReq bsamecityCancelReq = new BsamecityCancelReq();
+        bsamecityCancelReq.setOrderId("100094");
+        bsamecityCancelReq.setCancelMsgType(1);
+        bsamecityCancelReq.setCancelMsg("测试寄件");
+        bsamecityCancelReq.setTaskId("3B8E825DCCEE4F28B4A93685DA62F7F2");
+
+        String t = System.currentTimeMillis() + "";
+        String param = new Gson().toJson(bsamecityCancelReq);
+
+        printReq.setKey(key);
+        printReq.setMethod(ApiInfoConstant.BSAMECITY_PRECANCEL);
+        printReq.setT(t);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setParam(param);
+
+        IBaseClient bsamecityPrice = new BsameCityExpress();
+        System.out.println(bsamecityPrice.execute(printReq));
+    }
+
+    /**
+     * 同城寄件-取消
+     *
+     * @throws Exception
+     */
+    @Test
+    public void  testBsamecityCancel() throws Exception {
+
+        PrintReq printReq = new PrintReq();
+        BsamecityCancelReq bsamecityCancelReq = new BsamecityCancelReq();
+        bsamecityCancelReq.setOrderId("100239");
+        bsamecityCancelReq.setCancelMsgType(1);
+        bsamecityCancelReq.setCancelMsg("测试寄件");
+        bsamecityCancelReq.setTaskId("BEA8285B6A014A1A94707CE3CF484D0A");
+
+        String t = System.currentTimeMillis() + "";
+        String param = new Gson().toJson(bsamecityCancelReq);
+
+        printReq.setKey(key);
+        printReq.setMethod(ApiInfoConstant.BSAMECITY_CANCEL);
+        printReq.setT(t);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setParam(param);
+
+        IBaseClient bsamecityPrice = new BsameCityExpress();
+        System.out.println(bsamecityPrice.execute(printReq));
+    }
+
+    /**
+     * 同城寄件-加小费
+     *
+     * @throws Exception
+     */
+    @Test
+    public void  testBsamecityAddfee() throws Exception {
+
+        PrintReq printReq = new PrintReq();
+        BsamecityAddfeeReq bsamecityAddfeeReq = new BsamecityAddfeeReq();
+        bsamecityAddfeeReq.setOrderId("100240");
+        bsamecityAddfeeReq.setRemark("加钱");
+        bsamecityAddfeeReq.setTaskId("1F495CE0E58B40A296694116CFBCE347");
+        bsamecityAddfeeReq.setTips("10");
+
+        String t = System.currentTimeMillis() + "";
+        String param = new Gson().toJson(bsamecityAddfeeReq);
+
+        printReq.setKey(key);
+        printReq.setMethod(ApiInfoConstant.BSAMECITY_ADDFEE);
+        printReq.setT(t);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setParam(param);
+
+        IBaseClient bsamecityPrice = new BsameCityExpress();
+        System.out.println(bsamecityPrice.execute(printReq));
+    }
 }
 
 ```

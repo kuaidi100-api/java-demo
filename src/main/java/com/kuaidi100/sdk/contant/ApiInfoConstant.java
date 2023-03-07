@@ -217,4 +217,29 @@ public class ApiInfoConstant {
      * 可用性方法
      */
     public static final String REACHABLE_METHOD = "reachable";
+
+    /**
+     * 同城寄件请求地址
+     */
+    public static final String BSAMECITY_URL = "https://api.kuaidi100.com/bsamecity/order";
+    /**
+     * 同城寄件-预下单方法
+     */
+    public static final String BSAMECITY_PRICE = "price";
+    /**
+     * 同城寄件-下单方法
+     */
+    public static final String BSAMECITY_ORDER = "order";
+    /**
+     * 同城寄件-预取消方法
+     */
+    public static final String BSAMECITY_PRECANCEL = "precancel";
+    /**
+     * 同城寄件-取消方法
+     */
+    public static final String BSAMECITY_CANCEL = "cancel";
+    /**
+     * 同城寄件-加小费方法
+     */
+    public static final String BSAMECITY_ADDFEE = "addfee";
 }
