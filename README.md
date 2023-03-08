@@ -901,7 +901,7 @@ public class BaseServiceTest {
         bsamecityOrderReq.setKuaidicom("shunfengtongcheng");
         bsamecityOrderReq.setLbsType(2);
         bsamecityOrderReq.setRecManName("张三");
-        bsamecityOrderReq.setRecManMobile("13012345678");
+        bsamecityOrderReq.setRecManMobile("12345678910");
         bsamecityOrderReq.setRecManProvince("北京市");
         bsamecityOrderReq.setRecManCity("北京市");
         bsamecityOrderReq.setRecManDistrict("海淀区");
@@ -909,7 +909,7 @@ public class BaseServiceTest {
         bsamecityOrderReq.setRecManLat("40.014838");
         bsamecityOrderReq.setRecManLng("116.352569");
         bsamecityOrderReq.setSendManName("李四");
-        bsamecityOrderReq.setSendManMobile("13012345679");
+        bsamecityOrderReq.setSendManMobile("12345678910");
         bsamecityOrderReq.setSendManProvince("北京市");
         bsamecityOrderReq.setSendManCity("北京市");
         bsamecityOrderReq.setSendManDistrict("海淀区");
@@ -955,7 +955,7 @@ public class BaseServiceTest {
         bsamecityOrderReq.setKuaidicom("shunfengtongcheng");
         bsamecityOrderReq.setLbsType(2);
         bsamecityOrderReq.setRecManName("张三");
-        bsamecityOrderReq.setRecManMobile("13012345678");
+        bsamecityOrderReq.setRecManMobile("12345678910");
         bsamecityOrderReq.setRecManProvince("北京市");
         bsamecityOrderReq.setRecManCity("北京市");
         bsamecityOrderReq.setRecManDistrict("海淀区");
@@ -963,7 +963,7 @@ public class BaseServiceTest {
         bsamecityOrderReq.setRecManLat("40.014838");
         bsamecityOrderReq.setRecManLng("116.352569");
         bsamecityOrderReq.setSendManName("李四");
-        bsamecityOrderReq.setSendManMobile("13012345679");
+        bsamecityOrderReq.setSendManMobile("12345678910");
         bsamecityOrderReq.setSendManProvince("北京市");
         bsamecityOrderReq.setSendManCity("北京市");
         bsamecityOrderReq.setSendManDistrict("海淀区");
@@ -983,6 +983,7 @@ public class BaseServiceTest {
         goods_list.add(goods);
         bsamecityOrderReq.setGoods(goods_list);
         bsamecityOrderReq.setCallbackUrl("http://baidu.com");
+        bsamecityOrderReq.setSalt("");
 
         String t = System.currentTimeMillis() + "";
         String param = new Gson().toJson(bsamecityOrderReq);
