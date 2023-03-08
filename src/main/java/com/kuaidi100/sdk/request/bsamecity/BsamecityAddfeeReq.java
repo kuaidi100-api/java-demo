@@ -11,12 +11,12 @@ import lombok.Data;
 @Data
 public class BsamecityAddfeeReq {
     /**
-     * 下单时返回的taskId
+     * 下单时返回的orderId
      */
     private String orderId;
 
     /**
-     * 下单时返回的orderId
+     * 下单时返回的taskId
      */
     private String taskId;
 
