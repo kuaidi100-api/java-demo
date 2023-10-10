@@ -1,4 +1,5 @@
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kuaidi100.sdk.api.*;
 import com.kuaidi100.sdk.cloud.CloudBase;
 import com.kuaidi100.sdk.contant.ApiInfoConstant;
@@ -16,11 +17,16 @@ import com.kuaidi100.sdk.request.cloud.COrderCancelReq;
 import com.kuaidi100.sdk.request.cloud.COrderQueryReq;
 import com.kuaidi100.sdk.request.cloud.COrderReq;
 import com.kuaidi100.sdk.request.labelV2.CustomReq;
+import com.kuaidi100.sdk.request.labelV2.DeliveryTimeReq;
 import com.kuaidi100.sdk.request.labelV2.OrderReq;
 import com.kuaidi100.sdk.request.labelV2.RepeatPrintReq;
 import com.kuaidi100.sdk.response.QueryTrackMapResp;
+import com.kuaidi100.sdk.response.labelV2.DeliveryTimeResp;
+import com.kuaidi100.sdk.response.labelV2.Result;
 import com.kuaidi100.sdk.utils.PropertiesReader;
 import com.kuaidi100.sdk.utils.SignUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpStatus;
 import org.junit.Test;
 
 import java.io.File;
@@ -223,6 +229,39 @@ public class BaseServiceTest {
 
         IBaseClient baseClient = new LabelV2();
         System.out.println(baseClient.execute(printReq));
+    }
+
+
+    /**
+     * 快递预估时效
+     *
+     * @throws Exception
+     */
+    @Test
+    public void  testDeliveryTime() throws Exception {
+        DeliveryTimeReq deliveryTimeReq = new DeliveryTimeReq();
+        deliveryTimeReq.setKuaidicom("jd");
+        deliveryTimeReq.setFrom("广东省广州市白云区");
+        deliveryTimeReq.setTo("广东省深圳市南山区");
+        deliveryTimeReq.setOrderTime("2023-10-11 10:00:00");
+        deliveryTimeReq.setExpType("特惠送");
+
+
+        String param = new Gson().toJson(deliveryTimeReq);
+        String t = System.currentTimeMillis() + "";
+
+        PrintReq printReq = new PrintReq();
+        printReq.setT(t);
+        printReq.setKey(key);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setMethod(ApiInfoConstant.TIME);
+        printReq.setParam(param);
+
+        IBaseClient baseClient = new LabelV2();
+        HttpResult httpResult = baseClient.execute(printReq);
+        if (httpResult.getStatus() == HttpStatus.SC_OK && StringUtils.isNotBlank(httpResult.getBody())){
+            System.out.println(new Gson().fromJson(httpResult.getBody(),new TypeToken<Result<DeliveryTimeResp>>(){}.getType()));
+        }
     }
 
     /**

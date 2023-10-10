@@ -194,6 +194,10 @@ public class ApiInfoConstant {
      */
     public static final String CUSTOM = "custom";
     /**
+     * 快递预估时效
+     */
+    public static final String TIME = "time";
+    /**
      * 详情
      */
     public static final String DETAIL = "detail";

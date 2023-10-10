@@ -9,6 +9,7 @@ import com.kuaidi100.sdk.request.BaseRequest;
 import com.kuaidi100.sdk.request.PrintReq;
 import com.kuaidi100.sdk.response.labelV2.OrderResult;
 import com.kuaidi100.sdk.response.labelV2.Result;
+import com.kuaidi100.sdk.response.labelV2.DeliveryTimeResp;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 
@@ -70,6 +71,23 @@ public class LabelV2 extends BaseClient {
 
         if (httpResult.getStatus() == HttpStatus.SC_OK && StringUtils.isNotBlank(httpResult.getBody())){
             return new Gson().fromJson(httpResult.getBody(),new TypeToken<Result<OrderResult>>(){}.getType());
+        }
+        return null;
+    }
+
+
+    /**
+     * 快递预估时效查询
+     * @param printReq
+     * @return
+     * @throws Exception
+     */
+    public Result<DeliveryTimeResp> deliveryTime(PrintReq printReq) throws Exception{
+        printReq.setMethod(ApiInfoConstant.TIME);
+        HttpResult httpResult = execute(printReq);
+
+        if (httpResult.getStatus() == HttpStatus.SC_OK && StringUtils.isNotBlank(httpResult.getBody())){
+            return new Gson().fromJson(httpResult.getBody(),new TypeToken<Result<DeliveryTimeResp>>(){}.getType());
         }
         return null;
     }
