@@ -259,9 +259,7 @@ public class BaseServiceTest {
 
         IBaseClient baseClient = new LabelV2();
         HttpResult httpResult = baseClient.execute(printReq);
-        if (httpResult.getStatus() == HttpStatus.SC_OK && StringUtils.isNotBlank(httpResult.getBody())){
-            System.out.println(new Gson().fromJson(httpResult.getBody(),new TypeToken<Result<DeliveryTimeResp>>(){}.getType()));
-        }
+        System.out.println(baseClient.execute(printReq));
     }
 
     /**
