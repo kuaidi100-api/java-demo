@@ -231,6 +231,32 @@ public class BaseServiceTest {
         System.out.println(baseClient.execute(printReq));
     }
 
+    /**
+     * 电子面单取消
+     * @throws Exception
+     */
+    public void testLabelCancel() throws Exception{
+        LabelCancelParam labelCancelParam = new LabelCancelParam();
+        labelCancelParam.setPartnerId("test");
+        labelCancelParam.setKuaidicom(CompanyConstant.SF);
+        labelCancelParam.setKuaidinum("SF1342567604302");
+        //快递公司订单号(对应下单时返回的kdComOrderNum，如果没有可以不传，否则必传)
+        labelCancelParam.setOrderId("01639366271685GNkZEX");
+
+        labelCancelParam.setReason("暂时不寄了");
+        String param = new Gson().toJson(labelCancelParam);
+        String t = System.currentTimeMillis() + "";
+
+        PrintReq printReq = new PrintReq();
+        printReq.setT(t);
+        printReq.setKey(key);
+        printReq.setMethod(ApiInfoConstant.CANCEL_METHOD);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setParam(param);
+
+        IBaseClient baseClient = new LabelCancel();
+        System.out.println(baseClient.execute(printReq));
+    }
 
     /**
      * 快递预估时效
