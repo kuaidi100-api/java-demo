@@ -262,6 +262,63 @@ public class BaseServiceTest {
             IBaseClient baseClient = new LabelV2();
             System.out.println(baseClient.execute(printReq));
         }
+
+    /**
+     * 电子面单取消
+     * @throws Exception
+     */
+    public void testLabelCancel() throws Exception{
+        LabelCancelParam labelCancelParam = new LabelCancelParam();
+        labelCancelParam.setPartnerId("test");
+        labelCancelParam.setKuaidicom(CompanyConstant.SF);
+        labelCancelParam.setKuaidinum("SF1342567604302");
+        //快递公司订单号(对应下单时返回的kdComOrderNum，如果没有可以不传，否则必传)
+        labelCancelParam.setOrderId("01639366271685GNkZEX");
+
+        labelCancelParam.setReason("暂时不寄了");
+        String param = new Gson().toJson(labelCancelParam);
+        String t = System.currentTimeMillis() + "";
+
+        PrintReq printReq = new PrintReq();
+        printReq.setT(t);
+        printReq.setKey(key);
+        printReq.setMethod(ApiInfoConstant.CANCEL_METHOD);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setParam(param);
+
+        IBaseClient baseClient = new LabelCancel();
+        System.out.println(baseClient.execute(printReq));
+    }
+
+    /**
+     * 快递预估时效
+     *
+     * @throws Exception
+     */
+    @Test
+    public void  testDeliveryTime() throws Exception {
+        DeliveryTimeReq deliveryTimeReq = new DeliveryTimeReq();
+        deliveryTimeReq.setKuaidicom("jd");
+        deliveryTimeReq.setFrom("广东省广州市白云区");
+        deliveryTimeReq.setTo("广东省深圳市南山区");
+        deliveryTimeReq.setOrderTime("2023-10-11 10:00:00");
+        deliveryTimeReq.setExpType("特惠送");
+
+
+        String param = new Gson().toJson(deliveryTimeReq);
+        String t = System.currentTimeMillis() + "";
+
+        PrintReq printReq = new PrintReq();
+        printReq.setT(t);
+        printReq.setKey(key);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setMethod(ApiInfoConstant.TIME);
+        printReq.setParam(param);
+
+        IBaseClient baseClient = new LabelV2();
+        HttpResult httpResult = baseClient.execute(printReq);
+        System.out.println(baseClient.execute(printReq));
+    }
     
         /**
          * 电子面单图片接口(v1版本示例，后续不维护新功能，建议使用v2)
