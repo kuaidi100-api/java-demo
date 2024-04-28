@@ -7,6 +7,7 @@ import com.kuaidi100.sdk.core.BaseClient;
 import com.kuaidi100.sdk.pojo.HttpResult;
 import com.kuaidi100.sdk.request.BaseRequest;
 import com.kuaidi100.sdk.request.PrintReq;
+import com.kuaidi100.sdk.response.backorder.BackOrderResp;
 import com.kuaidi100.sdk.response.labelV2.OrderResult;
 import com.kuaidi100.sdk.response.labelV2.Result;
 import com.kuaidi100.sdk.response.labelV2.DeliveryTimeResp;
@@ -84,6 +85,23 @@ public class LabelV2 extends BaseClient {
      */
     public Result<DeliveryTimeResp> deliveryTime(PrintReq printReq) throws Exception{
         printReq.setMethod(ApiInfoConstant.TIME);
+        HttpResult httpResult = execute(printReq);
+
+        if (httpResult.getStatus() == HttpStatus.SC_OK && StringUtils.isNotBlank(httpResult.getBody())){
+            return new Gson().fromJson(httpResult.getBody(),new TypeToken<Result<DeliveryTimeResp>>(){}.getType());
+        }
+        return null;
+    }
+
+
+    /**
+     * 运单附件查询
+     * @param printReq
+     * @return
+     * @throws Exception
+     */
+    public Result<BackOrderResp> backOrder(PrintReq printReq) throws Exception{
+        printReq.setMethod(ApiInfoConstant.BACKORDER);
         HttpResult httpResult = execute(printReq);
 
         if (httpResult.getStatus() == HttpStatus.SC_OK && StringUtils.isNotBlank(httpResult.getBody())){

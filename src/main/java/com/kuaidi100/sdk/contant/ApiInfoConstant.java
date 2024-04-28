@@ -202,6 +202,10 @@ public class ApiInfoConstant {
      */
     public static final String DETAIL = "detail";
     /**
+     * 运单附件查询
+     */
+    public static final String BACKORDER = "backOrder";
+    /**
      * C端寄件下单接口请求地址
      */
     public static final String C_ORDER_URL = "https://order.kuaidi100.com/order/corderapi.do";
