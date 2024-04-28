@@ -206,6 +206,34 @@ public class BaseServiceTest {
             System.out.println(baseClient.execute(printReq));
     
         }
+        
+
+        /**
+         * 运单附件查询接口
+         *
+         * @throws Exception
+         */
+        @Test
+        public void  testBackOrder() throws Exception {
+            BackOrderReq backOrderReq = new BackOrderReq();
+            backOrderReq.setPartnerId("12345678910");
+            backOrderReq.setPartnerKey("12345678910");
+            backOrderReq.setKuaidicom(CompanyConstant.SF);
+            backOrderReq.setKuaidinum("SF1234567");
+            backOrderReq.setPhone("13088888888");
+            String param = new Gson().toJson(backOrderReq);
+            String t = System.currentTimeMillis() + "";
+            PrintReq printReq = new PrintReq();
+            printReq.setT(t);
+            printReq.setKey(key);
+            printReq.setSign(SignUtils.printSign(param,t,key,secret));
+            printReq.setMethod(ApiInfoConstant.BACKORDER);
+            printReq.setParam(param);
+    
+            IBaseClient baseClient = new LabelV2();
+            System.out.println(baseClient.execute(printReq));
+    
+        }
     
     
         /**
