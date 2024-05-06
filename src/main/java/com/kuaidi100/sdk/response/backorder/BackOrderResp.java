@@ -21,7 +21,6 @@ public class BackOrderResp {
      * 任务id
      */
     private String taskId;
-
     /**
      * 运单附件列表
      */
