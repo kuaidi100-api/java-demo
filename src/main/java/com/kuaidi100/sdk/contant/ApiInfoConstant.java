@@ -206,6 +206,10 @@ public class ApiInfoConstant {
      */
     public static final String BACKORDER = "backOrder";
     /**
+     * 订单拦截
+     */
+    public static final String INTERCEPTORDER = "interceptOrder";
+    /**
      * C端寄件下单接口请求地址
      */
     public static final String C_ORDER_URL = "https://order.kuaidi100.com/order/corderapi.do";

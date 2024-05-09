@@ -1,4 +1,4 @@
-package com.kuaidi100.sdk.request;
+package com.kuaidi100.sdk.request.labelV2;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

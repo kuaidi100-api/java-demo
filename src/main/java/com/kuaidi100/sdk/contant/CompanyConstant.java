@@ -19,5 +19,6 @@ public class CompanyConstant {
 
 
     public static final String SS = "shansong";
+    public static final String JT = "jtexpress";
     public static final String KFW = "kfw";
 }

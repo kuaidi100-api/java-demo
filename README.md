@@ -234,7 +234,46 @@ public class BaseServiceTest {
             System.out.println(baseClient.execute(printReq));
     
         }
-    
+
+
+    /**
+     * 订单拦截接口
+     *
+     * @throws Exception
+     */
+    @Test
+    public void  testInterceptOrder() throws Exception {
+        InterceptOrderReq interceptOrderReq = new InterceptOrderReq();
+        interceptOrderReq.setOrderId("123456789");
+        interceptOrderReq.setKuaidicom(CompanyConstant.JT);
+        interceptOrderReq.setKuaidinum("JT12345678");
+        interceptOrderReq.setPartnerId("12345678");
+        interceptOrderReq.setPartnerKey("12345678");
+        interceptOrderReq.setReason("测试拦截");
+        interceptOrderReq.setInterceptType("MODIFY_ADDR");
+        ManInfo recManInfo = new ManInfo();
+        recManInfo.setName("张三");
+        recManInfo.setMobile("130******66");
+        recManInfo.setPrintAddr("广东省深圳市南山区粤海街道科技南十二路金蝶软件园");
+        interceptOrderReq.setRecManInfo(recManInfo);
+        interceptOrderReq.setOrderRole("1");
+        interceptOrderReq.setInterceptPayType("THIRDPARTY");
+        interceptOrderReq.setSalt("kuaidi1000api@salt");
+        interceptOrderReq.setCallbackUrl("http://api.kuaidi100.com/test/callback");
+        String param = new Gson().toJson(interceptOrderReq);
+        String t = System.currentTimeMillis() + "";
+        PrintReq printReq = new PrintReq();
+        printReq.setT(t);
+        printReq.setKey(key);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setMethod(ApiInfoConstant.INTERCEPTORDER);
+        printReq.setParam(param);
+
+        IBaseClient baseClient = new LabelV2();
+        System.out.println(baseClient.execute(printReq));
+
+    }
+        
     
         /**
          * 云打印复打(V2)

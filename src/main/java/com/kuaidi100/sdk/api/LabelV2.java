@@ -109,4 +109,20 @@ public class LabelV2 extends BaseClient {
         }
         return null;
     }
+
+    /**
+     * 订单拦截
+     * @param printReq
+     * @return
+     * @throws Exception
+     */
+    public Result<BackOrderResp> interceptOrder(PrintReq printReq) throws Exception{
+        printReq.setMethod(ApiInfoConstant.INTERCEPTORDER);
+        HttpResult httpResult = execute(printReq);
+
+        if (httpResult.getStatus() == HttpStatus.SC_OK && StringUtils.isNotBlank(httpResult.getBody())){
+            return new Gson().fromJson(httpResult.getBody(),new TypeToken<Result<DeliveryTimeResp>>(){}.getType());
+        }
+        return null;
+    }
 }
