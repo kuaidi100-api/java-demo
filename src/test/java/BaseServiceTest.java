@@ -8,6 +8,7 @@ import com.kuaidi100.sdk.contant.PrintType;
 import com.kuaidi100.sdk.core.IBaseClient;
 import com.kuaidi100.sdk.pojo.HttpResult;
 import com.kuaidi100.sdk.request.*;
+import com.kuaidi100.sdk.request.addressResolution.AddressResolutionParam;
 import com.kuaidi100.sdk.request.bsamecity.BsamecityAddfeeReq;
 import com.kuaidi100.sdk.request.bsamecity.BsamecityCancelReq;
 import com.kuaidi100.sdk.request.bsamecity.BsamecityOrderReq;
@@ -238,6 +239,26 @@ public class BaseServiceTest {
 
     }
 
+    /**
+     * 地址解析接口
+     *
+     * @throws Exception
+     */
+    @Test
+    public void  testAddressResolution() throws Exception {
+        AddressResolutionParam addressResolutionParam = new AddressResolutionParam();
+        addressResolutionParam.setContent("张三广东省深圳市南山区粤海街道科技南十二路金蝶软件园13088888888");
+        String param = new Gson().toJson(addressResolutionParam);
+        String t = System.currentTimeMillis() + "";
+        AddressResolutionReq addressResolutionReq = new AddressResolutionReq();
+        addressResolutionReq.setT(t);
+        addressResolutionReq.setKey(key);
+        addressResolutionReq.setSign(SignUtils.printSign(param,t,key,secret));
+        addressResolutionReq.setParam(param);
+        IBaseClient baseClient = new AddressResolution();
+        System.out.println(baseClient.execute(addressResolutionReq));
+    }
+
 
     /**
      * 云打印复打(V2)
@@ -347,7 +368,6 @@ public class BaseServiceTest {
         printReq.setParam(param);
 
         IBaseClient baseClient = new LabelV2();
-        HttpResult httpResult = baseClient.execute(printReq);
         System.out.println(baseClient.execute(printReq));
     }
 

@@ -4,7 +4,7 @@ import lombok.Data;
 
 /**
  * @description : 同城寄件-加小费请求类
- * @author: guangrui_hu
+ * @author: api.kuaidi100.com
  * @date: 2023/3/7
  * @version:
  */

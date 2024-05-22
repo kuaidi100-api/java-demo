@@ -186,6 +186,11 @@ public class ApiInfoConstant {
      */
     public static final String NEW_TEMPLATE_URL = "https://api.kuaidi100.com/label/order";
     /**
+     * 地址解析请求地址
+     */
+    public static final String ADDRESS_RESOLUTION_URL = "https://api.kuaidi100.com/address/resolution";
+
+    /**
      * 下单
      */
     public static final String ORDER = "order";

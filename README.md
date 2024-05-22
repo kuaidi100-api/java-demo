@@ -273,6 +273,26 @@ public class BaseServiceTest {
         System.out.println(baseClient.execute(printReq));
 
     }
+    
+     /**
+     * 地址解析接口
+     *
+     * @throws Exception
+     */
+    @Test
+    public void  testAddressResolution() throws Exception {
+        AddressResolutionParam addressResolutionParam = new AddressResolutionParam();
+        addressResolutionParam.setContent("张三广东省深圳市南山区粤海街道科技南十二路金蝶软件园13088888888");
+        String param = new Gson().toJson(addressResolutionParam);
+        String t = System.currentTimeMillis() + "";
+        AddressResolutionReq addressResolutionReq = new AddressResolutionReq();
+        addressResolutionReq.setT(t);
+        addressResolutionReq.setKey(key);
+        addressResolutionReq.setSign(SignUtils.printSign(param,t,key,secret));
+        addressResolutionReq.setParam(param);
+        IBaseClient baseClient = new AddressResolution();
+        System.out.println(baseClient.execute(addressResolutionReq));
+    }
         
     
         /**
