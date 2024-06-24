@@ -16,4 +16,24 @@ public class AddressResolutionParam {
      */
     private String content;
 
+    /**
+     * 图片base64编码
+     */
+    private String image;
+
+    /**
+     * 图片URL
+     */
+    private String imageUrl;
+
+    /**
+     * pdf URL
+     */
+    private String pdfUrl;
+
+    /**
+     * html链接
+     */
+    private String htmlUrl;
+
 }

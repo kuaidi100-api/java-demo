@@ -247,7 +247,13 @@ public class BaseServiceTest {
     @Test
     public void  testAddressResolution() throws Exception {
         AddressResolutionParam addressResolutionParam = new AddressResolutionParam();
+        //content 、image、imageUrl、pdfUrl、htmlUrl必填其一，优先顺序：content >image>imageUrl>padUrl>htmlUrl
         addressResolutionParam.setContent("张三广东省深圳市南山区粤海街道科技南十二路金蝶软件园13088888888");
+        //image传base64编码
+        // addressResolutionParam.setImage("");
+        // addressResolutionParam.setImageUrl("http://api.kuaidi100.com/label/getImage/20240621/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+        // addressResolutionParam.setPdfUrl("http://api.kuaidi100.com/label/xxx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+        // addressResolutionParam.setHtmlUrl("http://api.kuaidi100.com/label/xxx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
         String param = new Gson().toJson(addressResolutionParam);
         String t = System.currentTimeMillis() + "";
         AddressResolutionReq addressResolutionReq = new AddressResolutionReq();
