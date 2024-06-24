@@ -16,6 +16,7 @@ import com.kuaidi100.sdk.request.bsamecity.Goods;
 import com.kuaidi100.sdk.request.cloud.COrderCancelReq;
 import com.kuaidi100.sdk.request.cloud.COrderQueryReq;
 import com.kuaidi100.sdk.request.cloud.COrderReq;
+import com.kuaidi100.sdk.request.intAddressResolution.IntAddressResolutionParam;
 import com.kuaidi100.sdk.request.labelV2.BackOrderReq;
 import com.kuaidi100.sdk.request.labelV2.CustomReq;
 import com.kuaidi100.sdk.request.labelV2.DeliveryTimeReq;
@@ -247,9 +248,9 @@ public class BaseServiceTest {
     @Test
     public void  testAddressResolution() throws Exception {
         AddressResolutionParam addressResolutionParam = new AddressResolutionParam();
-        //content 、image、imageUrl、pdfUrl、htmlUrl必填其一，优先顺序：content >image>imageUrl>padUrl>htmlUrl
+        // content 、image、imageUrl、pdfUrl、htmlUrl必填其一，优先顺序：content >image>imageUrl>padUrl>htmlUrl
         addressResolutionParam.setContent("张三广东省深圳市南山区粤海街道科技南十二路金蝶软件园13088888888");
-        //image传base64编码
+        // image传base64编码
         // addressResolutionParam.setImage("");
         // addressResolutionParam.setImageUrl("http://api.kuaidi100.com/label/getImage/20240621/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
         // addressResolutionParam.setPdfUrl("http://api.kuaidi100.com/label/xxx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
@@ -263,6 +264,27 @@ public class BaseServiceTest {
         addressResolutionReq.setParam(param);
         IBaseClient baseClient = new AddressResolution();
         System.out.println(baseClient.execute(addressResolutionReq));
+    }
+
+    /**
+     * 国际地址解析接口
+     *
+     * @throws Exception
+     */
+    @Test
+    public void  testIntAddressResolution() throws Exception {
+        IntAddressResolutionParam intAddressResolutionParam = new IntAddressResolutionParam();
+        intAddressResolutionParam.setCountry("United States");
+        intAddressResolutionParam.setAddress("84 Alford Rd, Great Barrington, MA 01230, USA");
+        String param = new Gson().toJson(intAddressResolutionParam);
+        String t = System.currentTimeMillis() + "";
+        AddressResolutionReq req = new AddressResolutionReq();
+        req.setT(t);
+        req.setKey(key);
+        req.setSign(SignUtils.printSign(param,t,key,secret));
+        req.setParam(param);
+        IBaseClient baseClient = new IntAddressResolution();
+        System.out.println(baseClient.execute(req));
     }
 
 

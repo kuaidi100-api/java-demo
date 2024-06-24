@@ -189,6 +189,10 @@ public class ApiInfoConstant {
      * 地址解析请求地址
      */
     public static final String ADDRESS_RESOLUTION_URL = "https://api.kuaidi100.com/address/resolution";
+    /**
+     * 国际地址解析请求地址
+     */
+    public static final String INTADDRESS_RESOLUTION_URL = "https://api.kuaidi100.com/internationalAddress/resolution";
 
     /**
      * 下单

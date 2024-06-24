@@ -28,7 +28,7 @@ java-demo使用和测试可参考[java-demo-test](https://github.com/kuaidi100-a
 
 ```css
 dependencies {
-	implementation 'com.github.kuaidi100-api:sdk:1.0.13'
+	implementation 'com.github.kuaidi100-api:sdk:1.0.14'
 }
 ```
 
@@ -38,7 +38,7 @@ dependencies {
 	<dependency>
             <groupId>com.github.kuaidi100-api</groupId>
             <artifactId>sdk</artifactId>
-            <version>1.0.13</version>
+            <version>1.0.14</version>
         </dependency>
 ```
 
@@ -273,8 +273,8 @@ public class BaseServiceTest {
         System.out.println(baseClient.execute(printReq));
 
     }
-    
-     /**
+
+    /**
      * 地址解析接口
      *
      * @throws Exception
@@ -282,7 +282,13 @@ public class BaseServiceTest {
     @Test
     public void  testAddressResolution() throws Exception {
         AddressResolutionParam addressResolutionParam = new AddressResolutionParam();
+        //content 、image、imageUrl、pdfUrl、htmlUrl必填其一，优先顺序：content >image>imageUrl>padUrl>htmlUrl
         addressResolutionParam.setContent("张三广东省深圳市南山区粤海街道科技南十二路金蝶软件园13088888888");
+        //image传base64编码
+        // addressResolutionParam.setImage("");
+        // addressResolutionParam.setImageUrl("http://api.kuaidi100.com/label/getImage/20240621/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+        // addressResolutionParam.setPdfUrl("http://api.kuaidi100.com/label/xxx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+        // addressResolutionParam.setHtmlUrl("http://api.kuaidi100.com/label/xxx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
         String param = new Gson().toJson(addressResolutionParam);
         String t = System.currentTimeMillis() + "";
         AddressResolutionReq addressResolutionReq = new AddressResolutionReq();
@@ -292,6 +298,27 @@ public class BaseServiceTest {
         addressResolutionReq.setParam(param);
         IBaseClient baseClient = new AddressResolution();
         System.out.println(baseClient.execute(addressResolutionReq));
+    }
+
+    /**
+     * 国际地址解析接口
+     *
+     * @throws Exception
+     */
+    @Test
+    public void  testIntAddressResolution() throws Exception {
+        IntAddressResolutionParam intAddressResolutionParam = new IntAddressResolutionParam();
+        intAddressResolutionParam.setCountry("United States");
+        intAddressResolutionParam.setAddress("84 Alford Rd, Great Barrington, MA 01230, USA");
+        String param = new Gson().toJson(intAddressResolutionParam);
+        String t = System.currentTimeMillis() + "";
+        AddressResolutionReq req = new AddressResolutionReq();
+        req.setT(t);
+        req.setKey(key);
+        req.setSign(SignUtils.printSign(param,t,key,secret));
+        req.setParam(param);
+        IBaseClient baseClient = new IntAddressResolution();
+        System.out.println(baseClient.execute(req));
     }
         
     
