@@ -308,8 +308,9 @@ public class BaseServiceTest {
     @Test
     public void  testIntAddressResolution() throws Exception {
         IntAddressResolutionParam intAddressResolutionParam = new IntAddressResolutionParam();
-        intAddressResolutionParam.setCountry("United States");
-        intAddressResolutionParam.setAddress("84 Alford Rd, Great Barrington, MA 01230, USA");
+        intAddressResolutionParam.setCode("US");
+        intAddressResolutionParam.setAddress("5430 Fredericksburg Rd Ste 310 San Antonio TX 78229 USA");
+        intAddressResolutionParam.setLanguage("zh");
         String param = new Gson().toJson(intAddressResolutionParam);
         String t = System.currentTimeMillis() + "";
         AddressResolutionReq req = new AddressResolutionReq();
@@ -320,7 +321,6 @@ public class BaseServiceTest {
         IBaseClient baseClient = new IntAddressResolution();
         System.out.println(baseClient.execute(req));
     }
-        
     
         /**
          * 云打印复打(V2)
