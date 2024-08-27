@@ -28,7 +28,7 @@ java-demo使用和测试可参考[java-demo-test](https://github.com/kuaidi100-a
 
 ```css
 dependencies {
-	implementation 'com.github.kuaidi100-api:sdk:1.0.14'
+	implementation 'com.github.kuaidi100-api:sdk:1.0.13'
 }
 ```
 
@@ -38,7 +38,7 @@ dependencies {
 	<dependency>
             <groupId>com.github.kuaidi100-api</groupId>
             <artifactId>sdk</artifactId>
-            <version>1.0.14</version>
+            <version>1.0.13</version>
         </dependency>
 ```
 
@@ -308,8 +308,9 @@ public class BaseServiceTest {
     @Test
     public void  testIntAddressResolution() throws Exception {
         IntAddressResolutionParam intAddressResolutionParam = new IntAddressResolutionParam();
-        intAddressResolutionParam.setCountry("United States");
-        intAddressResolutionParam.setAddress("84 Alford Rd, Great Barrington, MA 01230, USA");
+        intAddressResolutionParam.setCode("US");
+        intAddressResolutionParam.setAddress("5430 Fredericksburg Rd Ste 310 San Antonio TX 78229 USA");
+        intAddressResolutionParam.setLanguage("zh");
         String param = new Gson().toJson(intAddressResolutionParam);
         String t = System.currentTimeMillis() + "";
         AddressResolutionReq req = new AddressResolutionReq();
@@ -320,7 +321,6 @@ public class BaseServiceTest {
         IBaseClient baseClient = new IntAddressResolution();
         System.out.println(baseClient.execute(req));
     }
-        
     
         /**
          * 云打印复打(V2)

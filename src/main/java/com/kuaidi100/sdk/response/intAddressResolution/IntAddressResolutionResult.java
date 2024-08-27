@@ -26,6 +26,11 @@ public class IntAddressResolutionResult {
     private String city;
 
     /**
+     * 区县
+     */
+    private String district;
+
+    /**
      * 路名/街道名
      */
     private String route;

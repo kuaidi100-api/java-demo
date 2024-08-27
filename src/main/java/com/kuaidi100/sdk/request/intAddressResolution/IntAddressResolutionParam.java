@@ -11,13 +11,18 @@ import lombok.Data;
 @Data
 public class IntAddressResolutionParam {
     /**
-     * 国家（英文），可参考国家列表附录，如 United States
+     * 国家/地区二字码（不区分大小写），可参考 国家/地区二字码列表附录
+     */
+    private String code;
+
+    /**
+     * 国际地址，如84 Alford Rd, Great Barrington, MA 01230, USA
      */
     private String address;
 
     /**
-     * 地址， 如 84 Alford Rd, Great Barrington, MA 01230, USA
+     * 语言码（不区分大小写），可参考 支持的语言列表附录。该字段决定响应的解析结果以哪种语言进行展示
      */
-    private String country;
+    private String language;
 
 }
