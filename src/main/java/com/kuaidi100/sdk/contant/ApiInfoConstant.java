@@ -246,7 +246,7 @@ public class ApiInfoConstant {
     /**
      * 同城寄件-预下单方法
      */
-    public static final String BSAMECITY_PRICE = "price";
+    public static final String PRICE = "price";
     /**
      * 同城寄件-下单方法
      */

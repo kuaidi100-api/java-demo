@@ -807,7 +807,7 @@ public class BaseServiceTest {
         String param = new Gson().toJson(bsamecityOrderReq);
 
         printReq.setKey(key);
-        printReq.setMethod(ApiInfoConstant.BSAMECITY_PRICE);
+        printReq.setMethod(ApiInfoConstant.PRICE);
         printReq.setT(t);
         printReq.setSign(SignUtils.printSign(param,t,key,secret));
         printReq.setParam(param);
@@ -955,4 +955,29 @@ public class BaseServiceTest {
         IBaseClient bsamecityPrice = new BsameCityExpress();
         System.out.println(bsamecityPrice.execute(printReq));
     }
+
+    /**
+     * 价格查询接口
+     *
+     * @throws Exception
+     */
+    @Test
+    public void  testPriceQuery() throws Exception {
+        PrintReq printReq = new PrintReq();
+        PriceQueryParam priceQueryParam = new PriceQueryParam();
+        priceQueryParam.setSendAddr("深圳南山区");
+        priceQueryParam.setRecAddr("北京海淀区");
+        priceQueryParam.setKuaidicom("jd");
+        priceQueryParam.setWeight(1.0);
+        String param = new Gson().toJson(priceQueryParam);
+        String t = System.currentTimeMillis() + "";
+        printReq.setKey(key);
+        printReq.setMethod(ApiInfoConstant.PRICE);
+        printReq.setT(t);
+        printReq.setSign(SignUtils.printSign(param,t,key,secret));
+        printReq.setParam(param);
+        IBaseClient baseClient = new PriceQuery();
+        System.out.println(baseClient.execute(printReq));
+    }
+
 }
