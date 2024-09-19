@@ -345,9 +345,10 @@ public class BaseServiceTest {
     }
 
     /**
-     * 电子面单取消
+     * 电子面单取消（V2）
      * @throws Exception
      */
+    @Test
     public void testLabelCancel() throws Exception{
         LabelCancelParam labelCancelParam = new LabelCancelParam();
         labelCancelParam.setPartnerId("test");
@@ -367,7 +368,7 @@ public class BaseServiceTest {
         printReq.setSign(SignUtils.printSign(param,t,key,secret));
         printReq.setParam(param);
 
-        IBaseClient baseClient = new LabelCancel();
+        IBaseClient baseClient = new LabelV2();
         System.out.println(baseClient.execute(printReq));
     }
 
