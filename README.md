@@ -28,7 +28,7 @@ java-demo使用和测试可参考[java-demo-test](https://github.com/kuaidi100-a
 
 ```css
 dependencies {
-	implementation 'com.github.kuaidi100-api:sdk:1.0.13'
+	implementation 'com.github.kuaidi100-api:sdk:1.0.15'
 }
 ```
 
