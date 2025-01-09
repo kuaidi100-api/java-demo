@@ -356,6 +356,10 @@ public class BaseServiceTest {
         labelCancelParam.setKuaidinum("SF1342567604302");
         //快递公司订单号(对应下单时返回的kdComOrderNum，如果没有可以不传，否则必传)
         labelCancelParam.setOrderId("01639366271685GNkZEX");
+        //业务员编码，部分快递公司必填
+        labelCancelParam.setCheckMan("123");
+        //产品业务类型，部分快递公司必填
+        labelCancelParam.setExpType("标准快递");
 
         labelCancelParam.setReason("暂时不寄了");
         String param = new Gson().toJson(labelCancelParam);

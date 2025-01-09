@@ -49,4 +49,14 @@ public class LabelCancelParam {
      * 取消原因
      */
     private String reason;
+
+    /**
+     * 业务员编码
+     */
+    private String checkMan;
+
+    /**
+     * 产品类型
+     */
+    private String expType;
 }
