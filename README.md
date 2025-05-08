@@ -88,12 +88,6 @@ dependencies {
 
 - [快递100短信发送接口](https://github.com/kuaidi100-api/java-demo/blob/master/src/test/java/BaseServiceTest.java#L613)
 
-- [C端查询运力(云平台接口)](https://github.com/kuaidi100-api/java-demo/blob/master/src/test/java/BaseServiceTest.java#L633)
-
-- [C端寄件(云平台接口)](https://github.com/kuaidi100-api/java-demo/blob/master/src/test/java/BaseServiceTest.java#L648)
-
-- [C端取消寄件(云平台接口)](https://github.com/kuaidi100-api/java-demo/blob/master/src/test/java/BaseServiceTest.java#L674)
-
 - [发货单接口](https://github.com/kuaidi100-api/java-demo/blob/master/src/test/java/BaseServiceTest.java#L693)
 
 - [快递面单OCR识别接口](https://github.com/kuaidi100-api/java-demo/blob/master/src/test/java/BaseServiceTest.java#L722)
