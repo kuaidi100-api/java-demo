@@ -122,22 +122,6 @@ public class ApiInfoConstant {
      */
     public static final String SAME_CITY_ORDER_URL = "https://order.kuaidi100.com/sameCity/order";
     /**
-     * 同城配送授权方法
-     */
-    public static final String SAME_CITY_AUTH_METHOD = "auth";
-    /**
-     * 同城配送下单方法
-     */
-    public static final String SAME_CITY_ORDER_METHOD = "order";
-    /**
-     * 同城配送查询订单方法
-     */
-    public static final String SAME_CITY_QUERY_METHOD = "query";
-    /**
-     * 同城配送取消订单方法
-     */
-    public static final String SAME_CITY_CANCEL_METHOD = "cancel";
-    /**
      * 取消方法
      */
     public static final String CANCEL_METHOD = "cancel";
