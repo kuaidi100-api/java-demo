@@ -1,6 +1,5 @@
 import com.google.gson.Gson;
 import com.kuaidi100.sdk.api.*;
-import com.kuaidi100.sdk.cloud.CloudBase;
 import com.kuaidi100.sdk.contant.ApiInfoConstant;
 import com.kuaidi100.sdk.contant.CloudApiCodeConstant;
 import com.kuaidi100.sdk.contant.CompanyConstant;
@@ -626,63 +625,6 @@ public class BaseServiceTest {
         System.out.println(sendSms.execute(sendSmsReq));
     }
 
-    /**
-     * C端查询运力(云平台接口)
-     */
-    @Test
-    public void testCOrderQuery() throws Exception {
-        COrderQueryReq cOrderQueryReq = new COrderQueryReq();
-        cOrderQueryReq.setAddress("广东省深圳市南山区华强南");
-        cOrderQueryReq.setSecret_key(secret_key);
-        cOrderQueryReq.setSecret_code(CloudApiCodeConstant.ORDER_QUERY_EXPRESS);
-        cOrderQueryReq.setSecret_sign(SignUtils.cloudSign(secret_key, secret_secret));
-
-        IBaseClient cloudBase = new CloudBase();
-        System.out.println(cloudBase.execute(cOrderQueryReq));
-    }
-
-    /**
-     * c端寄件(云平台接口)
-     */
-    @Test
-    public void testCOrder() throws Exception {
-        COrderReq cOrderReq = new COrderReq();
-        cOrderReq.setCom(CompanyConstant.SF);
-        cOrderReq.setSendManName("张三");
-        cOrderReq.setSendManMobile("15966666666");
-        cOrderReq.setSendManPrintAddr("西藏日喀则市定日县珠穆朗玛峰");
-        cOrderReq.setRecManName("李四");
-        cOrderReq.setRecManMobile("15966666666");
-        cOrderReq.setRecManPrintAddr("西藏日喀则市定日县珠穆朗玛峰");
-        cOrderReq.setCallBackUrl("http://www.baidu.com");
-        cOrderReq.setCargo("文件");
-        cOrderReq.setRemark("测试下单，待会取消");
-        cOrderReq.setWeight("1");
-        cOrderReq.setSalt("123456");
-        cOrderReq.setSecret_key(secret_key);
-        cOrderReq.setSecret_code(CloudApiCodeConstant.ORDER);
-        cOrderReq.setSecret_sign(SignUtils.cloudSign(secret_key,secret_secret));
-
-        IBaseClient cloudBase = new CloudBase();
-        System.out.println(cloudBase.execute(cOrderReq));
-    }
-
-    /**
-     * c端取消寄件(云平台接口)
-     */
-    @Test
-    public void testCOrderCancel() throws Exception {
-        COrderCancelReq cOrderCancelReq = new COrderCancelReq();
-        cOrderCancelReq.setTaskId("B9D3FF44B7439F298BA62211E3AC7126");
-        cOrderCancelReq.setOrderId("17561388");
-        cOrderCancelReq.setCancelMsg("测试单");
-        cOrderCancelReq.setSecret_key(secret_key);
-        cOrderCancelReq.setSecret_code(CloudApiCodeConstant.ORDER_CANCEL);
-        cOrderCancelReq.setSecret_sign(SignUtils.cloudSign(secret_key,secret_secret));
-
-        IBaseClient cloudBase = new CloudBase();
-        System.out.println(cloudBase.execute(cOrderCancelReq));
-    }
 
     /**
      * 发货单接口
