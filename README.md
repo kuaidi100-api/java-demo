@@ -35,7 +35,7 @@ dependencies {
 #### Maven
 
 ```xml
-	<dependency>
+    <dependency>
         <groupId>com.github.kuaidi100-api</groupId>
         <artifactId>sdk</artifactId>
         <version>1.0.15</version>
