@@ -1,6 +1,9 @@
 package com.kuaidi100.sdk.response.labelV2;
 
+import com.kuaidi100.sdk.response.PredictedRoute;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * @description : 快递预估时效查询响应类
@@ -38,6 +41,10 @@ public class DeliveryTimeResp {
      * 到达需要花费的时间，单位天
      */
     private String deliveryExpendTime;
+    /**
+     * 预估路线
+     */
+    private List<PredictedRoute> predictedRoute;
     /**
      * 产品类型
      */

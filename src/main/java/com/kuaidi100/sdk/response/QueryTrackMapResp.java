@@ -12,7 +12,7 @@ import lombok.ToString;
 public class QueryTrackMapResp extends QueryTrackResp {
 
     /**
-     * 轨迹地图链接
+     * 轨迹地图链接，目前当入参resultv2=7时，会返回null
      */
     private String trailUrl;
     /**
@@ -27,4 +27,8 @@ public class QueryTrackMapResp extends QueryTrackResp {
      * 到达还需多少时间
      */
     private String remainTime;
+    /**
+     * 是否存在环路
+     */
+    private Boolean isLoop;
 }

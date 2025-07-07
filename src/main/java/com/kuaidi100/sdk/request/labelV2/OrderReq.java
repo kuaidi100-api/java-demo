@@ -305,4 +305,8 @@ public class OrderReq {
      * 第三方平台自定义区域模板地址
      */
     private String thirdCustomTemplateUrl;
+    /**
+     * 接口版本
+     */
+    private int billVersion;
 }

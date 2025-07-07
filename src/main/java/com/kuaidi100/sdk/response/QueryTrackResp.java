@@ -42,8 +42,12 @@ public class QueryTrackResp {
      * 快递单明细状态标记
      */
     private String condition;
-
+    /**
+     * 物流节点数据，包含物流轨迹上各个节点的信息，节点排序为从发货地址到收货地址，实时查询接口中提交resultv2=8标记后才会出现
+     */
     private QueryTrackRouteInfo routeInfo;
+
+    private PredictedRoute predictedRoute;
     /**
      * 查不到轨迹或者其他问题返回码
      */
