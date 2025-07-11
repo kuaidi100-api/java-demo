@@ -42,7 +42,7 @@ public class DeliveryTimeResp {
      */
     private String deliveryExpendTime;
     /**
-     * 预估路线
+     * 预估路线，包含实际线路和快递100预测的线路节点信息
      */
     private List<PredictedRoute> predictedRoute;
     /**
