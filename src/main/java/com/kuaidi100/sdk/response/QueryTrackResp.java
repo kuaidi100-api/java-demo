@@ -58,4 +58,20 @@ public class QueryTrackResp {
      * 查不到轨迹或者其他问题返回结果
      */
     private boolean result;
+    /**
+     * 预计到达时间
+     */
+    private String arrivalTime;
+    /**
+     * 平均耗时
+     */
+    private String totalTime;
+    /**
+     * 到达还需多少时间
+     */
+    private String remainTime;
+    /**
+     * 是否存在环路
+     */
+    private Boolean isLoop;
 }
