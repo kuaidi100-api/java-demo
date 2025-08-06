@@ -21,9 +21,9 @@ import java.net.URLEncoder;
  */
 @Deprecated
 public class CloudPrintCustom extends BaseClient {
-    private int connectTimeout = 3000;
+    private int connectTimeout = 5000;
 
-    private int socketTimeout = 3000;
+    private int socketTimeout = 5000;
 
     public String getApiUrl(BaseRequest request) {
         return null;
