@@ -915,8 +915,11 @@ public class BaseServiceTest {
         PriceQueryParam priceQueryParam = new PriceQueryParam();
         priceQueryParam.setSendAddr("深圳南山区");
         priceQueryParam.setRecAddr("北京海淀区");
-        priceQueryParam.setKuaidicom("jd");
-        priceQueryParam.setWeight(1.0);
+        priceQueryParam.setKuaidicom("kuayue");
+        priceQueryParam.setWeight(30.0);
+        // TODO 请替换为真实的月卡号，非必传，跨越必传
+        priceQueryParam.setMonthlyCard("123456789012");
+
         String param = new Gson().toJson(priceQueryParam);
         String t = System.currentTimeMillis() + "";
         printReq.setKey(key);
