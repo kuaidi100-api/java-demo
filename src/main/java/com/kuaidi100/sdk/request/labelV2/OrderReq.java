@@ -309,4 +309,9 @@ public class OrderReq {
      * 接口版本
      */
     private int billVersion;
+
+    /**
+     * 新增字段，箱码字段。第一个为母单箱码，其他为子单箱码。
+     */
+    private List<String> boxNo;
 }

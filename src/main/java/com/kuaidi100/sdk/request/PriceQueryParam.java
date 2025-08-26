@@ -26,8 +26,9 @@ public class PriceQueryParam  extends BaseRequest {
      * 重量，默认单位为kg，参数无需带单位，如1.0
      */
     private double weight;
+
     /**
-     * 月结账户编号
+     * 月结账户编码字段，查询月结账户专属价格，跨越必传
      */
     private String monthlyCard;
 }

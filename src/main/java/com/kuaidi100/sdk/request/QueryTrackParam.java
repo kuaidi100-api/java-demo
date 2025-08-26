@@ -44,4 +44,13 @@ public class QueryTrackParam {
      * 返回结果排序方式。desc：降序（默认），asc：升序
      */
     private String order = "desc";
+    /**
+     * 语言类型。zh：中文（默认），en：英文
+     */
+    private String lang;
+
+    /**
+     * 默认为false，当入参为true时，会尝试从物流轨迹中提取出快递员姓名和快递员电话并返回
+     */
+    private Boolean needCourierInfo;
 }
