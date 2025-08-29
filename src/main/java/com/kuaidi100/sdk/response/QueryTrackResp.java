@@ -82,5 +82,5 @@ public class QueryTrackResp {
      * deliveryManName:派件快递员姓名，例如："李四"，如提取不到会返回空字符串
      * deliveryManPhone:派件快递员手机号，格式为："12335467890"，如提取出多个手机号，会使用逗号分隔，例如"1234567890,1983782937",提取不到会返回空字符串
      */
-    private String courierInfo;
+    private CourierInfo courierInfo;
 }
