@@ -67,7 +67,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.10</version>
+            <version>1.18.30</version>
             <scope>compile</scope>
         </dependency>
 
@@ -191,11 +191,18 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
-                        <version>3.3</version>
+                        <version>3.8.1</version>
                         <configuration>
-                            <source>1.8</source>
-                            <target>1.8</target>
+                            <source>17</source>
+                            <target>17</target>
                             <encoding>UTF-8</encoding>
+                            <compilerArgs>
+                                <arg>-Xlint:all</arg>
+                                <!-- 添加以下参数解决Lombok问题 -->
+                                <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+                                <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+                                <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+                            </compilerArgs>
                         </configuration>
                     </plugin>
                 </plugins>
