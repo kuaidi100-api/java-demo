@@ -20,10 +20,10 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-          server-id: central
+          server-id: snapshots
           server-username: SERVER_USERNAME
           server-password: SERVER_PASSWORD
-          gpg-private-key: ${{ secrets.GPG_SECRET }}
+          gpg-private-key: GPG_SECRET
           gpg-passphrase: GPG_PASSPHRASE
 
       # 获取 Maven 项目版本号
@@ -39,6 +39,7 @@ jobs:
           SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
           SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
+          GPG_SECRET: ${{ secrets.GPG_SECRET }}
 
       # 创建 Release（自动附带 Source code (zip/tar.gz)）
       - name: Create Release
