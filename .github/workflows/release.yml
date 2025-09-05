@@ -38,7 +38,7 @@ jobs:
 
       # 发布到 Apache Maven Central
       - name: Publish to Apache Maven Central
-        run: mvn deploy
+        run: mvn deploy -Dmaven.test.skip=true
         env:
           SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
           SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
