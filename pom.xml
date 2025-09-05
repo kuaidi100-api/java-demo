@@ -6,7 +6,7 @@
 
     <groupId>com.github.kuaidi100-api</groupId>
     <artifactId>sdk</artifactId>
-    <version>1.0.22.2</version>
+    <version>1.0.22.3</version>
 
     <name>api</name>
     <url>https://github.com/kuaidi100-api/java-demo</url>
@@ -175,6 +175,12 @@
                                 </goals>
                             </execution>
                         </executions>
+                        <configuration>
+                            <gpgArguments>
+                                <arg>--pinentry-mode</arg>
+                                <arg>loopback</arg>
+                            </gpgArguments>
+                        </configuration>
                     </plugin>
                     <plugin>
                         <groupId>org.sonatype.central</groupId>
