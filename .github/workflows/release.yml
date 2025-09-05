@@ -25,7 +25,7 @@ jobs:
           server-username: SERVER_USERNAME
           server-password: SERVER_PASSWORD
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
-          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          gpg-passphrase: GPG_PASSPHRASE
 
       # 获取 Maven 项目版本号
       - name: Extract project version
@@ -42,6 +42,7 @@ jobs:
         env:
           SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
           SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
       # 创建 Release（自动附带 Source code (zip/tar.gz)）
       - name: Create Release
