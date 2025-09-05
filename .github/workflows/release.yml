@@ -38,7 +38,7 @@ jobs:
 
       # 发布到 Apache Maven Central
       - name: Publish to Apache Maven Central
-        run: mvn deploy -Dmaven.test.skip=true
+        run: mvn deploy -P release -Dmaven.test.skip=true -X
         env:
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
