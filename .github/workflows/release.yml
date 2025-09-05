@@ -22,10 +22,10 @@ jobs:
           distribution: 'temurin'
           java-version: '8'
           server-id: central
-          server-username: SERVER_USERNAME
-          server-password: SERVER_PASSWORD
+          server-username: ${{ secrets.SERVER_USERNAME }}
+          server-password: ${{ secrets.SERVER_PASSWORD }}
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
-          gpg-passphrase: GPG_PASSPHRASE
+          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
 
       # 获取 Maven 项目版本号
       - name: Extract project version
