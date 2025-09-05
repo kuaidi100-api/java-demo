@@ -176,7 +176,10 @@
                             </execution>
                         </executions>
                         <configuration>
+                            <useAgent>false</useAgent>
                             <gpgArguments>
+                                <arg>--batch</arg>
+                                <arg>--yes</arg>
                                 <arg>--pinentry-mode</arg>
                                 <arg>loopback</arg>
                             </gpgArguments>
