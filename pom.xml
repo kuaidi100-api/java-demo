@@ -154,9 +154,11 @@
                     <charset>UTF-8</charset>
                     <encoding>UTF-8</encoding>
                     <docencoding>UTF-8</docencoding>
+                    <doclint>none</doclint>
                 </configuration>
                 <executions>
                     <execution>
+                        <id>attach-javadocs</id>
                         <phase>compile</phase>
                         <goals>
                             <goal>jar</goal>
