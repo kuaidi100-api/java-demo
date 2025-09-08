@@ -44,4 +44,9 @@ public class QueryTrackData {
      * 状态值
      */
     private String statusCode;
+
+    /**
+     * 快件当前地点
+     */
+    private String location;
 }
