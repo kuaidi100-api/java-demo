@@ -314,4 +314,14 @@ public class OrderReq {
      * 新增字段，箱码字段。第一个为母单箱码，其他为子单箱码。
      */
     private List<String> boxNo;
+
+    /**
+     * 取件联系人姓名
+     */
+    private String consignorName;
+
+    /**
+     * 取件联系人电话
+     */
+    private String consignorMobile;
 }

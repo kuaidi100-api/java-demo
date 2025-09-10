@@ -44,4 +44,20 @@ public class BackOrderReq {
      */
     private String phone;
 
+
+    /**
+     * pin码， 默认为空,京东目前非必填，后续京东可能会必填
+     */
+    private String pin;
+
+    /**
+     * 网点编码
+     */
+    private String net;
+
+    /**
+     * 订单id
+     */
+    private String orderId;
+
 }
