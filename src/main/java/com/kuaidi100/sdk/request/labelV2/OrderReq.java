@@ -109,6 +109,11 @@ public class OrderReq {
      * 在使用菜鸟/淘宝/拼多多授权电子面单时，若月结账号下存在多个网点，则tbNet="网点名称,网点编号" ，注意此处为英文逗号
      */
     private String tbNet;
+
+    /**
+     * 是否重新下单，默认true，配合orderId使用；当orderId不为空，reorder设置为false，48小时内只会返回第一次下单成功的内容;否则每次下单都认为重新下发订单
+     */
+    private Boolean reorder = true;
     /**
      * 邮费
      */
