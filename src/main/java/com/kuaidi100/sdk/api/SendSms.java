@@ -20,6 +20,7 @@ import java.util.Map;
  */
 public class SendSms extends BaseClient {
 
+    @Override
     public String getApiUrl(BaseRequest request) {
         return ApiInfoConstant.SEND_SMS_URL;
     }

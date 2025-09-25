@@ -22,6 +22,7 @@ import java.util.List;
 @Deprecated
 public class PrintImg extends BaseClient {
 
+    @Override
     public String getApiUrl(BaseRequest request) {
         return ApiInfoConstant.ELECTRONIC_ORDER_PIC_URL;
     }

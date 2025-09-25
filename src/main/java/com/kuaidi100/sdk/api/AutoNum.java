@@ -21,6 +21,7 @@ import java.util.List;
  */
 public class AutoNum extends BaseClient {
 
+    @Override
     public String getApiUrl(BaseRequest request) {
         AutoNumReq autoNumReq = (AutoNumReq) request;
         return String.format(ApiInfoConstant.AUTO_NUM_URL,autoNumReq.getNum(),autoNumReq.getKey());

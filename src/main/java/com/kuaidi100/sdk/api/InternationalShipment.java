@@ -18,6 +18,7 @@ import org.apache.http.HttpStatus;
  */
 public class InternationalShipment extends BaseClient {
 
+    @Override
     public String getApiUrl(BaseRequest request) {
         return ApiInfoConstant.INTERNATIONAL_SHIPMENT_URL;
     }

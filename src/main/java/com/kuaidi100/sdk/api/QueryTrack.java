@@ -18,6 +18,7 @@ import org.apache.http.HttpStatus;
  */
 public  class QueryTrack extends BaseClient {
 
+    @Override
     public String getApiUrl(BaseRequest request) {
         return ApiInfoConstant.QUERY_URL;
     }

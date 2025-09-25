@@ -11,6 +11,7 @@ import com.kuaidi100.sdk.request.BaseRequest;
  * @version:
  */
 public class BsameCityExpress extends BaseClient {
+    @Override
     public String getApiUrl(BaseRequest request) {
         return ApiInfoConstant.BSAMECITY_URL;
     }

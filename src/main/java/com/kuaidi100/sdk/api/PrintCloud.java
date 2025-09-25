@@ -19,6 +19,7 @@ import org.apache.http.HttpStatus;
 @Deprecated
 public class PrintCloud extends BaseClient {
 
+    @Override
     public String getApiUrl(BaseRequest request) {
         return ApiInfoConstant.ELECTRONIC_ORDER_PRINT_URL;
     }

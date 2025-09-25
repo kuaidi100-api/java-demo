@@ -15,16 +15,19 @@ public abstract class BaseClient implements IBaseClient{
 
     private int socketTimeout = 5000;
 
+    @Override
     public HttpResult execute(BaseRequest request) throws Exception{
 
         return HttpUtils.doPost(getApiUrl(request),request,connectTimeout,socketTimeout);
     }
 
+    @Override
     public BaseResponse executeToObject(BaseRequest request) throws Exception{
 
         return null;
     }
 
+    @Override
     public void setTimeOut(int connectTimeout, int socketTimeout) {
         this.connectTimeout = connectTimeout;
         this.socketTimeout = socketTimeout;

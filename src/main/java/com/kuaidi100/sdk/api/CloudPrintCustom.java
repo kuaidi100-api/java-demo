@@ -25,6 +25,7 @@ public class CloudPrintCustom extends BaseClient {
 
     private int socketTimeout = 5000;
 
+    @Override
     public String getApiUrl(BaseRequest request) {
         return null;
     }

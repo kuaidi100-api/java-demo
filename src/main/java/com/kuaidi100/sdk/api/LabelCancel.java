@@ -16,6 +16,7 @@ import org.apache.http.HttpStatus;
  */
 public class LabelCancel extends BaseClient {
 
+    @Override
     public String getApiUrl(BaseRequest request) {
         return ApiInfoConstant.ELECTRONIC_ORDER_HTML_URL;
     }

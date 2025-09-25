@@ -123,9 +123,7 @@ org.apache.commons.codec.digest.DigestUtils.md5Hex(msg).toUpperCase();
 可以参考推送[订阅回调](https://github.com/kuaidi100-api/kuadi100-api/blob/master/src/main/java/com/kuaidi100/sdk/api/Subscribe.java#L56)
 
 ```java
-public SubscribeResp callBackUrl(HttpServletRequest request){
-        String param = request.getParameter("param");
-        String sign = request.getParameter("sign");
+public SubscribeResp callBackUrl(String param, String sign){
         //建议记录一下这个回调的内容，方便出问题后双方排查问题
         log.debug("快递100订阅推送回调结果|{}|{}",param,sign);
         //订阅时传的salt,没有可以忽略

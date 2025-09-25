@@ -23,6 +23,7 @@ import java.util.Map;
  */
 public class CloudPrintAttachment extends BaseClient {
 
+    @Override
     public String getApiUrl(BaseRequest request) {
         return null;
     }

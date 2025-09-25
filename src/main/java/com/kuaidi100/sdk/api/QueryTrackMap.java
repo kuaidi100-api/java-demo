@@ -12,6 +12,7 @@ import com.kuaidi100.sdk.request.BaseRequest;
  */
 public  class QueryTrackMap extends BaseClient {
 
+    @Override
     public String getApiUrl(BaseRequest request) {
         return ApiInfoConstant.QUERY_MAP_VIEW_URL;
     }

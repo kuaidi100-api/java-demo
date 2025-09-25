@@ -16,6 +16,7 @@ import org.apache.http.HttpStatus;
  */
 public class CloudPrintCommand extends BaseClient {
 
+    @Override
     public String getApiUrl(BaseRequest request) {
         return ApiInfoConstant.ELECTRONIC_ORDER_PRINT_URL;
     }

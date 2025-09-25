@@ -12,6 +12,7 @@ import com.kuaidi100.sdk.request.BaseRequest;
  */
 public class ElecDetocr extends BaseClient {
 
+    @Override
     public String getApiUrl(BaseRequest request) {
         return ApiInfoConstant.ELEC_DETOCR_URL;
     }

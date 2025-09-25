@@ -20,6 +20,7 @@ import org.apache.http.HttpStatus;
  */
 public class LabelV2 extends BaseClient {
 
+    @Override
     public String getApiUrl(BaseRequest request) {
         return ApiInfoConstant.NEW_TEMPLATE_URL;
     }
