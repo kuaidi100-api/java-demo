@@ -17,6 +17,10 @@ public class AutoNumResp {
      */
     private String comCode;
     /**
+     * 快递公司名称
+     */
+    private String name;
+    /**
      * 请忽略
      */
     private String noPre;
