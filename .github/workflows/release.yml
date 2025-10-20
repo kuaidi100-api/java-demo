@@ -3,7 +3,7 @@ name: Release Build
 on:
   push:
     tags:
-      - 'v*'   # 例如 v1.0.20 触发
+      - 'v*'
 
 permissions:
   contents: write
