@@ -49,5 +49,13 @@ public class DeliveryTimeResp {
      * 产品类型
      */
     private String expType;
+    /**
+     * 预计到达需要花费的总时间，单位小时
+     */
+    private String totalTime;
+    /**
+     * 预计到达需要花费的剩余时间，单位小时（全程模式预测下和总时间一致，在途模式下返回预测剩余时间）
+     */
+    private String remainTime;
 
 }

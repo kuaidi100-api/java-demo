@@ -1,7 +1,6 @@
 import com.google.gson.Gson;
 import com.kuaidi100.sdk.api.*;
 import com.kuaidi100.sdk.contant.ApiInfoConstant;
-import com.kuaidi100.sdk.contant.CloudApiCodeConstant;
 import com.kuaidi100.sdk.contant.CompanyConstant;
 import com.kuaidi100.sdk.contant.PrintType;
 import com.kuaidi100.sdk.core.IBaseClient;
@@ -12,16 +11,8 @@ import com.kuaidi100.sdk.request.bsamecity.BsamecityAddfeeReq;
 import com.kuaidi100.sdk.request.bsamecity.BsamecityCancelReq;
 import com.kuaidi100.sdk.request.bsamecity.BsamecityOrderReq;
 import com.kuaidi100.sdk.request.bsamecity.Goods;
-import com.kuaidi100.sdk.request.cloud.COrderCancelReq;
-import com.kuaidi100.sdk.request.cloud.COrderQueryReq;
-import com.kuaidi100.sdk.request.cloud.COrderReq;
 import com.kuaidi100.sdk.request.intAddressResolution.IntAddressResolutionParam;
-import com.kuaidi100.sdk.request.labelV2.BackOrderReq;
-import com.kuaidi100.sdk.request.labelV2.CustomReq;
-import com.kuaidi100.sdk.request.labelV2.DeliveryTimeReq;
-import com.kuaidi100.sdk.request.labelV2.InterceptOrderReq;
-import com.kuaidi100.sdk.request.labelV2.OrderReq;
-import com.kuaidi100.sdk.request.labelV2.RepeatPrintReq;
+import com.kuaidi100.sdk.request.labelV2.*;
 import com.kuaidi100.sdk.response.QueryTrackMapResp;
 import com.kuaidi100.sdk.utils.PropertiesReader;
 import com.kuaidi100.sdk.utils.SignUtils;
@@ -99,22 +90,169 @@ public class BaseServiceTest {
      */
     @Test
     public void testSubscribe() throws Exception{
-        SubscribeParameters subscribeParameters = new SubscribeParameters();
-        subscribeParameters.setCallbackurl("http://www.baidu.com");
-        subscribeParameters.setPhone("17725390266");
 
-        SubscribeParam subscribeParam = new SubscribeParam();
-        subscribeParam.setParameters(subscribeParameters);
-        subscribeParam.setCompany(CompanyConstant.ST);
-        subscribeParam.setNumber("773039762404825");
-        subscribeParam.setKey(key);
+        String data = "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3297600239259,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=92106,18339273118,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3281009121397,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=91175,13750812761,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3281455920505,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=91831,17788141115,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3281455963192,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=91787,15577227112,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3288369416338,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=89132,18937182002,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3288207493489,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=87543,18312669840,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF2084062704430,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=86283,13733152848,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3232498980986,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=84650,13700875082,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3237980824303,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=80573,17788141115,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3239476355586,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=78235,13880622172,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3297600200967,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=92213,13733152848,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3297600203430,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=92193,18337191975,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF2074154248196,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=92136,15301481691,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3297600251646,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=92096,18522587153,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3297600898503,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=92084,13783507691,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3237987766891,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=80826,19943803288,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3286221747423,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=81719,15371999740,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3232170789893,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=83481,13880622172,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3232170712064,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=83545,13383829822,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3232174483598,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=83727,18939563166,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3237316791330,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=79889,19943803298,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3281453496318,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=91777,13880622172,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3284187125250,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=79179,18312669840,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3284183845835,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=79542,13837140101,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3297723964262,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=90960,17788141115,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3288765758082,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=86679,13756566272,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3239476355586,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=78184,18937182002,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3282352414250,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=85654,19937779664,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3238639264281,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=88631,15837117698,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3288302781640,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=88924,13783507691,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3237694938724,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=79805,18937182002,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3238615369562,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=88520,15577227112,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3234518946621,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=85302,13880622172,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF2074154248187,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=92136,15301481691,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3297600285853,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=92130,13783507691,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3281216470444,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=92083,13837140101,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3297728540612,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=90956,15577227112,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3238236636706,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=90877,15371999740,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3234120453760,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=86336,13837140101,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3234120437136,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=86275,15837117698,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3234120414110,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=86255,18939502112,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3288308170669,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=89009,19943803298,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3288763593578,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=86591,13837140101,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3282149259934,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=85105,17788141115,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF2054080346277,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=92130,13783507691,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3239476687643,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=78179,18312669840,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3288901004900,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=86880,18939563166,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3284080262528,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=77634,19943803298,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3286251606365,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=82124,18939502112,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3237301501050,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=80135,17788141112,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3237694953409,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=79736,13880622172,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3237694953409,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=79710,13880622172,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3234080237206,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=87141,18959222080,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3238249011596,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=91300,18937182002,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3297600292321,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=92219,18939563166,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3238631176728,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=88237,15301481691,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3238661496632,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=88600,18337191975,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3281983496340,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=90880,17788141115,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3288768235528,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=86283,13733152848,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3286250697575,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=81753,15577227112,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3288721155930,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=86811,15378703883,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3237694938724,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=79804,19937770084,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3234518946621,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=85028,18937182002,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3281216931412,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=92232,18339273118,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3281216950006,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=92231,18337191975,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3281216002224,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=92188,15837117698,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3286590038241,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=83400,13837140101,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3234510206080,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=84974,17788141115,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3232598114664,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=82756,15353618250,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3282149858269,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=85338,13383829822,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3232496096005,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=84512,18337191975,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3282482124986,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=84063,17788141115,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3284876592534,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=78966,17788141115,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3238936322747,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=90208,15577227112,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3234147919817,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=86663,17788141115,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3234120285615,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=86334,18611733101,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3297600273507,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=92220,15837117698,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF2054080343680,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=92188,15837117698,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3297600257006,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=92097,18037877058,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3239476367126,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=78177,17788141115,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3234120224998,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=86326,15038378799,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3288768899318,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=86175,13880622172,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3234073356761,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=86815,17788141112,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3286559742699,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=83634,15577227112,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3297728508511,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=90950,15378703883,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3238268351766,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=90918,18939502112,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3281983496340,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=90728,18312669840,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3239268530088,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=77682,18937182002,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3238961355409,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=89853,18937182002,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3288726483877,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=86311,18937182002,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3282149259934,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=85112,18312669840,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF2054080343671,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=92188,15837117698,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3281216067212,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=92136,15301481691,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3281216032027,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=92093,13375550311,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3297600897139,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=92085,18939563166,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3288995919407,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=87144,19943803298,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3288942730992,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=87202,18337191975,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3286678796967,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=81211,17788141115,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3288720504265,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=86681,19943803298,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3286250697575,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=81834,19943803288,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3297728545402,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=90916,13526584569,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3238268367571,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=90899,15378703883,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3238268333585,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=90772,19943803298,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3297723964262,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=90967,18312669840,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3237694938724,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=79156,18937182002,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3238964610192,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=90240,18312669840,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3234128969163,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=86256,13880622172,4\n" +
+                "shunfeng,河南郑州市中原区,grmFRRHA6201,SF3286182520665,https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=82692,18192651175,4\n";
 
-        SubscribeReq subscribeReq = new SubscribeReq();
-        subscribeReq.setSchema(ApiInfoConstant.SUBSCRIBE_SCHEMA);
-        subscribeReq.setParam(new Gson().toJson(subscribeParam));
+        for (String s : data.split("\n")) {
+            String[] split = s.split(",");
 
-        IBaseClient subscribe = new Subscribe();
-        System.out.println(subscribe.execute(subscribeReq));
+            String company = split[0];
+            String from = split[1];
+            String key = split[2];
+            String number = split[3];
+            String callbackurl = split[4];
+            String phone = split[5];
+            String resultv2 = split[6];
+
+            SubscribeParameters subscribeParameters = new SubscribeParameters();
+            subscribeParameters.setCallbackurl(callbackurl);
+            subscribeParameters.setPhone(phone);
+            subscribeParameters.setResultv2(resultv2);
+
+            SubscribeParam subscribeParam = new SubscribeParam();
+            subscribeParam.setParameters(subscribeParameters);
+            subscribeParam.setCompany(company);
+            subscribeParam.setNumber(number);
+            subscribeParam.setKey(key);
+            subscribeParam.setFrom(from);
+//            subscribeParam.setTo(to);
+
+            SubscribeReq subscribeReq = new SubscribeReq();
+            subscribeReq.setSchema(ApiInfoConstant.SUBSCRIBE_SCHEMA);
+            subscribeReq.setParam(new Gson().toJson(subscribeParam));
+
+            IBaseClient subscribe = new Subscribe();
+            System.out.println(subscribe.execute(subscribeReq));
+
+
+        }
+
+//        SubscribeParameters subscribeParameters = new SubscribeParameters();
+//        subscribeParameters.setCallbackurl("https://api.kuaidi100.com/eorder/logistics/monitor/rec/trajectory?userId=850332023&orderId=86175");
+//        subscribeParameters.setPhone("13880622172");
+//        subscribeParameters.setResultv2("4");
+//
+//        SubscribeParam subscribeParam = new SubscribeParam();
+//        subscribeParam.setParameters(subscribeParameters);
+//        subscribeParam.setCompany(CompanyConstant.SF);
+//        subscribeParam.setNumber("SF3288768899318");
+//        subscribeParam.setKey(key);
+//        subscribeParam.setFrom("河南郑州市中原区");
+//        subscribeParam.setTo("四川成都市双流区");
+//
+//        SubscribeReq subscribeReq = new SubscribeReq();
+//        subscribeReq.setSchema(ApiInfoConstant.SUBSCRIBE_SCHEMA);
+//        subscribeReq.setParam(new Gson().toJson(subscribeParam));
+//
+//        IBaseClient subscribe = new Subscribe();
+//        System.out.println(subscribe.execute(subscribeReq));
     }
 
     /**

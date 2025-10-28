@@ -2,6 +2,8 @@ package com.kuaidi100.sdk.request.labelV2;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @description : 快递预估时效查询请求类
  * @author:  kuaidi100
@@ -30,5 +32,9 @@ public class DeliveryTimeReq {
      * 产品类型
      */
     private String expType;
+    /**
+     * 物流轨迹信息
+     */
+    private List<DeliveryTimeLogistic> logistics;
 
 }
