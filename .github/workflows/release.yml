@@ -2,20 +2,24 @@ name: Release Build
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
+    paths:
+      - 'pom.xml'     # 仅当 pom.xml 改动时触发
 
 permissions:
   contents: write
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
 
     steps:
-      # 拉取代码
-      - name: Checkout
-        uses: actions/checkout@v3
+      # 拉取完整历史记录
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       # 设置 JDK 1.8
       - name: Set up JDK 1.8
@@ -29,12 +33,75 @@ jobs:
           gpg-private-key: ${{ secrets.GPG_SECRET }}
           gpg-passphrase: GPG_PASSPHRASE
 
-      # 获取 Maven 项目版本号
-      - name: Extract project version
-        id: get_version
-        run: echo "PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+      # 获取当前版本号
+      - name: Get current project version
+        id: version
+        run: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "PROJECT_VERSION=$VERSION" >> $GITHUB_ENV
+          echo "📦 Detected version: $VERSION"
 
-      # 使用 Maven 打包
+      # 获取上一个版本 tag（按时间排序）
+      - name: Get previous tag
+        id: prev_tag
+        run: |
+          PREV_TAG=$(git tag --sort=-creatordate | grep '^v' | head -n 1 || echo "")
+          echo "PREV_TAG=$PREV_TAG" >> $GITHUB_ENV
+          echo "Last version tag: $PREV_TAG"
+
+      # 检查版本是否递增
+      - name: Verify version increment
+        if: env.PREV_TAG != ''
+        run: |
+          PREV_VER=${PREV_TAG#v}
+          echo "🔍 Comparing $PREV_VER → ${PROJECT_VERSION}"
+          if [ "$(printf '%s\n' "$PREV_VER" "${PROJECT_VERSION}" | sort -V | head -n1)" = "${PROJECT_VERSION}" ] && [ "$PREV_VER" != "${PROJECT_VERSION}" ]; then
+            echo "✅ Version increment confirmed"
+          elif [ "$PREV_VER" = "${PROJECT_VERSION}" ]; then
+            echo "❌ Version unchanged (${PROJECT_VERSION}), skipping release."
+            exit 0
+          else
+            echo "❌ Version appears to be lower than previous ($PREV_VER → ${PROJECT_VERSION})."
+            exit 1
+          fi
+
+      # 检查该 tag 是否已存在（避免重复推送）
+      - name: Check if tag exists
+        id: check_tag
+        run: |
+          if git rev-parse "v${PROJECT_VERSION}" >/dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_ENV
+            echo "⚠️ Tag v${PROJECT_VERSION} already exists. Skipping release."
+          else
+            echo "exists=false" >> $GITHUB_ENV
+          fi
+
+      # 创建并推送新 tag
+      - name: Create and push tag
+        if: env.exists == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag "v${PROJECT_VERSION}"
+          git push origin "v${PROJECT_VERSION}"
+          echo "🏷️ Created tag v${PROJECT_VERSION}"
+
+      # 生成 Release Note（自动汇总 commit）
+      - name: Generate release notes
+        id: notes
+        run: |
+          if [ -z "${PREV_TAG}" ]; then
+            NOTES=$(git log --pretty=format:"- %s" -n 20)
+          else
+            NOTES=$(git log ${PREV_TAG}..HEAD --pretty=format:"- %s")
+          fi
+          echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
+          echo "$NOTES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          echo "📝 Generated release notes:"
+          echo "$NOTES"
+
+      # 构建项目
       - name: Build with Maven
         run: mvn clean package -DskipTests
 
@@ -46,20 +113,21 @@ jobs:
           SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSWORD }}
 
-      # 创建 Release（自动附带 Source code (zip/tar.gz)）
-      - name: Create Release
+      # 创建 GitHub Release
+      - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref_name }}
-          release_name: Release ${{ github.ref_name }}
+          tag_name: v${{ env.PROJECT_VERSION }}
+          release_name: Release v${{ env.PROJECT_VERSION }}
+          body: ${{ env.RELEASE_NOTES }}
           draft: false
           prerelease: false
 
-      # 上传 JAR 包
-      - name: Upload JAR
+      # 上传 JAR 到 Release
+      - name: Upload JAR to Release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
