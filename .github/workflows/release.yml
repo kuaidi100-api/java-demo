@@ -49,21 +49,39 @@ jobs:
           echo "PREV_TAG=$PREV_TAG" >> $GITHUB_ENV
           echo "Last version tag: $PREV_TAG"
 
-      # 检查版本是否递增
+      # 检查版本是否递增（严格语义化版本比较）
       - name: Verify version increment
         if: env.PREV_TAG != ''
         run: |
           PREV_VER=${PREV_TAG#v}
-          echo "🔍 Comparing $PREV_VER → ${PROJECT_VERSION}"
-          if [ "$(printf '%s\n' "$PREV_VER" "${PROJECT_VERSION}" | sort -V | head -n1)" = "${PROJECT_VERSION}" ] && [ "$PREV_VER" != "${PROJECT_VERSION}" ]; then
-            echo "✅ Version increment confirmed"
-          elif [ "$PREV_VER" = "${PROJECT_VERSION}" ]; then
-            echo "❌ Version unchanged (${PROJECT_VERSION}), skipping release."
+          NEW_VER=${PROJECT_VERSION}
+
+          # 解析 version
+          parse() {
+            IFS='.' read -r major minor patch <<< "$1"
+            echo "$major" "$minor" "$patch"
+          }
+
+          read p_major p_minor p_patch <<< "$(parse "$PREV_VER")"
+          read n_major n_minor n_patch <<< "$(parse "$NEW_VER")"
+
+          echo "🔍 Comparing $PREV_VER → $NEW_VER"
+
+          # 判断是否相等
+          if (( n_major == p_major && n_minor == p_minor && n_patch == p_patch )); then
+            echo "⚠️ Version unchanged ($NEW_VER), skipping release."
             exit 0
-          else
-            echo "❌ Version appears to be lower than previous ($PREV_VER → ${PROJECT_VERSION})."
-            exit 1
           fi
+
+          # 判断是否降级
+          if (( n_major < p_major )) \
+            || (( n_major == p_major && n_minor < p_minor )) \
+            || (( n_major == p_major && n_minor == p_minor && n_patch < p_patch )); then
+              echo "❌ Version appears to be lower than previous ($PREV_VER → $NEW_VER)."
+              exit 1
+          fi
+
+          echo "✅ Version increment confirmed"
 
       # 检查该 tag 是否已存在（避免重复推送）
       - name: Check if tag exists
