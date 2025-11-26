@@ -3,7 +3,7 @@ name: Release Build
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - 'pom.xml'     # 仅当 pom.xml 改动时触发
 

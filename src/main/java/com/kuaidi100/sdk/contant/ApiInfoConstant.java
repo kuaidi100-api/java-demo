@@ -243,4 +243,21 @@ public class ApiInfoConstant {
      * 同城寄件-加小费方法
      */
     public static final String BSAMECITY_ADDFEE = "addfee";
+
+    /**
+     * 取件码 - 注册接口URL
+     */
+    public static final String PICKUP_CODE_REGISTER_URL = "https://api.kuaidi100.com/pickupCode/register";
+    /**
+     * 取件码 - 注册方法
+     */
+    public static final String PICKUP_CODE_REGISTER_METHOD = "pickupCodeRegister";
+    /**
+     * 取件码 - 查询接口URL
+     */
+    public static final String PICKUP_CODE_QUERY_URL = "https://api.kuaidi100.com/pickupCode/query";
+    /**
+     * 取件码 - 查询方法
+     */
+    public static final String PICKUP_CODE_QUERY_METHOD = "pickupCodeQuery";
 }

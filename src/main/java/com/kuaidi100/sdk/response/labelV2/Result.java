@@ -20,4 +20,8 @@ public class Result<T> {
      * 响应耗时：毫秒
      */
     private long time;
+
+    public boolean isSuccess() {
+        return this.code == 200;
+    }
 }
