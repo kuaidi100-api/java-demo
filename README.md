@@ -28,7 +28,7 @@ java-demo使用和测试可参考[java-demo-test](https://github.com/kuaidi100-a
 
 ```css
 dependencies {
-	implementation 'com.github.kuaidi100-api:sdk:1.0.27'
+	implementation 'com.github.kuaidi100-api:sdk:1.1.0'
 }
 ```
 
@@ -38,7 +38,7 @@ dependencies {
     <dependency>
         <groupId>com.github.kuaidi100-api</groupId>
         <artifactId>sdk</artifactId>
-        <version>1.0.27</version>
+        <version>1.1.0</version>
     </dependency>
 ```
 
@@ -107,6 +107,8 @@ dependencies {
 - [C端寄件](https://github.com/kuaidi100-api/java-demo/blob/master/src/test/java/COrderTest.java)
 
 - [价格查询接口](https://github.com/kuaidi100-api/java-demo/blob/master/src/test/java/BaseServiceTest.java#L971)
+
+- [取件码接口](https://github.com/kuaidi100-api/java-demo/blob/master/src/test/java/PickupCodeTest.java)
 
 ## FAQ
 
