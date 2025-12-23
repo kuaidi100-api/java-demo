@@ -19,6 +19,11 @@ import org.apache.http.HttpStatus;
  * @version: 1.0.0
  */
 public class IntAddressResolution extends BaseClient {
+
+    public IntAddressResolution() {
+        this.setTimeOut(10000, 10000);
+    }
+
     @Override
     public String getApiUrl(BaseRequest request) {
         return ApiInfoConstant.INTADDRESS_RESOLUTION_URL;
