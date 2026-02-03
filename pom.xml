@@ -6,7 +6,7 @@
 
     <groupId>com.github.kuaidi100-api</groupId>
     <artifactId>sdk</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
 
     <name>api</name>
     <url>https://github.com/kuaidi100-api/java-demo</url>
