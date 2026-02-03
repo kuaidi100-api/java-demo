@@ -91,4 +91,7 @@ public class COrderReq {
      * 4：开通行政解析功能以及物流轨迹增加物流高级状态名称、状态值并且返回出发、目的及当前城市信息(详见：快递信息推送接口文档)
      */
     private String resultv2;
+
+    //平台订单号，最大32位。若此参数与之前的重复，48小时内返回第一次下单内容，否则会重新下单。
+    private String thirdOrderId;
 }

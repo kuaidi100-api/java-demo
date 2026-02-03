@@ -112,4 +112,25 @@ public class BOrderReq {
      * 打印状态回调地址，returnType为10时必填
      */
     private String printCallBackUrl;
+
+    //平台订单号，最大32位。若此参数与之前的重复，48小时内返回第一次下单内容，否则会重新下单
+    private String thirdOrderId;
+
+    //取件码自定义传入，需传入4位数字，仅用于极兔，其他快递公司传入无效
+    private String pickupCode;
+
+    //寄件人实名信息（圆通、极兔支持 ）
+    private String realName;
+
+    //寄件人证件类型，1：居民身份证 ；2：港澳居民来往内地通行证 ；3：台湾居民来往大陆通行证 ；4：中国公民护照（圆通、极兔支持 ）
+    private String sendIdCardType;
+
+    //寄件人证件号码 （圆通、极兔支持 ）
+    private String sendIdCard;
+
+    //渠道ID，如有多个同品牌运力，请联系商务提供后传入
+    private String channelSw;
+
+    //支付方式，SHIPPER: 寄付（默认）。不支持到付
+    private String payment;
 }
