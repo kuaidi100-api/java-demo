@@ -36,4 +36,9 @@ public class AddressResolutionParam {
      */
     private String htmlUrl;
 
+    /**
+     * 地址解析级别，传3表示解析到三级地址，传4表示解析到四级地址，默认值为3
+     */
+    private Integer addressLevel = 3;
+
 }
