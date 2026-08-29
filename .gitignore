@@ -41,6 +41,7 @@ coverage/
 .turbo/
 .cache/
 unpackage/
+apps/*/unpackage/
 
 # Local configuration and credentials
 .env
@@ -69,3 +70,4 @@ yarn-error.log*
 *.swo
 logs/
 tmp/
+.runtime/

@@ -1,0 +1,12 @@
+{
+  "name": "木棉速达用户端",
+  "appid": "__UNI__EXPRESSUSER",
+  "description": "快递综合服务平台用户端",
+  "versionName": "0.1.0",
+  "versionCode": "100",
+  "transformPx": false,
+  "h5": {
+    "title": "木棉速达",
+    "router": { "mode": "hash" }
+  }
+}

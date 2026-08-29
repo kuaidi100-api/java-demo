@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   ForbiddenException,
   Inject,
@@ -63,6 +64,8 @@ export class OrdersService {
 
   async create(principal: AuthPrincipal, dto: CreateOrderDto) {
     this.ensureUser(principal);
+    const sender = await this.resolveAddress(principal.id, dto.sender, dto.senderAddressId, '寄件');
+    const recipient = await this.resolveAddress(principal.id, dto.recipient, dto.recipientAddressId, '收件');
     const estimate = await this.estimate({
       serviceType: dto.serviceType,
       weightKg: dto.item.weightKg,
@@ -79,8 +82,8 @@ export class OrdersService {
         isMock: true,
         addresses: {
           create: [
-            this.addressData(OrderAddressType.SENDER, dto.sender),
-            this.addressData(OrderAddressType.RECIPIENT, dto.recipient),
+            this.addressData(OrderAddressType.SENDER, sender),
+            this.addressData(OrderAddressType.RECIPIENT, recipient),
           ],
         },
         items: { create: dto.item },
@@ -101,7 +104,12 @@ export class OrdersService {
     const where = principal.type === PrincipalType.USER
       ? { userId: principal.id }
       : principal.type === PrincipalType.COURIER
-        ? { OR: [{ courierId: principal.id }, { status: OrderStatus.PENDING_ACCEPTANCE }] }
+        ? {
+          OR: [
+            { courierId: principal.id },
+            { status: OrderStatus.PENDING_ACCEPTANCE, courierId: null },
+          ],
+        }
         : {};
     return this.prisma.expressOrder.findMany({
       where,
@@ -149,6 +157,16 @@ export class OrdersService {
     });
     if (!order) throw new NotFoundException('订单不存在');
     this.authorizeAction(principal, dto.action, order.userId, order.courierId);
+    if (dto.courierId && dto.action !== OrderAction.DISPATCH) {
+      throw new ConflictException('仅调度动作可以指定配送员');
+    }
+    if (dto.action === OrderAction.DISPATCH && dto.courierId) {
+      const courier = await this.prisma.courier.findFirst({
+        where: { id: dto.courierId, accountStatus: 'ACTIVE', deletedAt: null },
+        select: { id: true },
+      });
+      if (!courier) throw new NotFoundException('指定配送员不存在或不可用');
+    }
     const nextStatus = targetStatus(order.status, dto.action);
 
     let shipmentResult: Awaited<ReturnType<LogisticsProvider['createShipment']>> | undefined;
@@ -169,6 +187,9 @@ export class OrdersService {
         data: {
           status: nextStatus,
           version: { increment: 1 },
+          ...(dto.action === OrderAction.DISPATCH && dto.courierId
+            ? { courierId: dto.courierId }
+            : {}),
           ...(dto.action === OrderAction.ACCEPT ? { courierId: principal.id } : {}),
           ...(nextStatus === OrderStatus.CANCELLED ? { cancelledAt: new Date() } : {}),
           ...(nextStatus === OrderStatus.COMPLETED ? { completedAt: new Date() } : {}),
@@ -190,8 +211,15 @@ export class OrdersService {
       if (dto.action === OrderAction.DISPATCH) {
         await transaction.deliveryTask.upsert({
           where: { orderId: order.id },
-          update: { status: DeliveryTaskStatus.PENDING },
-          create: { orderId: order.id, status: DeliveryTaskStatus.PENDING },
+          update: {
+            status: DeliveryTaskStatus.PENDING,
+            ...(dto.courierId ? { courierId: dto.courierId } : {}),
+          },
+          create: {
+            orderId: order.id,
+            status: DeliveryTaskStatus.PENDING,
+            ...(dto.courierId ? { courierId: dto.courierId } : {}),
+          },
         });
         if (shipmentResult) {
           await transaction.shipment.create({
@@ -271,6 +299,34 @@ export class OrdersService {
     };
   }
 
+  private async resolveAddress(
+    userId: string,
+    inline: OrderAddressInputDto | undefined,
+    addressId: string | undefined,
+    label: string,
+  ): Promise<OrderAddressInputDto> {
+    if ((inline && addressId) || (!inline && !addressId)) {
+      throw new BadRequestException(`${label}地址必须在地址簿 ID 与新地址之间二选一`);
+    }
+    if (inline) return inline;
+    const saved = await this.prisma.userAddress.findFirst({
+      where: { id: addressId, userId, deletedAt: null },
+    });
+    if (!saved) throw new NotFoundException(`${label}地址不存在`);
+    return {
+      contactName: saved.contactName,
+      phone: this.security.decryptField(saved.phoneEncrypted),
+      countryCode: saved.countryCode,
+      country: saved.country,
+      province: saved.province ?? undefined,
+      city: saved.city,
+      district: saved.district ?? undefined,
+      detail: saved.detail,
+      latitude: saved.latitude === null ? undefined : Number(saved.latitude),
+      longitude: saved.longitude === null ? undefined : Number(saved.longitude),
+    };
+  }
+
   private orderNo(): string {
     const date = new Date().toISOString().slice(0, 10).replaceAll('-', '');
     return `DEMO-${date}-${randomInt(100000, 999999)}`;
@@ -306,7 +362,7 @@ export class OrdersService {
     if (
       principal.type === PrincipalType.COURIER &&
       courierActions.has(action) &&
-      (action === OrderAction.ACCEPT ? courierId === null : courierId === principal.id)
+      (action === OrderAction.ACCEPT ? courierId === null || courierId === principal.id : courierId === principal.id)
     ) return;
     if (
       principal.type === PrincipalType.ADMINISTRATOR &&

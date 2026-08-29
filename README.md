@@ -4,8 +4,8 @@
 `pom.xml` 保持原位，作为独立物流适配基础，不会由业务后端直接调用真实下单接口。
 
 当前阶段已提供 NestJS API、Prisma 数据模型、MySQL/Redis Docker Compose、Swagger、
-JWT 登录、地址与模拟订单最小接口。用户端、配送员端、管理后台仅建立边界目录，页面开发
-将在后续确认后进行。
+JWT 登录、地址与模拟订单接口，以及可联调的用户端、配送员端和管理后台。三端共享统一
+API 客户端，所有订单动作由后端身份、RBAC 与状态机校验。
 
 ## 本地启动
 
@@ -18,6 +18,9 @@ Copy-Item .env.example .env  # 首次启动；一键脚本也会自动创建
 
 - API 健康检查：`http://localhost:3000/api/v1/health`
 - Swagger：`http://localhost:3000/docs`
+- 用户端：`http://127.0.0.1:5173/`
+- 配送员端：`http://127.0.0.1:5174/`
+- 管理后台：`http://127.0.0.1:5175/`
 - 停止基础设施：`.\scripts\stop-local.ps1`
 - 完整设计：[docs/architecture.md](docs/architecture.md)
 - 数据模型：[docs/data-model.md](docs/data-model.md)
@@ -29,6 +32,9 @@ Copy-Item .env.example .env  # 首次启动；一键脚本也会自动创建
 `.env.example` 中的演示账号和演示密码只用于本地种子数据，禁止在生产环境复用；前端不会
 预填密码，也不会把 Access Token、Refresh Token 或敏感配置写入日志。客户端只读取
 `VITE_API_BASE_URL` 等公开配置，任何密钥都不得使用 `VITE_` 前缀。
+
+API 和本地数据库已启动时，可用 `.\scripts\start-previews.cmd` 一键启动三个可视化客户端。
+分别启动时使用 `npm run start:user`、`npm run start:courier`、`npm run start:admin`。
 
 ---
 

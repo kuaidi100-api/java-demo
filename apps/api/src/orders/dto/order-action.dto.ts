@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEnum, IsOptional, IsString, MaxLength } from 'class-validator';
+import { IsEnum, IsOptional, IsString, IsUUID, MaxLength } from 'class-validator';
 
 export enum OrderAction {
   SUBMIT = 'SUBMIT',
@@ -25,4 +25,9 @@ export class OrderActionDto {
   @IsString()
   @MaxLength(255)
   reason?: string;
+
+  @ApiPropertyOptional({ description: '管理员调度时可指定配送员 UUID' })
+  @IsOptional()
+  @IsUUID()
+  courierId?: string;
 }

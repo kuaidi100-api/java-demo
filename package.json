@@ -4,19 +4,25 @@
   "private": true,
   "description": "快递综合服务平台 monorepo（保留快递100 Java SDK）",
   "workspaces": [
-    "apps/api",
+    "apps/*",
     "packages/*"
   ],
   "scripts": {
-    "build": "npm run build:packages && npm run build:api",
+    "build": "npm run build:packages && npm run build:api && npm run build:clients",
     "build:packages": "npm run build -w @express-platform/shared-types && npm run build -w @express-platform/api-client && npm run build -w @express-platform/ui-components",
     "build:api": "npm run build -w @express-platform/api",
-    "typecheck": "npm run typecheck -w @express-platform/shared-types && npm run typecheck -w @express-platform/api-client && npm run typecheck -w @express-platform/ui-components && npm run typecheck -w @express-platform/api",
+    "build:clients": "npm run build:h5 -w @express-platform/user-app && npm run build:h5 -w @express-platform/courier-app && npm run build -w @express-platform/admin-web",
+    "typecheck": "npm run build -w @express-platform/shared-types && npm run typecheck -w @express-platform/shared-types && npm run typecheck -w @express-platform/api-client && npm run typecheck -w @express-platform/ui-components && npm run typecheck -w @express-platform/api && npm run typecheck:clients",
+    "typecheck:clients": "npm run typecheck -w @express-platform/user-app && npm run typecheck -w @express-platform/courier-app && npm run typecheck -w @express-platform/admin-web",
     "lint": "npm run lint -w @express-platform/api",
-    "test": "npm run test -w @express-platform/api",
+    "test": "npm run test -w @express-platform/api && npm run test -w @express-platform/api-client",
     "test:e2e": "npm run test:e2e -w @express-platform/api",
     "start:api": "npm run start:dev -w @express-platform/api",
     "start:api:prod": "npm run start:prod -w @express-platform/api",
+    "start:user": "npm run dev:h5 -w @express-platform/user-app",
+    "start:courier": "npm run dev:h5 -w @express-platform/courier-app",
+    "start:admin": "npm run dev -w @express-platform/admin-web",
+    "start:previews": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/start-previews.ps1",
     "db:generate": "npm run prisma:generate -w @express-platform/api",
     "db:migrate": "npm run prisma:migrate -w @express-platform/api",
     "db:seed": "npm run prisma:seed -w @express-platform/api",
@@ -27,11 +33,24 @@
     "node": ">=20",
     "npm": ">=10"
   },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "magicast": "0.3.5",
+    "vite": "8.2.2"
+  },
   "allowScripts": {
     "@prisma/client": true,
     "@prisma/engines": true,
     "@scarf/scarf": false,
     "esbuild": true,
     "prisma": true
+  },
+  "overrides": {
+    "vitest": {
+      "vite": "8.2.2"
+    },
+    "@vitest/mocker": {
+      "vite": "8.2.2"
+    }
   }
 }

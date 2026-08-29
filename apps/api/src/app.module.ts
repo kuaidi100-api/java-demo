@@ -1,6 +1,7 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
+import { AdminModule } from './admin/admin.module.js';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { AuthModule } from './auth/auth.module.js';
@@ -24,6 +25,7 @@ import { UsersModule } from './users/users.module.js';
     SecurityModule,
     ProvidersModule,
     AuthModule,
+    AdminModule,
     UsersModule,
     OrdersModule,
   ],

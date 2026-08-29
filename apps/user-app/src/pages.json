@@ -1,0 +1,14 @@
+{
+  "pages": [
+    { "path": "pages/login/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/home/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/order-create/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/orders/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/order-detail/index", "style": { "navigationStyle": "custom" } }
+  ],
+  "globalStyle": {
+    "backgroundColor": "#F7F3ED",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "木棉速达"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "pages":[
+    {"path":"pages/login/index","style":{"navigationStyle":"custom"}},
+    {"path":"pages/workbench/index","style":{"navigationStyle":"custom"}},
+    {"path":"pages/order-detail/index","style":{"navigationStyle":"custom"}}
+  ],
+  "globalStyle":{"backgroundColor":"#F2F0EB","navigationBarTextStyle":"black","navigationBarTitleText":"木棉骑手"}
+}

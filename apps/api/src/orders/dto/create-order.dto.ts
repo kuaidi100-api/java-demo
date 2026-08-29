@@ -9,6 +9,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  IsUUID,
   Matches,
   Max,
   MaxLength,
@@ -107,15 +108,27 @@ export class CreateOrderDto {
   @IsEnum(OrderServiceType)
   serviceType!: OrderServiceType;
 
-  @ApiProperty({ type: OrderAddressInputDto })
+  @ApiPropertyOptional({ type: OrderAddressInputDto, description: '与 senderAddressId 二选一' })
+  @IsOptional()
   @ValidateNested()
   @Type(() => OrderAddressInputDto)
-  sender!: OrderAddressInputDto;
+  sender?: OrderAddressInputDto;
 
-  @ApiProperty({ type: OrderAddressInputDto })
+  @ApiPropertyOptional({ type: OrderAddressInputDto, description: '与 recipientAddressId 二选一' })
+  @IsOptional()
   @ValidateNested()
   @Type(() => OrderAddressInputDto)
-  recipient!: OrderAddressInputDto;
+  recipient?: OrderAddressInputDto;
+
+  @ApiPropertyOptional({ description: '当前用户地址簿中的寄件地址 UUID' })
+  @IsOptional()
+  @IsUUID()
+  senderAddressId?: string;
+
+  @ApiPropertyOptional({ description: '当前用户地址簿中的收件地址 UUID' })
+  @IsOptional()
+  @IsUUID()
+  recipientAddressId?: string;
 
   @ApiProperty({ type: OrderItemInputDto })
   @ValidateNested()
