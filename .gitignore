@@ -30,3 +30,42 @@
 *.mvnw/*
 *.txt
 *.mvnw
+
+# Node / TypeScript workspaces
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+.npm/
+.vite/
+.turbo/
+.cache/
+unpackage/
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+*.local
+
+# Local runtime data
+uploads/*
+!uploads/.gitkeep
+infrastructure/docker/data/
+infrastructure/docker/runtime/
+docker-data/
+mysql-data/
+redis-data/
+run-stale-codex-*/
+
+# Logs and process files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.pid
+*.tmp
+*.temp
+*.swp
+*.swo
+logs/
+tmp/

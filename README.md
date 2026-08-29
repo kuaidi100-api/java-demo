@@ -1,3 +1,39 @@
+# 快递综合服务平台
+
+本仓库正在原快递100 Java SDK 基础上扩展多模块平台。原 SDK 的 `src/` 与根目录
+`pom.xml` 保持原位，作为独立物流适配基础，不会由业务后端直接调用真实下单接口。
+
+当前阶段已提供 NestJS API、Prisma 数据模型、MySQL/Redis Docker Compose、Swagger、
+JWT 登录、地址与模拟订单最小接口。用户端、配送员端、管理后台仅建立边界目录，页面开发
+将在后续确认后进行。
+
+## 本地启动
+
+前置条件：Node.js 20+、npm 10+、Docker Desktop。
+
+```powershell
+Copy-Item .env.example .env  # 首次启动；一键脚本也会自动创建
+.\scripts\start-local.cmd
+```
+
+- API 健康检查：`http://localhost:3000/api/v1/health`
+- Swagger：`http://localhost:3000/docs`
+- 停止基础设施：`.\scripts\stop-local.ps1`
+- 完整设计：[docs/architecture.md](docs/architecture.md)
+- 数据模型：[docs/data-model.md](docs/data-model.md)
+- 状态机：[docs/order-state-machine.md](docs/order-state-machine.md)
+
+开发环境固定显示“模拟环境”；快递100正式接口、短信、支付与 Google Maps 未配置时均不会
+执行真实外部操作。任何密钥只允许写入已被 Git 忽略的 `.env`。
+
+`.env.example` 中的演示账号和演示密码只用于本地种子数据，禁止在生产环境复用；前端不会
+预填密码，也不会把 Access Token、Refresh Token 或敏感配置写入日志。客户端只读取
+`VITE_API_BASE_URL` 等公开配置，任何密钥都不得使用 `VITE_` 前缀。
+
+---
+
+## 原快递100 Java SDK 说明
+
 <h1 align="center"><a href="https://github.com/kuaidi100-api/kuadi100-api/" target="_blank">java-demo Project</a></h1>
 
 ## Introduce

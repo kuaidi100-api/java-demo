@@ -1,0 +1,583 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum AccountStatus {
+  ACTIVE
+  DISABLED
+  LOCKED
+}
+
+enum CourierWorkStatus {
+  OFFLINE
+  AVAILABLE
+  BUSY
+  SUSPENDED
+}
+
+enum PrincipalType {
+  USER
+  COURIER
+  ADMINISTRATOR
+  SYSTEM
+}
+
+enum OrderStatus {
+  DRAFT
+  PENDING_CONFIRMATION
+  PENDING_DISPATCH
+  PENDING_ACCEPTANCE
+  ACCEPTED
+  PICKING_UP
+  PICKED_UP
+  IN_TRANSIT
+  DELIVERED
+  COMPLETED
+  CANCELLED
+  EXCEPTION
+}
+
+enum OrderServiceType {
+  EXPRESS
+  PICKUP
+  SAME_CITY
+}
+
+enum OrderAddressType {
+  SENDER
+  RECIPIENT
+}
+
+enum ItemType {
+  DOCUMENT
+  CLOTHING
+  FOOD
+  DIGITAL
+  DAILY_NECESSITIES
+  OTHER
+}
+
+enum ShipmentStatus {
+  PENDING
+  CREATED
+  IN_TRANSIT
+  DELIVERED
+  CANCELLED
+  EXCEPTION
+}
+
+enum DeliveryTaskStatus {
+  PENDING
+  ACCEPTED
+  PICKING_UP
+  PICKED_UP
+  IN_TRANSIT
+  DELIVERED
+  CANCELLED
+  EXCEPTION
+}
+
+enum DeliveryProofType {
+  PICKUP_PHOTO
+  DELIVERY_PHOTO
+  SIGNATURE
+  EXCEPTION_PHOTO
+}
+
+enum TicketStatus {
+  OPEN
+  PROCESSING
+  RESOLVED
+  CLOSED
+}
+
+enum TicketPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum NotificationChannel {
+  IN_APP
+  SMS
+  PUSH
+  EMAIL
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  FAILED
+  READ
+}
+
+model User {
+  id             String        @id @default(uuid()) @db.Char(36)
+  displayName    String        @map("display_name") @db.VarChar(80)
+  phoneHash      String        @unique @map("phone_hash") @db.Char(64)
+  phoneEncrypted String        @map("phone_encrypted") @db.Text
+  phoneLast4     String        @map("phone_last4") @db.Char(4)
+  passwordHash   String        @map("password_hash") @db.VarChar(255)
+  status         AccountStatus @default(ACTIVE)
+  tokenVersion   Int           @default(0) @map("token_version")
+  createdAt      DateTime      @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt      DateTime      @updatedAt @map("updated_at") @db.DateTime(3)
+  deletedAt      DateTime?     @map("deleted_at") @db.DateTime(3)
+
+  addresses     UserAddress[]
+  orders        ExpressOrder[]
+  roles         UserRole[]
+  tickets       CustomerServiceTicket[]
+  notifications Notification[]
+
+  @@index([status])
+  @@map("users")
+}
+
+model UserAddress {
+  id                String    @id @default(uuid()) @db.Char(36)
+  userId            String    @map("user_id") @db.Char(36)
+  label             String?   @db.VarChar(30)
+  contactName       String    @map("contact_name") @db.VarChar(80)
+  phoneHash         String    @map("phone_hash") @db.Char(64)
+  phoneEncrypted    String    @map("phone_encrypted") @db.Text
+  phoneLast4        String    @map("phone_last4") @db.Char(4)
+  countryCode       String    @default("LA") @map("country_code") @db.Char(2)
+  country           String    @db.VarChar(80)
+  province          String?   @db.VarChar(100)
+  city              String    @db.VarChar(100)
+  district          String?   @db.VarChar(100)
+  detail            String    @db.VarChar(255)
+  postalCode        String?   @map("postal_code") @db.VarChar(20)
+  latitude          Decimal?  @db.Decimal(10, 7)
+  longitude         Decimal?  @db.Decimal(10, 7)
+  isDefaultSender   Boolean   @default(false) @map("is_default_sender")
+  isDefaultReceiver Boolean   @default(false) @map("is_default_receiver")
+  createdAt         DateTime  @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt         DateTime  @updatedAt @map("updated_at") @db.DateTime(3)
+  deletedAt         DateTime? @map("deleted_at") @db.DateTime(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, deletedAt])
+  @@map("user_addresses")
+}
+
+model Courier {
+  id             String            @id @default(uuid()) @db.Char(36)
+  displayName    String            @map("display_name") @db.VarChar(80)
+  phoneHash      String            @unique @map("phone_hash") @db.Char(64)
+  phoneEncrypted String            @map("phone_encrypted") @db.Text
+  phoneLast4     String            @map("phone_last4") @db.Char(4)
+  passwordHash   String            @map("password_hash") @db.VarChar(255)
+  accountStatus  AccountStatus     @default(ACTIVE) @map("account_status")
+  workStatus     CourierWorkStatus @default(OFFLINE) @map("work_status")
+  tokenVersion   Int               @default(0) @map("token_version")
+  createdAt      DateTime          @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt      DateTime          @updatedAt @map("updated_at") @db.DateTime(3)
+  deletedAt      DateTime?         @map("deleted_at") @db.DateTime(3)
+
+  locations CourierLocation[]
+  orders    ExpressOrder[]
+  tasks     DeliveryTask[]
+
+  @@index([accountStatus, workStatus])
+  @@map("couriers")
+}
+
+model CourierLocation {
+  id         String   @id @default(uuid()) @db.Char(36)
+  courierId  String   @map("courier_id") @db.Char(36)
+  latitude   Decimal  @db.Decimal(10, 7)
+  longitude  Decimal  @db.Decimal(10, 7)
+  accuracyM  Decimal? @map("accuracy_m") @db.Decimal(8, 2)
+  heading    Decimal? @db.Decimal(6, 2)
+  speedKph   Decimal? @map("speed_kph") @db.Decimal(8, 2)
+  recordedAt DateTime @map("recorded_at") @db.DateTime(3)
+  createdAt  DateTime @default(now()) @map("created_at") @db.DateTime(3)
+
+  courier Courier @relation(fields: [courierId], references: [id], onDelete: Cascade)
+
+  @@index([courierId, recordedAt])
+  @@map("courier_locations")
+}
+
+model Administrator {
+  id           String        @id @default(uuid()) @db.Char(36)
+  username     String        @unique @db.VarChar(60)
+  displayName  String        @map("display_name") @db.VarChar(80)
+  passwordHash String        @map("password_hash") @db.VarChar(255)
+  status       AccountStatus @default(ACTIVE)
+  tokenVersion Int           @default(0) @map("token_version")
+  createdAt    DateTime      @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt    DateTime      @updatedAt @map("updated_at") @db.DateTime(3)
+  deletedAt    DateTime?     @map("deleted_at") @db.DateTime(3)
+
+  roles           AdministratorRole[]
+  assignedTickets CustomerServiceTicket[]
+  operationLogs   OperationLog[]
+
+  @@index([status])
+  @@map("administrators")
+}
+
+model Role {
+  id          String   @id @default(uuid()) @db.Char(36)
+  code        String   @unique @db.VarChar(60)
+  name        String   @db.VarChar(80)
+  description String?  @db.VarChar(255)
+  isSystem    Boolean  @default(false) @map("is_system")
+  createdAt   DateTime @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.DateTime(3)
+
+  userRoles          UserRole[]
+  administratorRoles AdministratorRole[]
+  permissions        RolePermission[]
+
+  @@map("roles")
+}
+
+model Permission {
+  id          String   @id @default(uuid()) @db.Char(36)
+  code        String   @unique @db.VarChar(100)
+  name        String   @db.VarChar(100)
+  description String?  @db.VarChar(255)
+  createdAt   DateTime @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.DateTime(3)
+
+  roles RolePermission[]
+
+  @@map("permissions")
+}
+
+model UserRole {
+  id        String   @id @default(uuid()) @db.Char(36)
+  userId    String   @map("user_id") @db.Char(36)
+  roleId    String   @map("role_id") @db.Char(36)
+  createdAt DateTime @default(now()) @map("created_at") @db.DateTime(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+  @@map("user_roles")
+}
+
+model AdministratorRole {
+  id              String   @id @default(uuid()) @db.Char(36)
+  administratorId String   @map("administrator_id") @db.Char(36)
+  roleId          String   @map("role_id") @db.Char(36)
+  createdAt       DateTime @default(now()) @map("created_at") @db.DateTime(3)
+
+  administrator Administrator @relation(fields: [administratorId], references: [id], onDelete: Cascade)
+  role          Role          @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([administratorId, roleId])
+  @@map("administrator_roles")
+}
+
+model RolePermission {
+  id           String   @id @default(uuid()) @db.Char(36)
+  roleId       String   @map("role_id") @db.Char(36)
+  permissionId String   @map("permission_id") @db.Char(36)
+  createdAt    DateTime @default(now()) @map("created_at") @db.DateTime(3)
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+model RefreshSession {
+  id          String        @id @default(uuid()) @db.Char(36)
+  subjectType PrincipalType @map("subject_type")
+  subjectId   String        @map("subject_id") @db.Char(36)
+  tokenHash   String        @unique @map("token_hash") @db.Char(64)
+  expiresAt   DateTime      @map("expires_at") @db.DateTime(3)
+  revokedAt   DateTime?     @map("revoked_at") @db.DateTime(3)
+  createdAt   DateTime      @default(now()) @map("created_at") @db.DateTime(3)
+  lastUsedAt  DateTime?     @map("last_used_at") @db.DateTime(3)
+  userAgent   String?       @map("user_agent") @db.VarChar(255)
+  ipHash      String?       @map("ip_hash") @db.Char(64)
+
+  @@index([subjectType, subjectId, revokedAt])
+  @@map("refresh_sessions")
+}
+
+model ExpressOrder {
+  id                String           @id @default(uuid()) @db.Char(36)
+  orderNo           String           @unique @map("order_no") @db.VarChar(32)
+  userId            String           @map("user_id") @db.Char(36)
+  courierId         String?          @map("courier_id") @db.Char(36)
+  serviceType       OrderServiceType @map("service_type")
+  status            OrderStatus      @default(DRAFT)
+  scheduledPickupAt DateTime?        @map("scheduled_pickup_at") @db.DateTime(3)
+  estimatedFee      Decimal          @default(0) @map("estimated_fee") @db.Decimal(12, 2)
+  actualFee         Decimal?         @map("actual_fee") @db.Decimal(12, 2)
+  currency          String           @default("LAK") @db.Char(3)
+  remark            String?          @db.VarChar(500)
+  isMock            Boolean          @default(true) @map("is_mock")
+  version           Int              @default(0)
+  createdAt         DateTime         @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt         DateTime         @updatedAt @map("updated_at") @db.DateTime(3)
+  cancelledAt       DateTime?        @map("cancelled_at") @db.DateTime(3)
+  completedAt       DateTime?        @map("completed_at") @db.DateTime(3)
+
+  user          User                    @relation(fields: [userId], references: [id])
+  courier       Courier?                @relation(fields: [courierId], references: [id])
+  addresses     OrderAddress[]
+  items         OrderItem[]
+  statusLogs    OrderStatusLog[]
+  shipment      Shipment?
+  task          DeliveryTask?
+  tickets       CustomerServiceTicket[]
+  notifications Notification[]
+
+  @@index([userId, createdAt])
+  @@index([courierId, status])
+  @@index([status, serviceType, createdAt])
+  @@map("express_orders")
+}
+
+model OrderAddress {
+  id             String           @id @default(uuid()) @db.Char(36)
+  orderId        String           @map("order_id") @db.Char(36)
+  type           OrderAddressType
+  contactName    String           @map("contact_name") @db.VarChar(80)
+  phoneHash      String           @map("phone_hash") @db.Char(64)
+  phoneEncrypted String           @map("phone_encrypted") @db.Text
+  phoneLast4     String           @map("phone_last4") @db.Char(4)
+  countryCode    String           @default("LA") @map("country_code") @db.Char(2)
+  country        String           @db.VarChar(80)
+  province       String?          @db.VarChar(100)
+  city           String           @db.VarChar(100)
+  district       String?          @db.VarChar(100)
+  detail         String           @db.VarChar(255)
+  postalCode     String?          @map("postal_code") @db.VarChar(20)
+  latitude       Decimal?         @db.Decimal(10, 7)
+  longitude      Decimal?         @db.Decimal(10, 7)
+  createdAt      DateTime         @default(now()) @map("created_at") @db.DateTime(3)
+
+  order ExpressOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@unique([orderId, type])
+  @@map("order_addresses")
+}
+
+model OrderItem {
+  id            String   @id @default(uuid()) @db.Char(36)
+  orderId       String   @map("order_id") @db.Char(36)
+  type          ItemType
+  name          String   @db.VarChar(100)
+  quantity      Int      @default(1)
+  weightKg      Decimal  @map("weight_kg") @db.Decimal(10, 3)
+  declaredValue Decimal? @map("declared_value") @db.Decimal(12, 2)
+  notes         String?  @db.VarChar(255)
+  createdAt     DateTime @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt     DateTime @updatedAt @map("updated_at") @db.DateTime(3)
+
+  order ExpressOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@map("order_items")
+}
+
+model OrderStatusLog {
+  id           String        @id @default(uuid()) @db.Char(36)
+  orderId      String        @map("order_id") @db.Char(36)
+  fromStatus   OrderStatus?  @map("from_status")
+  toStatus     OrderStatus   @map("to_status")
+  operatorType PrincipalType @map("operator_type")
+  operatorId   String?       @map("operator_id") @db.Char(36)
+  reason       String?       @db.VarChar(255)
+  requestId    String?       @map("request_id") @db.VarChar(64)
+  metadata     Json?
+  createdAt    DateTime      @default(now()) @map("created_at") @db.DateTime(3)
+
+  order ExpressOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId, createdAt])
+  @@map("order_status_logs")
+}
+
+model Shipment {
+  id           String         @id @default(uuid()) @db.Char(36)
+  orderId      String         @unique @map("order_id") @db.Char(36)
+  shipmentNo   String         @unique @map("shipment_no") @db.VarChar(40)
+  providerCode String         @map("provider_code") @db.VarChar(40)
+  providerRef  String?        @map("provider_ref") @db.VarChar(100)
+  status       ShipmentStatus @default(PENDING)
+  isMock       Boolean        @default(true) @map("is_mock")
+  createdAt    DateTime       @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt    DateTime       @updatedAt @map("updated_at") @db.DateTime(3)
+
+  order          ExpressOrder    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  trackingEvents TrackingEvent[]
+
+  @@index([status, updatedAt])
+  @@map("shipments")
+}
+
+model TrackingEvent {
+  id          String   @id @default(uuid()) @db.Char(36)
+  shipmentId  String   @map("shipment_id") @db.Char(36)
+  status      String   @db.VarChar(50)
+  description String   @db.VarChar(255)
+  location    String?  @db.VarChar(150)
+  latitude    Decimal? @db.Decimal(10, 7)
+  longitude   Decimal? @db.Decimal(10, 7)
+  occurredAt  DateTime @map("occurred_at") @db.DateTime(3)
+  createdAt   DateTime @default(now()) @map("created_at") @db.DateTime(3)
+
+  shipment Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+
+  @@index([shipmentId, occurredAt])
+  @@map("tracking_events")
+}
+
+model DeliveryTask {
+  id          String             @id @default(uuid()) @db.Char(36)
+  orderId     String             @unique @map("order_id") @db.Char(36)
+  courierId   String?            @map("courier_id") @db.Char(36)
+  status      DeliveryTaskStatus @default(PENDING)
+  acceptedAt  DateTime?          @map("accepted_at") @db.DateTime(3)
+  pickupAt    DateTime?          @map("pickup_at") @db.DateTime(3)
+  deliveredAt DateTime?          @map("delivered_at") @db.DateTime(3)
+  createdAt   DateTime           @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt   DateTime           @updatedAt @map("updated_at") @db.DateTime(3)
+
+  order   ExpressOrder    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  courier Courier?        @relation(fields: [courierId], references: [id])
+  proofs  DeliveryProof[]
+
+  @@index([courierId, status])
+  @@index([status, createdAt])
+  @@map("delivery_tasks")
+}
+
+model DeliveryProof {
+  id         String            @id @default(uuid()) @db.Char(36)
+  taskId     String            @map("task_id") @db.Char(36)
+  type       DeliveryProofType
+  storageKey String            @map("storage_key") @db.VarChar(255)
+  mimeType   String            @map("mime_type") @db.VarChar(100)
+  sizeBytes  Int               @map("size_bytes")
+  isPrivate  Boolean           @default(true) @map("is_private")
+  uploadedBy String            @map("uploaded_by") @db.Char(36)
+  createdAt  DateTime          @default(now()) @map("created_at") @db.DateTime(3)
+
+  task DeliveryTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@index([taskId, createdAt])
+  @@map("delivery_proofs")
+}
+
+model ServiceArea {
+  id          String   @id @default(uuid()) @db.Char(36)
+  code        String   @unique @db.VarChar(50)
+  name        String   @db.VarChar(100)
+  countryCode String   @default("LA") @map("country_code") @db.Char(2)
+  region      String?  @db.VarChar(100)
+  boundary    Json
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.DateTime(3)
+
+  pricingRules PricingRule[]
+
+  @@index([countryCode, isActive])
+  @@map("service_areas")
+}
+
+model PricingRule {
+  id            String           @id @default(uuid()) @db.Char(36)
+  serviceAreaId String?          @map("service_area_id") @db.Char(36)
+  name          String           @db.VarChar(100)
+  serviceType   OrderServiceType @map("service_type")
+  baseFee       Decimal          @map("base_fee") @db.Decimal(12, 2)
+  perKmFee      Decimal          @default(0) @map("per_km_fee") @db.Decimal(12, 2)
+  perKgFee      Decimal          @default(0) @map("per_kg_fee") @db.Decimal(12, 2)
+  minimumFee    Decimal          @map("minimum_fee") @db.Decimal(12, 2)
+  currency      String           @default("LAK") @db.Char(3)
+  isActive      Boolean          @default(true) @map("is_active")
+  effectiveFrom DateTime         @map("effective_from") @db.DateTime(3)
+  effectiveTo   DateTime?        @map("effective_to") @db.DateTime(3)
+  createdAt     DateTime         @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt     DateTime         @updatedAt @map("updated_at") @db.DateTime(3)
+
+  serviceArea ServiceArea? @relation(fields: [serviceAreaId], references: [id])
+
+  @@index([serviceType, isActive, effectiveFrom])
+  @@map("pricing_rules")
+}
+
+model CustomerServiceTicket {
+  id              String         @id @default(uuid()) @db.Char(36)
+  ticketNo        String         @unique @map("ticket_no") @db.VarChar(32)
+  userId          String         @map("user_id") @db.Char(36)
+  orderId         String?        @map("order_id") @db.Char(36)
+  assignedAdminId String?        @map("assigned_admin_id") @db.Char(36)
+  subject         String         @db.VarChar(150)
+  description     String         @db.Text
+  status          TicketStatus   @default(OPEN)
+  priority        TicketPriority @default(NORMAL)
+  createdAt       DateTime       @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt       DateTime       @updatedAt @map("updated_at") @db.DateTime(3)
+  resolvedAt      DateTime?      @map("resolved_at") @db.DateTime(3)
+
+  user          User           @relation(fields: [userId], references: [id])
+  order         ExpressOrder?  @relation(fields: [orderId], references: [id])
+  assignedAdmin Administrator? @relation(fields: [assignedAdminId], references: [id])
+
+  @@index([status, priority, createdAt])
+  @@map("customer_service_tickets")
+}
+
+model Notification {
+  id        String              @id @default(uuid()) @db.Char(36)
+  userId    String              @map("user_id") @db.Char(36)
+  orderId   String?             @map("order_id") @db.Char(36)
+  channel   NotificationChannel
+  status    NotificationStatus  @default(PENDING)
+  title     String              @db.VarChar(120)
+  content   String              @db.VarChar(500)
+  metadata  Json?
+  sentAt    DateTime?           @map("sent_at") @db.DateTime(3)
+  readAt    DateTime?           @map("read_at") @db.DateTime(3)
+  createdAt DateTime            @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt DateTime            @updatedAt @map("updated_at") @db.DateTime(3)
+
+  user  User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  order ExpressOrder? @relation(fields: [orderId], references: [id])
+
+  @@index([userId, status, createdAt])
+  @@map("notifications")
+}
+
+model OperationLog {
+  id              String        @id @default(uuid()) @db.Char(36)
+  administratorId String?       @map("administrator_id") @db.Char(36)
+  operatorType    PrincipalType @map("operator_type")
+  operatorId      String?       @map("operator_id") @db.Char(36)
+  action          String        @db.VarChar(100)
+  resourceType    String        @map("resource_type") @db.VarChar(80)
+  resourceId      String?       @map("resource_id") @db.Char(36)
+  requestId       String?       @map("request_id") @db.VarChar(64)
+  ipHash          String?       @map("ip_hash") @db.Char(64)
+  result          String        @db.VarChar(30)
+  metadata        Json?
+  createdAt       DateTime      @default(now()) @map("created_at") @db.DateTime(3)
+
+  administrator Administrator? @relation(fields: [administratorId], references: [id])
+
+  @@index([resourceType, resourceId, createdAt])
+  @@index([operatorType, operatorId, createdAt])
+  @@map("operation_logs")
+}

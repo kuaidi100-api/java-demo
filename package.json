@@ -1,0 +1,37 @@
+{
+  "name": "express-service-platform",
+  "version": "0.1.0",
+  "private": true,
+  "description": "快递综合服务平台 monorepo（保留快递100 Java SDK）",
+  "workspaces": [
+    "apps/api",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build:packages && npm run build:api",
+    "build:packages": "npm run build -w @express-platform/shared-types && npm run build -w @express-platform/api-client && npm run build -w @express-platform/ui-components",
+    "build:api": "npm run build -w @express-platform/api",
+    "typecheck": "npm run typecheck -w @express-platform/shared-types && npm run typecheck -w @express-platform/api-client && npm run typecheck -w @express-platform/ui-components && npm run typecheck -w @express-platform/api",
+    "lint": "npm run lint -w @express-platform/api",
+    "test": "npm run test -w @express-platform/api",
+    "test:e2e": "npm run test:e2e -w @express-platform/api",
+    "start:api": "npm run start:dev -w @express-platform/api",
+    "start:api:prod": "npm run start:prod -w @express-platform/api",
+    "db:generate": "npm run prisma:generate -w @express-platform/api",
+    "db:migrate": "npm run prisma:migrate -w @express-platform/api",
+    "db:seed": "npm run prisma:seed -w @express-platform/api",
+    "infra:up": "docker compose up -d mysql redis",
+    "infra:down": "docker compose down"
+  },
+  "engines": {
+    "node": ">=20",
+    "npm": ">=10"
+  },
+  "allowScripts": {
+    "@prisma/client": true,
+    "@prisma/engines": true,
+    "@scarf/scarf": false,
+    "esbuild": true,
+    "prisma": true
+  }
+}
