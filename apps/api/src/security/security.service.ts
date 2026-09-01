@@ -17,14 +17,30 @@ export class SecurityService {
     return phone.replace(/[\s()-]/g, '');
   }
 
+  normalizeEmail(email: string): string {
+    return email.trim().toLowerCase();
+  }
+
   hashPhone(phone: string): string {
     return createHmac('sha256', this.config.getOrThrow<string>('PHONE_HASH_KEY'))
       .update(this.normalizePhone(phone))
       .digest('hex');
   }
 
+  hashEmail(email: string): string {
+    return createHmac('sha256', this.config.getOrThrow<string>('PHONE_HASH_KEY'))
+      .update(this.normalizeEmail(email))
+      .digest('hex');
+  }
+
   hashOpaqueToken(token: string): string {
     return createHash('sha256').update(token).digest('hex');
+  }
+
+  hashVerificationCode(challengeId: string, code: string): string {
+    return createHmac('sha256', this.config.getOrThrow<string>('PHONE_HASH_KEY'))
+      .update(`${challengeId}:${code}`)
+      .digest('hex');
   }
 
   encryptField(value: string): string {
@@ -52,6 +68,10 @@ export class SecurityService {
 
   maskPhone(last4: string): string {
     return `******${last4}`;
+  }
+
+  maskEmail(last4: string): string {
+    return `***@${last4}`;
   }
 
   hashPassword(password: string): Promise<string> {

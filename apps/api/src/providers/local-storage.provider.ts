@@ -23,8 +23,24 @@ export class LocalStorageProvider implements StorageProvider {
 
     const baseDir = resolve(this.config.get<string>('UPLOAD_DIR') ?? 'uploads');
     await mkdir(baseDir, { recursive: true });
-    const storageKey = `${randomUUID()}${extension}`;
-    await writeFile(join(baseDir, storageKey), input.content, { flag: 'wx' });
-    return { storageKey, sizeBytes: input.content.length };
+    const folder = input.folder ?? 'uploads';
+    const storageKey = `${folder}/${randomUUID()}${extension}`;
+    const fullPath = join(baseDir, storageKey);
+    await mkdir(join(baseDir, folder), { recursive: true });
+    await writeFile(fullPath, input.content, { flag: 'wx' });
+    return {
+      storageKey,
+      sizeBytes: input.content.length,
+      publicUrl: this.publicUrl(storageKey),
+      signedUrl: await this.signedUrl(storageKey),
+    };
+  }
+
+  publicUrl(storageKey: string): string {
+    return `/uploads/${storageKey}`;
+  }
+
+  async signedUrl(storageKey: string): Promise<string> {
+    return this.publicUrl(storageKey);
   }
 }

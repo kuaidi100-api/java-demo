@@ -121,6 +121,8 @@ export class OrdersService {
         serviceType: true,
         status: true,
         estimatedFee: true,
+        actualFee: true,
+        paymentStatus: true,
         currency: true,
         isMock: true,
         scheduledPickupAt: true,
@@ -139,6 +141,10 @@ export class OrdersService {
         statusLogs: { orderBy: { createdAt: 'asc' } },
         shipment: { include: { trackingEvents: { orderBy: { occurredAt: 'asc' } } } },
         task: true,
+        freightDetail: true,
+        errandDetail: true,
+        purchaseDetail: true,
+        serviceRequest: true,
       },
     });
     if (!order) throw new NotFoundException('订单不存在');
@@ -146,6 +152,12 @@ export class OrdersService {
     const addresses = order.addresses.map(({ phoneHash: _hash, phoneEncrypted: _encrypted, ...address }) => ({
       ...address,
       phone: this.security.maskPhone(address.phoneLast4),
+      latitude: address.latitude === null || address.latitude === undefined
+        ? undefined
+        : Number(address.latitude),
+      longitude: address.longitude === null || address.longitude === undefined
+        ? undefined
+        : Number(address.longitude),
     }));
     return { ...order, addresses, environment: { enabled: order.isMock, label: order.isMock ? '模拟环境' : '真实环境' } };
   }
@@ -393,5 +405,102 @@ export class OrdersService {
       return ShipmentStatus.IN_TRANSIT;
     }
     return ShipmentStatus.CREATED;
+  }
+
+  async createComplaint(
+    principal: AuthPrincipal,
+    orderId: string,
+    dto: {
+      issueType: 'DAMAGE' | 'ATTITUDE' | 'OVERCHARGE' | 'OTHER';
+      subject: string;
+      description: string;
+      proofUrls?: string[];
+    },
+  ) {
+    if (principal.type !== PrincipalType.USER) throw new ForbiddenException('仅用户可投诉');
+    const order = await this.prisma.expressOrder.findFirst({
+      where: { id: orderId, userId: principal.id },
+    });
+    if (!order) throw new NotFoundException('订单不存在');
+    const proofs = (dto.proofUrls ?? []).map((u) => u.trim()).filter(Boolean).slice(0, 6);
+    const description = proofs.length
+      ? `${dto.description.trim()}\n\n__PROOFS__${JSON.stringify(proofs)}`
+      : dto.description.trim();
+    const ticket = await this.prisma.customerServiceTicket.create({
+      data: {
+        ticketNo: `CS-${new Date().toISOString().slice(0, 10).replaceAll('-', '')}-${randomInt(1000, 9999)}`,
+        userId: principal.id,
+        orderId,
+        issueType: dto.issueType,
+        subject: dto.subject.trim(),
+        description,
+      },
+    });
+    return this.mapTicket(ticket);
+  }
+
+  async listTickets(principal: AuthPrincipal) {
+    if (principal.type !== PrincipalType.USER) throw new ForbiddenException('仅用户可查看工单');
+    const rows = await this.prisma.customerServiceTicket.findMany({
+      where: { userId: principal.id },
+      orderBy: { createdAt: 'desc' },
+      take: 50,
+    });
+    return rows.map((row) => this.mapTicket(row));
+  }
+
+  async ticketDetail(principal: AuthPrincipal, ticketId: string) {
+    if (principal.type !== PrincipalType.USER) throw new ForbiddenException('仅用户可查看工单');
+    const row = await this.prisma.customerServiceTicket.findFirst({
+      where: { id: ticketId, userId: principal.id },
+    });
+    if (!row) throw new NotFoundException('工单不存在');
+    return this.mapTicket(row);
+  }
+
+  private mapTicket(row: {
+    id: string;
+    ticketNo: string;
+    orderId: string | null;
+    issueType: string;
+    subject: string;
+    description: string;
+    status: string;
+    priority: string;
+    adminNote: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+    resolvedAt: Date | null;
+  }) {
+    const { text, proofUrls } = this.splitProofs(row.description);
+    return {
+      id: row.id,
+      ticketNo: row.ticketNo,
+      orderId: row.orderId,
+      issueType: row.issueType,
+      subject: row.subject,
+      description: text,
+      proofUrls,
+      status: row.status,
+      priority: row.priority,
+      adminNote: row.adminNote,
+      createdAt: row.createdAt.toISOString(),
+      updatedAt: row.updatedAt.toISOString(),
+      resolvedAt: row.resolvedAt?.toISOString() ?? null,
+    };
+  }
+
+  private splitProofs(description: string): { text: string; proofUrls: string[] } {
+    const marker = '\n\n__PROOFS__';
+    const idx = description.indexOf(marker);
+    if (idx < 0) return { text: description, proofUrls: [] };
+    const text = description.slice(0, idx);
+    try {
+      const parsed = JSON.parse(description.slice(idx + marker.length)) as unknown;
+      const proofUrls = Array.isArray(parsed) ? parsed.filter((u): u is string => typeof u === 'string') : [];
+      return { text, proofUrls };
+    } catch {
+      return { text, proofUrls: [] };
+    }
   }
 }

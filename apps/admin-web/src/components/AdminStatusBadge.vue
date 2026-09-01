@@ -1,0 +1,3 @@
+<script setup lang="ts">withDefaults(defineProps<{label:string;tone?:'primary'|'success'|'warning'|'danger'|'neutral'}>(),{tone:'primary'});</script>
+<template><span class="admin-status" :class="`tone-${tone}`">{{label}}</span></template>
+<style scoped>.admin-status{display:inline-flex;padding:6px 10px;border-radius:999px;font-size:11px;font-weight:800;white-space:nowrap}.tone-primary{color:#1565c0;background:#e3f2fd}.tone-success{color:#2e7d32;background:#e8f5e9}.tone-warning{color:#f57c00;background:#fff8e1}.tone-danger{color:#c62828;background:#ffebee}.tone-neutral{color:#666;background:#f5f5f5}</style>

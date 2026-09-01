@@ -5,9 +5,23 @@
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./tokens.css": "./src/tokens.css",
+    "./shell.css": "./src/shell.css",
+    "./theme": "./src/theme.ts",
+    "./i18n": "./src/i18n/index.ts",
+    "./mobile/*": "./src/mobile/*"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "peerDependencies": {
+    "vue": "^3.4.0"
   },
   "devDependencies": {
     "typescript": "^6.0.2"

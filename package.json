@@ -22,6 +22,7 @@
     "start:user": "npm run dev:h5 -w @express-platform/user-app",
     "start:courier": "npm run dev:h5 -w @express-platform/courier-app",
     "start:admin": "npm run dev -w @express-platform/admin-web",
+    "scan:cjk": "node scripts/scan-cjk-residual.mjs",
     "start:previews": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/start-previews.ps1",
     "db:generate": "npm run prisma:generate -w @express-platform/api",
     "db:migrate": "npm run prisma:migrate -w @express-platform/api",

@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { ItemType, OrderServiceType } from '@prisma/client';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
   IsEnum,
   IsISO8601,
@@ -16,6 +16,15 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
+
+const SERVICE_ALIAS: Record<string, OrderServiceType> = {
+  INTRACITY: OrderServiceType.SAME_CITY,
+};
+
+function toPrismaServiceType(value: unknown): OrderServiceType {
+  const raw = String(value);
+  return SERVICE_ALIAS[raw] ?? (raw as OrderServiceType);
+}
 
 export class OrderAddressInputDto {
   @ApiProperty({ example: '测试寄件人（虚拟）' })
@@ -105,6 +114,7 @@ export class OrderItemInputDto {
 
 export class CreateOrderDto {
   @ApiProperty({ enum: OrderServiceType })
+  @Transform(({ value }) => toPrismaServiceType(value))
   @IsEnum(OrderServiceType)
   serviceType!: OrderServiceType;
 

@@ -24,6 +24,11 @@ export function validateEnvironment(config: Record<string, unknown>): Record<str
     throw new Error('FIELD_ENCRYPTION_KEY must be a 64-character hexadecimal value');
   }
 
+  const corsOrigins = String(config.CORS_ORIGINS ?? '').split(',').map((value) => value.trim()).filter(Boolean);
+  if (String(config.NODE_ENV ?? 'development') === 'production' && corsOrigins.length === 0) {
+    throw new Error('CORS_ORIGINS must contain at least one allowed origin in production');
+  }
+
   const providerMode = String(config.PROVIDER_MODE ?? 'mock');
   if (!['mock', 'kuaidi100'].includes(providerMode)) {
     throw new Error('PROVIDER_MODE must be mock or kuaidi100');
@@ -31,6 +36,18 @@ export function validateEnvironment(config: Record<string, unknown>): Record<str
 
   if (providerMode === 'kuaidi100' && String(config.KUAIDI100_ENABLED) !== 'true') {
     throw new Error('KUAIDI100_ENABLED must be true before selecting the kuaidi100 provider');
+  }
+
+  const storageDriver = String(config.STORAGE_DRIVER ?? 'local');
+  if (!['local', 'oss'].includes(storageDriver)) {
+    throw new Error('STORAGE_DRIVER must be local or oss');
+  }
+  if (storageDriver === 'oss') {
+    for (const name of ['OSS_ACCESS_KEY_ID', 'OSS_ACCESS_KEY_SECRET', 'OSS_BUCKET'] as const) {
+      if (!String(config[name] ?? '').trim()) {
+        throw new Error(`${name} is required when STORAGE_DRIVER=oss`);
+      }
+    }
   }
 
   return config;

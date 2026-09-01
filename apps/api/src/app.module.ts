@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module.js';
 import { RateLimitGuard } from './common/guards/rate-limit.guard.js';
 import { RequestIdMiddleware } from './common/middleware/request-id.middleware.js';
 import { validateEnvironment } from './config/env.js';
+import { BusinessModule } from './business/business.module.js';
 import { OrdersModule } from './orders/orders.module.js';
 import { PrismaModule } from './prisma/prisma.module.js';
 import { ProvidersModule } from './providers/providers.module.js';
@@ -28,6 +29,7 @@ import { UsersModule } from './users/users.module.js';
     AdminModule,
     UsersModule,
     OrdersModule,
+    BusinessModule,
   ],
   controllers: [AppController],
   providers: [

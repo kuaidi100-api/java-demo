@@ -4,6 +4,7 @@ import { DisabledPaymentProvider } from './disabled-payment.provider.js';
 import { GoogleMapsProvider } from './google-maps.provider.js';
 import { Kuaidi100Provider } from './kuaidi100.provider.js';
 import { LocalStorageProvider } from './local-storage.provider.js';
+import { OssStorageProvider } from './oss-storage.provider.js';
 import { MockLogisticsProvider } from './mock-logistics.provider.js';
 import { MockMapProvider } from './mock-map.provider.js';
 import { MockNotificationProvider, MockSmsProvider } from './mock-communication.providers.js';
@@ -24,6 +25,7 @@ import {
     MockMapProvider,
     GoogleMapsProvider,
     LocalStorageProvider,
+    OssStorageProvider,
     DisabledPaymentProvider,
     MockSmsProvider,
     MockNotificationProvider,
@@ -38,7 +40,15 @@ import {
     },
     { provide: MAP_PROVIDER, useExisting: MockMapProvider },
     { provide: SMS_PROVIDER, useExisting: MockSmsProvider },
-    { provide: STORAGE_PROVIDER, useExisting: LocalStorageProvider },
+    {
+      provide: STORAGE_PROVIDER,
+      inject: [ConfigService, LocalStorageProvider, OssStorageProvider],
+      useFactory: (
+        config: ConfigService,
+        local: LocalStorageProvider,
+        oss: OssStorageProvider,
+      ) => (config.get<string>('STORAGE_DRIVER', 'local') === 'oss' ? oss : local),
+    },
     { provide: PAYMENT_PROVIDER, useExisting: DisabledPaymentProvider },
     { provide: NOTIFICATION_PROVIDER, useExisting: MockNotificationProvider },
   ],

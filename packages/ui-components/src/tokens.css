@@ -1,0 +1,149 @@
+/* Kapok Design Tokens — light / dark + typography + 8px grid */
+
+:root:not([data-theme='dark']):not(.km-dark),
+[data-theme='light'] {
+  color-scheme: light;
+
+  /* Brand */
+  --km-primary: #2563eb;
+  --km-primary-strong: #1d4ed8;
+  --km-primary-soft: #eff6ff;
+  --km-primary-glow: rgba(37, 99, 235, 0.18);
+  --km-accent: #3b82f6;
+
+  /* Surfaces */
+  --km-bg: #f4f5f7;
+  --km-bg-soft: #eef1f5;
+  --km-surface: #ffffff;
+  --km-surface-raised: #ffffff;
+  --km-surface-sunken: #f8f9fb;
+  --km-hero: #f3f7fb;
+  --km-sky: linear-gradient(180deg, #d7e9f8 0%, #e8f1f8 42%, #f4f5f7 100%);
+  --km-route-line: rgba(37, 99, 235, 0.12);
+
+  /* Text */
+  --km-text: #111827;
+  --km-text-secondary: #4b5563;
+  --km-text-muted: #6b7280;
+  --km-text-inverse: #ffffff;
+  --km-text-on-primary: #ffffff;
+
+  /* Semantic */
+  --km-success: #059669;
+  --km-success-soft: #ecfdf5;
+  --km-warning: #d97706;
+  --km-warning-soft: #fffbeb;
+  --km-danger: #dc2626;
+  --km-danger-soft: #fef2f2;
+
+  /* Chrome */
+  --km-border: rgba(17, 24, 39, 0.08);
+  --km-border-strong: rgba(17, 24, 39, 0.14);
+  --km-divider: rgba(17, 24, 39, 0.06);
+  --km-overlay: rgba(17, 24, 39, 0.36);
+  --km-shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04), 0 10px 28px rgba(15, 23, 42, 0.04);
+  --km-shadow-floating: 0 12px 32px rgba(37, 99, 235, 0.14);
+  --km-shadow-nav: 0 -1px 0 rgba(17, 24, 39, 0.06);
+
+  --km-btn: var(--km-primary);
+  --km-focus-ring: 0 0 0 3px rgba(37, 99, 235, 0.22);
+}
+
+[data-theme='dark'],
+.km-dark {
+  color-scheme: dark;
+
+  --km-primary: #60a5fa;
+  --km-primary-strong: #93c5fd;
+  --km-primary-soft: rgba(96, 165, 250, 0.14);
+  --km-primary-glow: rgba(96, 165, 250, 0.28);
+  --km-accent: #7dd3fc;
+
+  --km-bg: #0b1220;
+  --km-bg-soft: #111827;
+  --km-surface: #151c2c;
+  --km-surface-raised: #1b2436;
+  --km-surface-sunken: #0f1624;
+  --km-hero: #182033;
+  --km-sky: linear-gradient(180deg, #121a2b 0%, #0f1624 48%, #0b1220 100%);
+  --km-route-line: rgba(96, 165, 250, 0.18);
+
+  --km-text: #f3f4f6;
+  --km-text-secondary: #d1d5db;
+  --km-text-muted: #9ca3af;
+  --km-text-inverse: #0b1220;
+  --km-text-on-primary: #0b1220;
+
+  --km-success: #34d399;
+  --km-success-soft: rgba(52, 211, 153, 0.12);
+  --km-warning: #fbbf24;
+  --km-warning-soft: rgba(251, 191, 36, 0.12);
+  --km-danger: #f87171;
+  --km-danger-soft: rgba(248, 113, 113, 0.12);
+
+  --km-border: rgba(255, 255, 255, 0.08);
+  --km-border-strong: rgba(255, 255, 255, 0.14);
+  --km-divider: rgba(255, 255, 255, 0.06);
+  --km-overlay: rgba(2, 6, 23, 0.62);
+  --km-shadow-card: 0 1px 0 rgba(255, 255, 255, 0.04), 0 12px 28px rgba(0, 0, 0, 0.35);
+  --km-shadow-floating: 0 16px 40px rgba(0, 0, 0, 0.45);
+  --km-shadow-nav: 0 -1px 0 rgba(255, 255, 255, 0.06);
+
+  --km-btn: var(--km-primary);
+  --km-focus-ring: 0 0 0 3px rgba(96, 165, 250, 0.28);
+}
+
+:root {
+  /* 8px spacing scale */
+  --km-space-1: 4px;
+  --km-space-2: 8px;
+  --km-space-3: 12px;
+  --km-space-4: 16px;
+  --km-space-5: 20px;
+  --km-space-6: 24px;
+  --km-space-8: 32px;
+  --km-space-10: 40px;
+  --km-page-gutter: 16px;
+
+  /* Radius */
+  --km-radius-sm: 8px;
+  --km-radius-control: 10px;
+  --km-radius-card: 16px;
+  --km-radius-button: 12px;
+  --km-radius-pill: 999px;
+
+  /* Layout */
+  --km-mobile-max: 480px;
+  --km-bottom-nav-height: 64px;
+  --km-tabbar-space: calc(var(--km-bottom-nav-height) + env(safe-area-inset-bottom, 0px));
+
+  /* Typography — display / title / subtitle / body / caption / overline */
+  --km-font-family: "SF Pro Text", Inter, "Noto Sans SC", "PingFang SC", "Microsoft YaHei",
+    "Noto Sans Lao", "Noto Sans Thai", "Myanmar Text", "Noto Sans Myanmar", "Segoe UI", sans-serif;
+  --km-font-display: 28px;
+  --km-font-title: 20px;
+  --km-font-subtitle: 17px;
+  --km-font-body: 15px;
+  --km-font-caption: 12px;
+  --km-font-overline: 11px;
+
+  --km-weight-regular: 400;
+  --km-weight-medium: 500;
+  --km-weight-semibold: 600;
+  --km-weight-bold: 700;
+
+  --km-line-display: 1.2;
+  --km-line-title: 1.3;
+  --km-line-subtitle: 1.4;
+  --km-line-body: 1.55;
+  --km-line-caption: 1.45;
+
+  --km-tracking-tight: -0.03em;
+  --km-tracking-display: -0.04em;
+  --km-tracking-body: -0.01em;
+  --km-tracking-wide: 0.08em;
+
+  /* Motion */
+  --km-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --km-duration: 220ms;
+}

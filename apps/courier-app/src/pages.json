@@ -4,5 +4,5 @@
     {"path":"pages/workbench/index","style":{"navigationStyle":"custom"}},
     {"path":"pages/order-detail/index","style":{"navigationStyle":"custom"}}
   ],
-  "globalStyle":{"backgroundColor":"#F2F0EB","navigationBarTextStyle":"black","navigationBarTitleText":"木棉骑手"}
+  "globalStyle":{"backgroundColor":"#f4f5f7","navigationBarTextStyle":"black","navigationBarTitleText":"木棉骑手"}
 }

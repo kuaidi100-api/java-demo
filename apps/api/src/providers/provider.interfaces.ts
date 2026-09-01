@@ -28,8 +28,25 @@ export interface SmsProvider {
   send(input: { phone: string; template: string; variables: Record<string, string> }): Promise<{ accepted: boolean; isMock: boolean }>;
 }
 
+export interface StorageObject {
+  content: Buffer;
+  mimeType: string;
+  originalName: string;
+  folder?: string;
+  isPublic?: boolean;
+}
+
+export interface StoredObject {
+  storageKey: string;
+  sizeBytes: number;
+  publicUrl?: string;
+  signedUrl?: string;
+}
+
 export interface StorageProvider {
-  save(input: { content: Buffer; mimeType: string; originalName: string }): Promise<{ storageKey: string; sizeBytes: number }>;
+  save(input: StorageObject): Promise<StoredObject>;
+  publicUrl?(storageKey: string): string;
+  signedUrl?(storageKey: string, expiresSeconds?: number): Promise<string>;
 }
 
 export interface PaymentProvider {

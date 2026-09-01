@@ -14,17 +14,20 @@ async function bootstrap() {
   const prefix = config.get<string>('API_PREFIX', 'api/v1');
   const port = config.get<number>('PORT', 3000);
 
-  app.use(helmet({ contentSecurityPolicy: false }));
+  app.use(
+    helmet({
+      contentSecurityPolicy: false,
+      // H5 与 API 分端口开发时，same-origin CORP 会导致浏览器 fetch 直接 net::ERR_FAILED
+      crossOriginResourcePolicy: { policy: 'cross-origin' },
+    }),
+  );
   app.use(compression());
+  const allowedOrigins = (config.get<string>('CORS_ORIGINS') ?? 'http://127.0.0.1:5173,http://127.0.0.1:5174,http://127.0.0.1:5175,http://localhost:5173,http://localhost:5174,http://localhost:5175')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
   app.enableCors({
-    origin: [
-      'http://127.0.0.1:5173',
-      'http://127.0.0.1:5174',
-      'http://127.0.0.1:5175',
-      'http://localhost:5173',
-      'http://localhost:5174',
-      'http://localhost:5175',
-    ],
+    origin: allowedOrigins,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Authorization', 'Content-Type'],
     credentials: true,

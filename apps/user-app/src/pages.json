@@ -1,14 +1,41 @@
 {
   "pages": [
-    { "path": "pages/login/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/home/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/login/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/register/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/change-password/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/reset-password/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/tickets/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/verify/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/order-create/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/orders/index", "style": { "navigationStyle": "custom" } },
-    { "path": "pages/order-detail/index", "style": { "navigationStyle": "custom" } }
+    { "path": "pages/order-detail/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/profile/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/tracking/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/purchase/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/express/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/service/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/info/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/tracking-map/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/flash/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/map-pick/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/freight/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/hotel/list", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/hotel/detail", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/photo/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/photo/package", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/ticket/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/moving/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/ride/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/delivery-3d/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/support/chat", "style": { "navigationStyle": "custom" } }
   ],
   "globalStyle": {
-    "backgroundColor": "#F7F3ED",
+    "backgroundColor": "#f4f5f7",
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "木棉速达"
+    "navigationBarTitleText": "木棉速达",
+    "h5": {
+      "maxWidth": 480
+    }
   }
 }

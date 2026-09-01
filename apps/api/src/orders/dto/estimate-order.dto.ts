@@ -1,10 +1,15 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { OrderServiceType } from '@prisma/client';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { IsEnum, IsNumber, IsOptional, Max, Min } from 'class-validator';
+
+const SERVICE_ALIAS: Record<string, OrderServiceType> = {
+  INTRACITY: OrderServiceType.SAME_CITY,
+};
 
 export class EstimateOrderDto {
   @ApiProperty({ enum: OrderServiceType })
+  @Transform(({ value }) => SERVICE_ALIAS[String(value)] ?? value)
   @IsEnum(OrderServiceType)
   serviceType!: OrderServiceType;
 

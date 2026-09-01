@@ -46,6 +46,57 @@ enum OrderServiceType {
   EXPRESS
   PICKUP
   SAME_CITY
+  PURCHASE
+  HOTEL
+  TICKET
+  MOVING
+  PHOTO
+  RIDE
+}
+
+enum PaymentStatus {
+  UNPAID
+  PENDING_CONFIRM
+  PAID
+  REFUNDED
+}
+
+enum FreightChannel {
+  NEXT_DAY
+  ECONOMY
+}
+
+enum FreightWarehouseStatus {
+  AWAITING_INBOUND
+  RECEIVED
+  DEPARTED
+  EXCEPTION
+}
+
+enum OfflinePaymentMethod {
+  CASH
+  WECHAT
+  ALIPAY
+}
+
+enum SettlementLocation {
+  PICKUP
+  DROPOFF
+}
+
+enum LedgerType {
+  ONLINE_REVENUE
+  CASH_REVENUE
+  DEPOSIT_DEDUCT
+  RIDER_PAYOUT
+  PLATFORM_CUT
+}
+
+enum TicketIssueType {
+  DAMAGE
+  ATTITUDE
+  OVERCHARGE
+  OTHER
 }
 
 enum OrderAddressType {
@@ -120,9 +171,12 @@ enum NotificationStatus {
 model User {
   id             String        @id @default(uuid()) @db.Char(36)
   displayName    String        @map("display_name") @db.VarChar(80)
-  phoneHash      String        @unique @map("phone_hash") @db.Char(64)
-  phoneEncrypted String        @map("phone_encrypted") @db.Text
-  phoneLast4     String        @map("phone_last4") @db.Char(4)
+  phoneHash      String?       @unique @map("phone_hash") @db.Char(64)
+  phoneEncrypted String?       @map("phone_encrypted") @db.Text
+  phoneLast4     String?       @map("phone_last4") @db.Char(4)
+  emailHash      String?       @unique @map("email_hash") @db.Char(64)
+  emailEncrypted String?       @map("email_encrypted") @db.Text
+  emailLast4     String?       @map("email_last4") @db.VarChar(10)
   passwordHash   String        @map("password_hash") @db.VarChar(255)
   status         AccountStatus @default(ACTIVE)
   tokenVersion   Int           @default(0) @map("token_version")
@@ -153,7 +207,13 @@ model UserAddress {
   province          String?   @db.VarChar(100)
   city              String    @db.VarChar(100)
   district          String?   @db.VarChar(100)
+  village           String?   @db.VarChar(100)
+  street            String?   @db.VarChar(150)
+  formattedAddress  String?   @map("formatted_address") @db.VarChar(255)
   detail            String    @db.VarChar(255)
+  landmark          String?   @db.VarChar(150)
+  placeId           String?   @map("place_id") @db.VarChar(180)
+  mapProvider       String    @default("MOCK") @map("map_provider") @db.VarChar(30)
   postalCode        String?   @map("postal_code") @db.VarChar(20)
   latitude          Decimal?  @db.Decimal(10, 7)
   longitude         Decimal?  @db.Decimal(10, 7)
@@ -177,15 +237,21 @@ model Courier {
   phoneLast4     String            @map("phone_last4") @db.Char(4)
   passwordHash   String            @map("password_hash") @db.VarChar(255)
   accountStatus  AccountStatus     @default(ACTIVE) @map("account_status")
-  workStatus     CourierWorkStatus @default(OFFLINE) @map("work_status")
-  tokenVersion   Int               @default(0) @map("token_version")
+  workStatus       CourierWorkStatus @default(OFFLINE) @map("work_status")
+  riderCode        String?           @unique @map("rider_code") @db.VarChar(40)
+  depositBalance   Decimal           @default(0) @map("deposit_balance") @db.Decimal(12, 2)
+  depositThreshold Decimal           @default(200) @map("deposit_threshold") @db.Decimal(12, 2)
+  tokenVersion     Int               @default(0) @map("token_version")
+  serviceAreaId    String?           @map("service_area_id") @db.Char(36)
   createdAt      DateTime          @default(now()) @map("created_at") @db.DateTime(3)
   updatedAt      DateTime          @updatedAt @map("updated_at") @db.DateTime(3)
   deletedAt      DateTime?         @map("deleted_at") @db.DateTime(3)
 
-  locations CourierLocation[]
-  orders    ExpressOrder[]
-  tasks     DeliveryTask[]
+  locations   CourierLocation[]
+  orders      ExpressOrder[]
+  tasks       DeliveryTask[]
+  ledgers     FinanceLedger[]
+  serviceArea ServiceArea?      @relation(fields: [serviceAreaId], references: [id])
 
   @@index([accountStatus, workStatus])
   @@map("couriers")
@@ -311,6 +377,22 @@ model RefreshSession {
   @@map("refresh_sessions")
 }
 
+model VerificationChallenge {
+  id          String   @id @default(uuid()) @db.Char(36)
+  targetHash  String   @map("target_hash") @db.Char(64)
+  channel     String   @db.VarChar(10)
+  codeHash    String   @map("code_hash") @db.Char(64)
+  attempts    Int      @default(0)
+  expiresAt   DateTime @map("expires_at") @db.DateTime(3)
+  verifiedAt  DateTime? @map("verified_at") @db.DateTime(3)
+  consumedAt  DateTime? @map("consumed_at") @db.DateTime(3)
+  createdAt   DateTime @default(now()) @map("created_at") @db.DateTime(3)
+
+  @@index([targetHash, createdAt])
+  @@index([expiresAt, consumedAt])
+  @@map("verification_challenges")
+}
+
 model ExpressOrder {
   id                String           @id @default(uuid()) @db.Char(36)
   orderNo           String           @unique @map("order_no") @db.VarChar(32)
@@ -318,11 +400,15 @@ model ExpressOrder {
   courierId         String?          @map("courier_id") @db.Char(36)
   serviceType       OrderServiceType @map("service_type")
   status            OrderStatus      @default(DRAFT)
+  paymentStatus     PaymentStatus    @default(UNPAID) @map("payment_status")
   scheduledPickupAt DateTime?        @map("scheduled_pickup_at") @db.DateTime(3)
   estimatedFee      Decimal          @default(0) @map("estimated_fee") @db.Decimal(12, 2)
   actualFee         Decimal?         @map("actual_fee") @db.Decimal(12, 2)
-  currency          String           @default("LAK") @db.Char(3)
+  couponId          String?          @map("coupon_id") @db.Char(36)
+  discountAmount    Decimal          @default(0) @map("discount_amount") @db.Decimal(12, 2)
+  currency          String           @default("CNY") @db.Char(3)
   remark            String?          @db.VarChar(500)
+  extra             Json?
   isMock            Boolean          @default(true) @map("is_mock")
   version           Int              @default(0)
   createdAt         DateTime         @default(now()) @map("created_at") @db.DateTime(3)
@@ -337,12 +423,18 @@ model ExpressOrder {
   statusLogs    OrderStatusLog[]
   shipment      Shipment?
   task          DeliveryTask?
-  tickets       CustomerServiceTicket[]
-  notifications Notification[]
+  tickets         CustomerServiceTicket[]
+  notifications   Notification[]
+  freightDetail   OrderFreightDetail?
+  errandDetail    OrderErrandDetail?
+  purchaseDetail  OrderPurchaseDetail?
+  serviceRequest  OrderServiceRequest?
+  ledgers         FinanceLedger[]
 
   @@index([userId, createdAt])
   @@index([courierId, status])
   @@index([status, serviceType, createdAt])
+  @@index([paymentStatus, createdAt])
   @@map("express_orders")
 }
 
@@ -359,7 +451,13 @@ model OrderAddress {
   province       String?          @db.VarChar(100)
   city           String           @db.VarChar(100)
   district       String?          @db.VarChar(100)
+  village        String?          @db.VarChar(100)
+  street         String?          @db.VarChar(150)
+  formattedAddress String?        @map("formatted_address") @db.VarChar(255)
   detail         String           @db.VarChar(255)
+  landmark       String?          @db.VarChar(150)
+  placeId        String?          @map("place_id") @db.VarChar(180)
+  mapProvider    String           @default("MOCK") @map("map_provider") @db.VarChar(30)
   postalCode     String?          @map("postal_code") @db.VarChar(20)
   latitude       Decimal?         @db.Decimal(10, 7)
   longitude      Decimal?         @db.Decimal(10, 7)
@@ -434,6 +532,7 @@ model TrackingEvent {
   latitude    Decimal? @db.Decimal(10, 7)
   longitude   Decimal? @db.Decimal(10, 7)
   occurredAt  DateTime @map("occurred_at") @db.DateTime(3)
+  isManual    Boolean  @default(false) @map("is_manual")
   createdAt   DateTime @default(now()) @map("created_at") @db.DateTime(3)
 
   shipment Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
@@ -484,16 +583,41 @@ model ServiceArea {
   code        String   @unique @db.VarChar(50)
   name        String   @db.VarChar(100)
   countryCode String   @default("LA") @map("country_code") @db.Char(2)
+  country     String   @default("老挝") @db.VarChar(80)
+  province    String?  @db.VarChar(100)
   region      String?  @db.VarChar(100)
   boundary    Json
+  centerLatitude  Decimal? @map("center_latitude") @db.Decimal(10, 7)
+  centerLongitude Decimal? @map("center_longitude") @db.Decimal(10, 7)
+  mapProvider String @default("MOCK") @map("map_provider") @db.VarChar(30)
+  coordinateStatus String @default("MOCK_UNVERIFIED") @map("coordinate_status") @db.VarChar(30)
+  isDefault Boolean @default(false) @map("is_default")
+  currency String @default("LAK") @db.Char(3)
+  timezone String @default("Asia/Vientiane") @db.VarChar(60)
+  operationsCenterName String? @map("operations_center_name") @db.VarChar(120)
+  userDisplayName String? @map("user_display_name") @db.VarChar(120)
+  courierDisplayName String? @map("courier_display_name") @db.VarChar(120)
+  outOfAreaMessage String @default("当前位置暂不在服务范围内") @map("out_of_area_message") @db.VarChar(160)
   isActive    Boolean  @default(true) @map("is_active")
   createdAt   DateTime @default(now()) @map("created_at") @db.DateTime(3)
   updatedAt   DateTime @updatedAt @map("updated_at") @db.DateTime(3)
 
   pricingRules PricingRule[]
+  couriers Courier[]
 
   @@index([countryCode, isActive])
   @@map("service_areas")
+}
+
+model SystemSetting {
+  id          String   @id @default(uuid()) @db.Char(36)
+  key         String   @unique @db.VarChar(100)
+  value       Json
+  description String?  @db.VarChar(255)
+  createdAt   DateTime @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.DateTime(3)
+
+  @@map("system_settings")
 }
 
 model PricingRule {
@@ -524,10 +648,13 @@ model CustomerServiceTicket {
   userId          String         @map("user_id") @db.Char(36)
   orderId         String?        @map("order_id") @db.Char(36)
   assignedAdminId String?        @map("assigned_admin_id") @db.Char(36)
-  subject         String         @db.VarChar(150)
-  description     String         @db.Text
-  status          TicketStatus   @default(OPEN)
-  priority        TicketPriority @default(NORMAL)
+  issueType       TicketIssueType @default(OTHER) @map("issue_type")
+  subject         String          @db.VarChar(150)
+  description     String          @db.Text
+  status          TicketStatus    @default(OPEN)
+  priority        TicketPriority  @default(NORMAL)
+  penaltyAmount   Decimal         @default(0) @map("penalty_amount") @db.Decimal(12, 2)
+  adminNote       String?         @map("admin_note") @db.VarChar(500)
   createdAt       DateTime       @default(now()) @map("created_at") @db.DateTime(3)
   updatedAt       DateTime       @updatedAt @map("updated_at") @db.DateTime(3)
   resolvedAt      DateTime?      @map("resolved_at") @db.DateTime(3)
@@ -580,4 +707,119 @@ model OperationLog {
   @@index([resourceType, resourceId, createdAt])
   @@index([operatorType, operatorId, createdAt])
   @@map("operation_logs")
+}
+
+model OrderFreightDetail {
+  id                 String                  @id @default(uuid()) @db.Char(36)
+  orderId            String                  @unique @map("order_id") @db.Char(36)
+  channel            FreightChannel
+  domesticTrackingNo String                  @map("domestic_tracking_no") @db.VarChar(64)
+  actualWeight       Decimal?                @map("actual_weight") @db.Decimal(8, 2)
+  volumeWeight       Decimal?                @map("volume_weight") @db.Decimal(8, 2)
+  billedWeight       Decimal?                @map("billed_weight") @db.Decimal(8, 2)
+  lengthCm           Decimal?                @map("length_cm") @db.Decimal(8, 2)
+  widthCm            Decimal?                @map("width_cm") @db.Decimal(8, 2)
+  heightCm           Decimal?                @map("height_cm") @db.Decimal(8, 2)
+  warehouseStatus    FreightWarehouseStatus  @default(AWAITING_INBOUND) @map("warehouse_status")
+  isUnclaimed        Boolean                 @default(false) @map("is_unclaimed")
+  claimedByUserId    String?                 @map("claimed_by_user_id") @db.Char(36)
+  thirdPartyCode     String?                 @map("third_party_code") @db.VarChar(64)
+  createdAt          DateTime                @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt          DateTime                @updatedAt @map("updated_at") @db.DateTime(3)
+
+  order ExpressOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([domesticTrackingNo])
+  @@index([warehouseStatus, isUnclaimed])
+  @@map("order_freight_details")
+}
+
+model OrderErrandDetail {
+  id               String                 @id @default(uuid()) @db.Char(36)
+  orderId          String                 @unique @map("order_id") @db.Char(36)
+  deliveryAreaType Int                    @map("delivery_area_type") @db.TinyInt
+  weightTier       Int                    @map("weight_tier") @db.TinyInt
+  itemDescription  String                 @map("item_description") @db.VarChar(255)
+  paymentMethod    OfflinePaymentMethod   @map("payment_method")
+  settlementLoc    SettlementLocation     @map("settlement_loc")
+  pickupImgKey     String?                @map("pickup_img_key") @db.VarChar(255)
+  paymentImgKey    String?                @map("payment_img_key") @db.VarChar(255)
+  cancelReason     String?                @map("cancel_reason") @db.VarChar(255)
+  timeoutAt        DateTime?              @map("timeout_at") @db.DateTime(3)
+  createdAt        DateTime               @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt        DateTime               @updatedAt @map("updated_at") @db.DateTime(3)
+
+  order ExpressOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([deliveryAreaType, weightTier])
+  @@map("order_errand_details")
+}
+
+model OrderPurchaseDetail {
+  id            String    @id @default(uuid()) @db.Char(36)
+  orderId       String    @unique @map("order_id") @db.Char(36)
+  productUrl    String    @map("product_url") @db.VarChar(1000)
+  quoteAmount   Decimal?  @map("quote_amount") @db.Decimal(12, 2)
+  serviceFee    Decimal?  @map("service_fee") @db.Decimal(12, 2)
+  adminNote     String?   @map("admin_note") @db.VarChar(500)
+  quotedAt      DateTime? @map("quoted_at") @db.DateTime(3)
+  confirmedAt   DateTime? @map("confirmed_at") @db.DateTime(3)
+  createdAt     DateTime  @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt     DateTime  @updatedAt @map("updated_at") @db.DateTime(3)
+
+  order ExpressOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("order_purchase_details")
+}
+
+model OrderServiceRequest {
+  id          String   @id @default(uuid()) @db.Char(36)
+  orderId     String   @unique @map("order_id") @db.Char(36)
+  contactName String   @map("contact_name") @db.VarChar(80)
+  phoneLast4  String   @map("phone_last4") @db.Char(4)
+  phoneHash   String   @map("phone_hash") @db.Char(64)
+  phoneEncrypted String @map("phone_encrypted") @db.Text
+  detail      String   @db.VarChar(1000)
+  payload     Json?
+  createdAt   DateTime @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.DateTime(3)
+
+  order ExpressOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("order_service_requests")
+}
+
+model FreightRule {
+  id          String         @id @default(uuid()) @db.Char(36)
+  channel     FreightChannel @unique
+  baseWeight  Decimal        @map("base_weight") @db.Decimal(8, 2)
+  basePrice   Decimal        @map("base_price") @db.Decimal(8, 2)
+  stepWeight  Decimal        @map("step_weight") @db.Decimal(8, 2)
+  stepPrice   Decimal        @map("step_price") @db.Decimal(8, 2)
+  currency    String         @default("CNY") @db.Char(3)
+  isActive    Boolean        @default(true) @map("is_active")
+  createdAt   DateTime       @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt   DateTime       @updatedAt @map("updated_at") @db.DateTime(3)
+
+  @@map("freight_rules")
+}
+
+model FinanceLedger {
+  id           String     @id @default(uuid()) @db.Char(36)
+  orderId      String?    @map("order_id") @db.Char(36)
+  courierId    String?    @map("courier_id") @db.Char(36)
+  amount       Decimal    @db.Decimal(12, 2)
+  type         LedgerType
+  batchDate    String     @map("batch_date") @db.VarChar(32)
+  platformCut  Decimal    @default(0) @map("platform_cut") @db.Decimal(12, 2)
+  riderCut     Decimal    @default(0) @map("rider_cut") @db.Decimal(12, 2)
+  note         String?    @db.VarChar(255)
+  createdAt    DateTime   @default(now()) @map("created_at") @db.DateTime(3)
+
+  order   ExpressOrder? @relation(fields: [orderId], references: [id])
+  courier Courier?      @relation(fields: [courierId], references: [id])
+
+  @@index([batchDate, type])
+  @@index([courierId, createdAt])
+  @@map("finance_ledgers")
 }

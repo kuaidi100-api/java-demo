@@ -1,11 +1,12 @@
-:root { color: #292622; background: #f5f1eb; font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif; font-synthesis: none; }
-* { box-sizing: border-box; } body { margin: 0; min-width: 1080px; min-height: 100vh; } button,input,select { font: inherit; } button { cursor: pointer; }
-.mock-pill { display: inline-flex; align-items: center; gap: 7px; padding: 7px 12px; color: #a7491f; background: #fff0e6; border: 1px solid #ffd1b9; border-radius: 999px; font-size: 12px; font-weight: 800; }
-.panel { background: #fffdfa; border: 1px solid rgba(72,57,45,.09); border-radius: 20px; box-shadow: 0 12px 30px rgba(73,53,36,.06); }
-.page-title { margin: 0; font-size: 28px; letter-spacing: -.5px; }.page-subtitle { margin: 8px 0 0; color: #81776e; font-size: 14px; }
+@import '@express-platform/ui-components/tokens.css';
+:root { color: var(--km-text); background: var(--km-bg); font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif; font-synthesis: none; }
+* { box-sizing: border-box; } body { margin: 0; min-width: 1080px; min-height: 100vh; background: #f4f5f7; } button,input,select { font: inherit; } button { cursor: pointer; }
+.mock-pill { display: inline-flex; align-items: center; gap: 7px; padding: 6px 10px; color: #1d4ed8; background: #eff6ff; border: 1px solid #dbeafe; border-radius: 8px; font-size: 12px; font-weight: 500; }
+.panel { background: #fff; border: 1px solid rgba(17,24,39,.06); border-radius: 16px; box-shadow: 0 1px 2px rgba(15,23,42,.04), 0 10px 28px rgba(15,23,42,.04); }
+.page-title { margin: 0; font-size: 26px; font-weight: 600; letter-spacing: -.6px; }.page-subtitle { margin: 8px 0 0; color: #6b7280; font-size: 14px; font-weight: 400; }
 .page-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 26px; }
-.primary { min-height: 42px; padding: 0 20px; border: 0; border-radius: 12px; color: #fff; background: #ea642e; font-weight: 800; box-shadow: 0 8px 18px rgba(220,83,31,.18); }.primary:disabled { cursor: not-allowed; opacity: .55; }
-.secondary { min-height: 40px; padding: 0 18px; border: 1px solid #eadfd6; border-radius: 12px; color: #554c45; background: #fff; font-weight: 700; }.secondary:hover { border-color: #e57a49; color: #d65b27; }
-.state { padding: 54px 24px; text-align: center; color: #7f756d; }.state strong { display: block; margin-bottom: 8px; color: #332f2b; font-size: 18px; }.state.error { color: #a63e32; background: #fff3f0; }.state button { margin-top: 18px; }
-.status { display: inline-flex; padding: 6px 10px; border-radius: 999px; color: #9d421c; background: #fff0e7; font-size: 12px; font-weight: 800; white-space: nowrap; }
-.table-wrap { overflow: hidden; }.data-table { width: 100%; border-collapse: collapse; }.data-table th { padding: 14px 18px; text-align: left; color: #877c72; background: #faf7f3; font-size: 12px; letter-spacing: .4px; }.data-table td { padding: 17px 18px; border-top: 1px solid #eee6df; font-size: 13px; }.data-table tbody tr { cursor: pointer; transition: background .15s; }.data-table tbody tr:hover { background: #fff9f4; }
+.primary { min-height: 40px; padding: 0 18px; border: 0; border-radius: 10px; color: #fff; background: #2563eb; font-weight: 600; box-shadow: none; }.primary:disabled { cursor: not-allowed; opacity: .45; }
+.secondary { min-height: 40px; padding: 0 16px; border: 1px solid rgba(37,99,235,.2); border-radius: 10px; color: #2563eb; background: #fff; font-weight: 500; }.secondary:hover { border-color: #2563eb; }
+.state { padding: 54px 24px; text-align: center; color: #9ca3af; }.state strong { display: block; margin-bottom: 8px; color: #111827; font-size: 18px; font-weight: 600; }.state.error { color: #b91c1c; background: #fef2f2; }.state button { margin-top: 18px; }
+.status { display: inline-flex; padding: 5px 10px; border-radius: 8px; color: #1d4ed8; background: #eff6ff; font-size: 12px; font-weight: 500; white-space: nowrap; }
+.table-wrap { overflow: hidden; }.data-table { width: 100%; border-collapse: collapse; }.data-table th { padding: 14px 18px; text-align: left; color: #9ca3af; background: #f8f9fb; font-size: 12px; font-weight: 500; letter-spacing: .3px; }.data-table td { padding: 16px 18px; border-top: 1px solid rgba(17,24,39,.06); font-size: 13px; }.data-table tbody tr { cursor: pointer; transition: background .15s; }.data-table tbody tr:hover { background: #f8fafc; }

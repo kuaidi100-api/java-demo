@@ -11,6 +11,7 @@
   "dependencies": {
     "@express-platform/api-client": "0.1.0",
     "@express-platform/shared-types": "0.1.0",
+    "@express-platform/ui-components": "0.1.0",
     "vue": "3.4.21",
     "vue-router": "4.4.4"
   },

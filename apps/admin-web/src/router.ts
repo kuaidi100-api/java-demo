@@ -5,6 +5,9 @@ import AdminLayout from './views/AdminLayout.vue';
 import OverviewView from './views/OverviewView.vue';
 import OrdersView from './views/OrdersView.vue';
 import OrderDetailView from './views/OrderDetailView.vue';
+import WarehouseView from './views/WarehouseView.vue';
+import FinanceView from './views/FinanceView.vue';
+import TicketsView from './views/TicketsView.vue';
 
 export const router = createRouter({
   history: createWebHashHistory(),
@@ -16,6 +19,9 @@ export const router = createRouter({
         { path: 'overview', component: OverviewView },
         { path: 'orders', component: OrdersView },
         { path: 'orders/:id', component: OrderDetailView },
+        { path: 'warehouse', component: WarehouseView },
+        { path: 'finance', component: FinanceView },
+        { path: 'tickets', component: TicketsView },
       ],
     },
   ],

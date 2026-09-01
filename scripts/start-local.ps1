@@ -21,8 +21,12 @@ Get-Content -LiteralPath '.env' | ForEach-Object {
   }
 }
 
-docker info *> $null
-if ($LASTEXITCODE -ne 0) {
+function Test-DockerEngine {
+  cmd /c "docker info >nul 2>&1"
+  return $LASTEXITCODE -eq 0
+}
+
+if (-not (Test-DockerEngine)) {
   $dockerDesktop = 'C:\Program Files\Docker\Docker\Docker Desktop.exe'
   if (-not (Test-Path -LiteralPath $dockerDesktop)) {
     throw 'Docker engine is unavailable and Docker Desktop was not found.'
@@ -30,15 +34,14 @@ if ($LASTEXITCODE -ne 0) {
   Start-Process -FilePath $dockerDesktop -WindowStyle Hidden
   Write-Host 'Waiting for Docker Desktop...'
   $ready = $false
-  foreach ($attempt in 1..60) {
+  foreach ($attempt in 1..90) {
     Start-Sleep -Seconds 2
-    docker info *> $null
-    if ($LASTEXITCODE -eq 0) {
+    if (Test-DockerEngine) {
       $ready = $true
       break
     }
   }
-  if (-not $ready) { throw 'Docker Desktop did not become ready within 120 seconds.' }
+  if (-not $ready) { throw 'Docker Desktop did not become ready within 180 seconds.' }
 }
 
 if (-not $SkipInstall) { npm install }

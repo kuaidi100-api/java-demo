@@ -36,7 +36,21 @@ export enum OrderAction {
 export enum OrderServiceType {
   EXPRESS = 'EXPRESS',
   PICKUP = 'PICKUP',
+  SAME_CITY = 'SAME_CITY',
   INTRACITY = 'INTRACITY',
+  PURCHASE = 'PURCHASE',
+  HOTEL = 'HOTEL',
+  TICKET = 'TICKET',
+  MOVING = 'MOVING',
+  PHOTO = 'PHOTO',
+  RIDE = 'RIDE',
+}
+
+export enum PaymentStatus {
+  UNPAID = 'UNPAID',
+  PENDING_CONFIRM = 'PENDING_CONFIRM',
+  PAID = 'PAID',
+  REFUNDED = 'REFUNDED',
 }
 
 export enum ItemType {
@@ -90,6 +104,40 @@ export interface LoginInput {
   subjectType: PrincipalType;
   identifier: string;
   password: string;
+}
+
+export interface RegisterInput {
+  displayName: string;
+  phone?: string;
+  email?: string;
+  password: string;
+  verificationToken: string;
+}
+
+export interface SendCodeInput {
+  phone?: string;
+  email?: string;
+  /** login=must exist; register=must not exist; reset=must exist */
+  purpose?: 'login' | 'register' | 'reset';
+}
+
+export interface VerifyCodeInput {
+  phone?: string;
+  email?: string;
+  code: string;
+}
+
+export interface SendCodeResult {
+  sent: boolean;
+  target: string;
+  mockCode?: string;
+  message: string;
+}
+
+export interface VerifyCodeResult {
+  verified: boolean;
+  verificationToken: string;
+  message: string;
 }
 
 export interface AddressInput {
@@ -150,6 +198,8 @@ export interface OrderSummary {
   serviceType: OrderServiceType;
   status: OrderStatus;
   estimatedFee: number | string;
+  actualFee?: number | string | null;
+  paymentStatus?: PaymentStatus;
   currency: string;
   isMock: boolean;
   scheduledPickupAt: string | null;
@@ -193,6 +243,21 @@ export interface TrackingEvent {
   occurredAt: string;
 }
 
+export interface PurchaseDetail {
+  productUrl: string;
+  quoteAmount: number | string | null;
+  serviceFee: number | string | null;
+  adminNote: string | null;
+  quotedAt: string | null;
+  confirmedAt: string | null;
+}
+
+export interface ServiceRequestDetail {
+  contactName: string;
+  detail: string;
+  payload?: Record<string, unknown> | null;
+}
+
 export interface OrderDetail extends Omit<OrderSummary, 'shipment'> {
   courierId: string | null;
   remark: string | null;
@@ -201,6 +266,9 @@ export interface OrderDetail extends Omit<OrderSummary, 'shipment'> {
   statusLogs: OrderStatusLog[];
   shipment: (NonNullable<OrderSummary['shipment']> & { trackingEvents: TrackingEvent[] }) | null;
   task: { id: string; courierId: string | null; status: string } | null;
+  purchaseDetail?: PurchaseDetail | null;
+  serviceRequest?: ServiceRequestDetail | null;
+  extra?: Record<string, unknown> | null;
   environment: MockEnvironmentState;
 }
 

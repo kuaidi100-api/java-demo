@@ -19,7 +19,8 @@ export class UsersService {
     return {
       id: user.id,
       displayName: user.displayName,
-      phone: this.security.maskPhone(user.phoneLast4),
+      phone: user.phoneLast4 ? this.security.maskPhone(user.phoneLast4) : null,
+      email: user.emailLast4 ? this.security.maskEmail(user.emailLast4) : null,
       status: user.status,
       createdAt: user.createdAt,
     };

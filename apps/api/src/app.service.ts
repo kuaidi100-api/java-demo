@@ -15,6 +15,7 @@ export class AppService {
       status: 'ok',
       database: 'ok',
       providerMode: this.config.get<string>('PROVIDER_MODE', 'mock'),
+      storageDriver: this.config.get<string>('STORAGE_DRIVER', 'local'),
       mockEnvironment: this.config.get<string>('PROVIDER_MODE', 'mock') === 'mock',
     };
   }

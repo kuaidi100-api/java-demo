@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document id="KmlFile">
+	<Placemark id="0B2FBE3649419314B50B">
+		<name>金三角经济特区配送范围</name>
+		<LookAt>
+			<longitude>100.1123721955715</longitude>
+			<latitude>20.30874246214393</latitude>
+			<altitude>396.5562092084882</altitude>
+			<heading>-95.16163018848164</heading>
+			<tilt>7.056908964546251</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>39462.81406737865</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<Polygon>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						100.1527514569086,20.28524340656723,0 100.1808035291631,20.34040320884711,0 100.1151458134463,20.40667826634942,0 100.0934349107348,20.38203521528422,0 100.0817935837889,20.3595561041063,0 100.0872177242839,20.29084279003852,0 100.0943962829306,20.25580789625191,0 100.1527514569086,20.28524340656723,0
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+</Document>
+</kml>

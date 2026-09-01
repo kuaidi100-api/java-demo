@@ -55,7 +55,9 @@ async function main(): Promise<void> {
     upsertPermission('orders.dispatch', '调度订单'),
     upsertPermission('pricing.manage', '管理价格规则'),
     upsertPermission('rbac.manage', '管理角色权限'),
-    upsertPermission('operation_logs.read', '查看操作日志'),
+    upsertPermission('warehouse.operate', '库管入库发车'),
+    upsertPermission('finance.read', '查看财务对账'),
+    upsertPermission('tickets.manage', '客服工单处理'),
   ]);
 
   const adminRole = await prisma.role.upsert({
@@ -113,7 +115,7 @@ async function main(): Promise<void> {
   const courierPhone = normalizePhone(required('SEED_COURIER_PHONE'));
   await prisma.courier.upsert({
     where: { phoneHash: phoneHash(courierPhone) },
-    update: { displayName: '测试配送员一（虚拟）' },
+    update: { displayName: '测试配送员一（虚拟）', riderCode: 'A-测试' },
     create: {
       displayName: '测试配送员一（虚拟）',
       phoneHash: phoneHash(courierPhone),
@@ -121,6 +123,33 @@ async function main(): Promise<void> {
       phoneLast4: courierPhone.slice(-4),
       passwordHash: await hash(required('SEED_COURIER_PASSWORD'), 12),
       workStatus: 'AVAILABLE',
+      riderCode: 'A-测试',
+      depositBalance: '500',
+    },
+  });
+
+  await prisma.freightRule.upsert({
+    where: { channel: 'NEXT_DAY' },
+    update: { basePrice: '20', stepPrice: '15' },
+    create: {
+      channel: 'NEXT_DAY',
+      baseWeight: '1',
+      basePrice: '20',
+      stepWeight: '1',
+      stepPrice: '15',
+      currency: 'CNY',
+    },
+  });
+  await prisma.freightRule.upsert({
+    where: { channel: 'ECONOMY' },
+    update: { basePrice: '15', stepPrice: '10' },
+    create: {
+      channel: 'ECONOMY',
+      baseWeight: '1',
+      basePrice: '15',
+      stepWeight: '1',
+      stepPrice: '10',
+      currency: 'CNY',
     },
   });
 

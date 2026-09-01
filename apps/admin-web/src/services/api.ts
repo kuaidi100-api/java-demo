@@ -28,7 +28,7 @@ const tokenStore: TokenStore = {
 };
 
 export const api = new ApiClient({
-  baseUrl: import.meta.env.VITE_API_BASE_URL ?? 'http://127.0.0.1:3000/api/v1',
+  baseUrl: import.meta.env.VITE_API_BASE_URL || '/api/v1',
   tokenStore,
   timeoutMs: 12_000,
   onUnauthorized: () => {
@@ -44,6 +44,13 @@ export const adminApi = {
   orders(): Promise<OrderSummary[]> { return api.get('/orders'); },
   order(id: string): Promise<OrderDetail> { return api.get(`/orders/${encodeURIComponent(id)}`); },
   act(id: string, input: OrderActionInput): Promise<OrderDetail> { return api.post(`/orders/${encodeURIComponent(id)}/actions`, input); },
+  receive(input: Record<string, unknown>): Promise<unknown> { return api.post('/freight/warehouse/receive', input); },
+  unclaimed(): Promise<unknown[]> { return api.get('/freight/unclaimed'); },
+  finance(batchDate?: string): Promise<unknown[]> { return api.get(batchDate ? `/admin/finance?batchDate=${encodeURIComponent(batchDate)}` : '/admin/finance'); },
+  runFinance(slot: 'Morning' | 'Evening'): Promise<unknown> { return api.post(`/admin/finance/run?slot=${slot}`); },
+  tickets(): Promise<unknown[]> { return api.get('/admin/tickets'); },
+  addTrace(id: string, description: string): Promise<unknown> { return api.post(`/admin/orders/${encodeURIComponent(id)}/traces`, { description }); },
+  quotePurchase(id: string, quoteAmount: number, adminNote?: string): Promise<unknown> { return api.post(`/purchases/${encodeURIComponent(id)}/quote`, { quoteAmount, adminNote }); },
 };
 
 export { tokenStore };
