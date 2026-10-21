@@ -12,5 +12,6 @@ public enum PrintType {
     IMAGE,
     CLOUD,
     NON,
+    ORDERFIRST,
     ;
 }

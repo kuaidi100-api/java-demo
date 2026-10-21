@@ -329,4 +329,52 @@ public class OrderReq {
      * 取件联系人电话
      */
     private String consignorMobile;
+
+    /**
+     * 顺丰国补参数
+     */
+    private OtherInfo otherInfo;
+
+
+    /**
+     * 物品明细信息
+     */
+    private List<ExpressPackage> packages;
+
+    /**
+     * 物品明细信息 金蝶专用 String
+     */
+    private String packageString;
+
+    /**
+     * 额外新字段 金蝶专用 String
+     */
+    private String addInfoString;
+
+    /**
+     * 额外新字段
+     */
+    private AddExtraInfo addInfo;
+
+    /**
+     * 组织码（目前仅支持德邦）
+     */
+    private String orgCode;
+
+    /**
+     * 销售单号
+     */
+    private String saleOrderNo;
+
+    /**基础服务字段，用户id和账号id**/
+    private String dbId;
+    private String elecId;
+    private String shareId;
+    private String shareType;
+
+    /**云打印是否需要image图片**/
+    private boolean needImage;
+
+    /*白名单不加密*/
+    private List<String> writeNotEncryPartnerIds;
 }
