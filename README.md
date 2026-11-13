@@ -4,13 +4,14 @@
 
 java-demo 是由[快递100](https://api.kuaidi100.com/home)官方提供的java sdk，方便调试使用。
 
-java-demo 集成了实时查询、订阅推送、智能判断、云打印相关、电子面单相关、短信、商家寄件等接口。
+java-demo 集成了实时查询、订阅推送、智能判断、云打印相关、电子面单相关、短信、商家寄件等接口，并支持[子账户](https://api.kuaidi100.com/document/zizhanghu)调用。
 
 ## Features
 
 - 提供了快递100接口请求参数实体类、返回实体类。
 - 提供测试类调试。
 - 支持maven、gradle引入
+- 支持子账户调用（替换鉴权参数 + 注入子账户专属 URL）
 
 ## Getting started
 
@@ -110,6 +111,38 @@ dependencies {
 
 - [取件码接口](https://github.com/kuaidi100-api/java-demo/blob/master/src/test/java/PickupCodeTest.java)
 
+- [子账户调用示例](https://github.com/kuaidi100-api/java-demo/blob/master/src/test/java/SubAccountTest.java)
+
+### 子账户调用
+
+子账户与主账户业务参数一致，调用时需**同时**替换：
+
+1. 鉴权参数：使用子账户的 `key` / `customer` / `secret`（写入 `account.properties` 或代码中传入）
+2. 请求 URL：使用 `ApiInfoConstant` 中的 `SUB_*` 常量，并通过客户端有参构造函数注入
+
+当前 SDK 支持的子账户接口：实时查询、订阅推送、地图查询、地图订阅、电子面单下单/取消/复打、时效预估、智能单号识别、快递可用性。完整说明见[子账户调用文档](https://api.kuaidi100.com/document/zizhanghu)。
+
+实时查询示例：
+
+```java
+QueryTrackParam queryTrackParam = new QueryTrackParam();
+queryTrackParam.setCom(CompanyConstant.YT);
+queryTrackParam.setNum("YT5319615559666");
+queryTrackParam.setPhone("18888888888");
+String param = new Gson().toJson(queryTrackParam);
+
+QueryTrackReq queryTrackReq = new QueryTrackReq();
+queryTrackReq.setParam(param);
+queryTrackReq.setCustomer(customer); // 子账户 customer
+queryTrackReq.setSign(SignUtils.querySign(param, key, customer)); // 子账户 key
+
+// 传入子账户专属 URL
+IBaseClient baseClient = new QueryTrack(ApiInfoConstant.SUB_QUERY_URL);
+System.out.println(baseClient.execute(queryTrackReq));
+```
+
+更多接口示例见 [SubAccountTest](https://github.com/kuaidi100-api/java-demo/blob/master/src/test/java/SubAccountTest.java)。电子面单若同一实例需处理下单/取消/时效/复打，可使用 `LabelV2` 四参数构造按 method 路由到不同子账户 URL。
+
 ## FAQ
 
 ### 问题1.快递100api接口里sign该如何处理？
@@ -165,6 +198,18 @@ public List<String> getBase64Img(String imgBase64){
     }
 ```
 
+### 问题4.如何使用子账户调用 SDK？
+
+子账户必须使用子账户专属 URL 与鉴权参数，不能与主账户混用。获取子账户参数：企业管理后台 → 我的信息 → 子账户管理，详见[子账户调用说明](https://api.kuaidi100.com/document/zizhanghu)。
+
+用法要点：
+
+- 无参构造：主账户，走默认官方地址
+- 有参构造（传入 `ApiInfoConstant.SUB_*`）：子账户模式
+- `account.properties` 中配置对应账户的 `key` / `customer` / `secret`
+
+示例代码见上文「子账户调用」及 [SubAccountTest](https://github.com/kuaidi100-api/java-demo/blob/master/src/test/java/SubAccountTest.java)。
+
 ## Tips
-如需获取账号信息（如 key、customer、secret），或免费试用100单，请访问[API开放平台](https://api.kuaidi100.com/register/diff/)进行注册
+如需获取账号信息（如 key、customer、secret），或免费试用100单，请访问[API开放平台](https://api.kuaidi100.com/register/diff/)进行注册。子账户鉴权参数请在企业管理后台的子账户管理中查看。
 
