@@ -12,8 +12,6 @@ import com.kuaidi100.sdk.utils.SignUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 
-// 移除servlet依赖 - 不再需要HttpServletRequest
-
 /**
  * 订阅(地图)
  *
@@ -22,9 +20,27 @@ import org.apache.http.HttpStatus;
  */
 public class SubscribeWithMap extends BaseClient {
 
+    private String apiUrl;
+
+    /**
+     * 主账户模式，使用默认地图订阅地址
+     */
+    public SubscribeWithMap() {
+        this.apiUrl = ApiInfoConstant.SUBSCRIBE_WITH_MAP_URL;
+    }
+
+    /**
+     * 子账户模式，传入子账户专属请求地址
+     *
+     * @param apiUrl 子账户请求地址，如 {@link ApiInfoConstant#SUB_SUBSCRIBE_MAP_URL}
+     */
+    public SubscribeWithMap(String apiUrl) {
+        this.apiUrl = apiUrl;
+    }
+
     @Override
     public String getApiUrl(BaseRequest request) {
-        return ApiInfoConstant.SUBSCRIBE_WITH_MAP_URL;
+        return this.apiUrl;
     }
 
     /**
@@ -33,10 +49,10 @@ public class SubscribeWithMap extends BaseClient {
      * @param subscribeReq
      * @return
      */
-    public SubscribeResp  subscribe(SubscribeReq subscribeReq) throws Exception{
+    public SubscribeResp subscribe(SubscribeReq subscribeReq) throws Exception {
         HttpResult httpResult = execute(subscribeReq);
-        if (httpResult.getStatus() == HttpStatus.SC_OK && StringUtils.isNotBlank(httpResult.getBody())){
-           return new Gson().fromJson(httpResult.getBody(), SubscribeResp.class);
+        if (httpResult.getStatus() == HttpStatus.SC_OK && StringUtils.isNotBlank(httpResult.getBody())) {
+            return new Gson().fromJson(httpResult.getBody(), SubscribeResp.class);
         }
         return null;
     }
@@ -55,7 +71,7 @@ public class SubscribeWithMap extends BaseClient {
      * @author: api.kuaidi100.com
      * @time: 2020/7/16 19:48
      */
-    public SubscribeResp callBackUrl(String param, String sign){
+    public SubscribeResp callBackUrl(String param, String sign) {
         //建议记录一下这个回调的内容，方便出问题后双方排查问题
         //log.debug("快递100订阅推送回调结果|{}|{}",param,sign);
         //订阅时传的salt,没有可以忽略
@@ -66,7 +82,7 @@ public class SubscribeWithMap extends BaseClient {
         subscribeResp.setReturnCode("200");
         subscribeResp.setMessage("成功");
         //加密如果相等，属于快递100推送；否则可以忽略掉当前请求
-        if (ourSign.equals(sign)){
+        if (ourSign.equals(sign)) {
             //TODO 业务处理
             SubscribeWithMapPushParamResp mapPushParamResp = new Gson().fromJson(param, SubscribeWithMapPushParamResp.class);
             return subscribeResp;

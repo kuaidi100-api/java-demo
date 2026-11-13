@@ -260,4 +260,46 @@ public class ApiInfoConstant {
      * 取件码 - 查询方法
      */
     public static final String PICKUP_CODE_QUERY_METHOD = "pickupCodeQuery";
+
+    // ================= 子账户调用专属接口 URL =================
+    /**
+     * 子账户-实时查询
+     */
+    public static final String SUB_QUERY_URL = "https://api.kuaidi100.com/gw/query";
+    /**
+     * 子账户-订阅推送
+     */
+    public static final String SUB_SUBSCRIBE_URL = "https://api.kuaidi100.com/gw/poll";
+    /**
+     * 子账户-地图轨迹查询
+     */
+    public static final String SUB_QUERY_MAP_URL = "https://api.kuaidi100.com/gw/map_query";
+    /**
+     * 子账户-地图轨迹订阅
+     */
+    public static final String SUB_SUBSCRIBE_MAP_URL = "https://api.kuaidi100.com/gw/map_poll";
+    /**
+     * 子账户-电子面单下单
+     */
+    public static final String SUB_ELECTRONIC_ORDER_URL = "https://api.kuaidi100.com/gw/eorder";
+    /**
+     * 子账户-电子面单取消
+     */
+    public static final String SUB_ELECTRONIC_CANCEL_URL = "https://api.kuaidi100.com/gw/cancel";
+    /**
+     * 子账户-电子面单复打
+     */
+    public static final String SUB_ELECTRONIC_REPRINT_URL = "https://api.kuaidi100.com/gw/reprint";
+    /**
+     * 子账户-时效预估
+     */
+    public static final String SUB_TIME_URL = "https://api.kuaidi100.com/gw/time";
+    /**
+     * 子账户-智能单号识别
+     */
+    public static final String SUB_AUTO_NUM_URL = "https://api.kuaidi100.com/gw/auto";
+    /**
+     * 子账户-快递可用性
+     */
+    public static final String SUB_REACHABLE_URL = "https://api.kuaidi100.com/gw/reachable";
 }

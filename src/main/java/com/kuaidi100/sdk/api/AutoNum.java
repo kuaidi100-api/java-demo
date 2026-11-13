@@ -26,10 +26,32 @@ import java.util.List;
  */
 public class AutoNum extends BaseClient {
 
+    private String apiUrl;
+
+    /**
+     * 主账户模式，使用默认智能单号识别地址（URL 模板含 num、key）
+     */
+    public AutoNum() {
+        this.apiUrl = ApiInfoConstant.AUTO_NUM_URL;
+    }
+
+    /**
+     * 子账户模式，传入子账户专属请求地址；num、key 通过请求体传递
+     *
+     * @param apiUrl 子账户请求地址，如 {@link ApiInfoConstant#SUB_AUTO_NUM_URL}
+     */
+    public AutoNum(String apiUrl) {
+        this.apiUrl = apiUrl;
+    }
+
     @Override
     public String getApiUrl(BaseRequest request) {
         AutoNumReq autoNumReq = (AutoNumReq) request;
-        return String.format(ApiInfoConstant.AUTO_NUM_URL, autoNumReq.getNum(), autoNumReq.getKey());
+        // 主账户地址为模板（含 %s），需将 num、key 拼入 URL；子账户地址为固定网关，参数走表单
+        if (this.apiUrl != null && this.apiUrl.contains("%s")) {
+            return String.format(this.apiUrl, autoNumReq.getNum(), autoNumReq.getKey());
+        }
+        return this.apiUrl;
     }
 
     /**
